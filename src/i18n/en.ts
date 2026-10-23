@@ -149,6 +149,7 @@ export const en = {
   },
   footer: {
     meta: "MIT License · macOS 15",
+    builtWith: "This site was built with Collie",
     github: "GitHub ↗",
   },
 };

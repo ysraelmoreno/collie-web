@@ -138,6 +138,7 @@ export const pt: Dictionary = {
   },
   footer: {
     meta: "Licença MIT · macOS 15",
+    builtWith: "Este site foi construído com Collie",
     github: "GitHub ↗",
   },
 };

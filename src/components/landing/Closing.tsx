@@ -32,12 +32,13 @@ export function Footer({ locale }: { locale: Locale }) {
         <a href={localePath[locale]} className="rounded-sm">
           <Wordmark />
         </a>
-        <p className="text-[15px] leading-[22px] text-text-secondary">
+        <p className="text-center text-[15px] leading-[22px] text-text-secondary sm:text-left">
           {t.meta}
+          <span className="block">{t.builtWith}</span>
         </p>
         <a
           href={GITHUB_URL}
-          className="text-[15px] leading-[22px] text-fg hover:text-accent-text"
+          className="whitespace-nowrap text-[15px] leading-[22px] text-fg hover:text-accent-text"
         >
           {t.github}
         </a>
