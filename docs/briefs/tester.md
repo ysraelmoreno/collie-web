@@ -3,7 +3,7 @@
 You validate the coded landing against the approved design. You do NOT write product code. Shepherd = terminal "Collie Web".
 
 ## What you can reach
-- Browser panel `browser-1` (dock) showing `http://localhost:3100` — a `next dev` server with hot reload (started by the Shepherd; do not stop it). Commands: `collie browser navigate|snapshot|screenshot|resize|scroll|text|eval|console …`.
+- Browser panel `browser-1` (canvas, viewport set to 1440) showing `http://localhost:4173` — the static build served by `npm run preview` (developer). After each fix round the developer must run `npm run build`; the preview then serves the new `out/`. (Port 3100 dev server was dropped: panel screenshots rendered it unstyled.). Commands: `collie browser navigate|snapshot|screenshot|resize|scroll|text|eval|console …`.
 - Design panel `design-1` (file `collie-web`), leashed to you. Page `Landing`:
   - 34359738376 EN 1440 · Dark / 34359738929 EN 1440 · Light
   - 34359738608 PT-BR 1440 · Dark / 34359739161 PT-BR 1440 · Light
