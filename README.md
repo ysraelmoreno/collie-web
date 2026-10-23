@@ -8,7 +8,7 @@ Landing page for [Collie](https://github.com/ysraelmoreno/collie). Next.js (App 
 | ------------------- | ---------------------------------------------- |
 | `npm run dev`       | Dev server on http://localhost:3000            |
 | `npm run build`     | Static export to `out/`                        |
-| `npm run preview`   | Serve `out/` locally (after `build`)           |
+| `npm run preview`   | Serve `out/` on http://localhost:4173          |
 | `npm run lint`      | ESLint                                         |
 | `npm run typecheck` | Generate route types, then `tsc --noEmit`      |
 | `npm run format`    | Prettier write (`format:check` to verify only) |
