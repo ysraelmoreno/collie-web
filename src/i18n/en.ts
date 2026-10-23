@@ -132,6 +132,7 @@ export const en = {
       "scripts/bundle-app.sh",
       "cp -R build/Collie.app /Applications/",
     ],
+    commandsLabel: "Build commands",
     note: "Optional: the Design panel also needs scripts/build-figcraft.sh (~10 min).",
   },
   copy: {

@@ -29,7 +29,12 @@ export function BuildIt({ locale }: { locale: Locale }) {
                 done={t.copy.done}
               />
             </div>
-            <pre className="overflow-x-auto p-5 text-sm leading-[22px] text-fg">
+            <pre
+              tabIndex={0}
+              role="region"
+              aria-label={b.commandsLabel}
+              className="overflow-x-auto p-5 text-sm focus-visible:-outline-offset-2 leading-[22px] text-fg"
+            >
               <code>
                 {b.commands.map((cmd) => (
                   <span key={cmd} className="block">

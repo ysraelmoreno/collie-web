@@ -121,6 +121,7 @@ export const pt: Dictionary = {
     body: "Ainda não há release empacotada. O Collie precisa de macOS 15 e Swift 6.2, e o app tem que ficar em /Applications antes do primeiro uso.",
     terminal: "Terminal",
     commands: en.build.commands,
+    commandsLabel: "Comandos de build",
     note: "Opcional: o painel Design também precisa de scripts/build-figcraft.sh (~10 min).",
   },
   copy: {
