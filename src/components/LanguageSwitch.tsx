@@ -6,12 +6,12 @@ export function LanguageSwitch({ locale }: { locale: Locale }) {
   return (
     <nav
       aria-label={getDictionary(locale).languageSwitch.label}
-      className="font-mono text-sm"
+      className="font-mono text-sm leading-[22px]"
     >
       {locales.map((l, i) => (
         <Fragment key={l}>
           {i > 0 && (
-            <span aria-hidden="true" className="px-2 text-muted">
+            <span aria-hidden="true" className="px-1.5 text-border">
               |
             </span>
           )}
@@ -19,7 +19,7 @@ export function LanguageSwitch({ locale }: { locale: Locale }) {
             href={localePath[l]}
             hrefLang={getDictionary(l).meta.lang}
             aria-current={l === locale ? "page" : undefined}
-            className="text-muted hover:text-paper aria-[current=page]:text-paper"
+            className="text-muted hover:text-fg aria-[current=page]:text-fg"
           >
             {l.toUpperCase()}
           </a>
