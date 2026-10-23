@@ -23,7 +23,7 @@ The owner APPROVED the landing screen. Build it in the existing Next.js project 
 
 ## Verify before reporting
 - `npm run lint`, `npm run typecheck`, `npm run format:check`, `npm run build` all green.
-- Run the site (`npm run preview` or `npx serve out`), open it with `collie panel`? No — ask me (Shepherd) for a browser panel if you need one; otherwise compare by screenshots you can take yourself.
+- Run the site (`npm run preview`) and leave it running; put the local URL in your report. Do NOT `collie ask` the Shepherd mid-task (it is waiting on you: deadlock). The Shepherd opens a browser panel after your report.
 - Small Conventional Commits, each ending with:
   Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
   No push.
