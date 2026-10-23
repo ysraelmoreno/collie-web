@@ -1,5 +1,5 @@
-import { Placeholder } from "@/components/Placeholder";
+import { Landing } from "@/components/landing/Landing";
 
 export default function Page() {
-  return <Placeholder locale="en" />;
+  return <Landing locale="en" />;
 }
