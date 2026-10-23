@@ -1,8 +1,10 @@
 /*
- * Design tokens from the `collie-web` design system (v2), exported with
+ * Design tokens from the `collie-web` design system (v4), exported with
  *   collie design run variable.export --panel design-1 --params '{"format":"css"}'
  * Adjusted by hand after export: px units on radius/space, and the Light mode
- * moved from [data-tokens="Light"] to prefers-color-scheme. Dark is default.
+ * moved from [data-tokens="Light"] to prefers-color-scheme or an explicit
+ * [data-theme="light"] (set by ThemeToggle). Dark is default, and
+ * [data-theme="dark"] beats a Light system. Light only lists what differs.
  */
 :root {
   --color-accent: #6e9bff;
@@ -37,7 +39,7 @@
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
+  :root:not([data-theme="dark"]) {
     --color-accent: #2f6bff;
     --color-accent-soft: #4a5bd6;
     --color-muted: #646b86;
@@ -52,4 +54,20 @@
     --color-text-secondary: #5a5d66;
     --color-on-accent: #ffffff;
   }
+}
+
+:root[data-theme="light"] {
+  --color-accent: #2f6bff;
+  --color-accent-soft: #4a5bd6;
+  --color-muted: #646b86;
+  --color-surface: #ffffff;
+  --color-surface-2: #ece9e2;
+  --color-border: #dcd8cf;
+  --color-memory: #e3e8ff;
+  --color-memory-2: #d3dbff;
+  --color-success: #0f7a55;
+  --color-bg: #f4f2ed;
+  --color-fg: #15171c;
+  --color-text-secondary: #5a5d66;
+  --color-on-accent: #ffffff;
 }

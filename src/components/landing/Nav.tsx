@@ -1,11 +1,12 @@
 import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { Wordmark } from "@/components/Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { getDictionary, localePath, type Locale } from "@/i18n";
 import { GITHUB_URL } from "@/lib/site";
 import { ButtonLink, Container } from "./ui";
 
 export function Nav({ locale }: { locale: Locale }) {
-  const t = getDictionary(locale).nav;
+  const { nav: t, theme } = getDictionary(locale);
   const links = [
     ["product", t.links.product],
     ["design", t.links.design],
@@ -15,11 +16,15 @@ export function Nav({ locale }: { locale: Locale }) {
 
   return (
     <header>
-      <Container className="flex min-h-[72px] items-center gap-6 py-[14px] lg:py-3">
-        <a href={localePath[locale]} className="rounded-sm">
+      <Container className="flex min-h-[72px] items-center gap-3 py-[14px] lg:gap-6 lg:py-3">
+        {/* ponytail: zoom keeps EN|PT, theme and GitHub on one row at 360px */}
+        <a
+          href={localePath[locale]}
+          className="shrink-0 rounded-sm max-sm:[zoom:0.85]"
+        >
           <Wordmark />
         </a>
-        <nav aria-label={t.label} className="mx-auto hidden md:block">
+        <nav aria-label={t.label} className="mx-auto hidden lg:block">
           <ul className="flex gap-9 text-[15px] leading-[22px] text-text-secondary">
             {links.map(([id, label]) => (
               <li key={id}>
@@ -30,9 +35,14 @@ export function Nav({ locale }: { locale: Locale }) {
             ))}
           </ul>
         </nav>
-        <div className="ml-auto flex items-center gap-5 md:ml-0">
+        <div className="ml-auto flex items-center gap-2 lg:ml-0 lg:gap-3">
           <LanguageSwitch locale={locale} />
-          <ButtonLink href={GITHUB_URL}>{t.github}</ButtonLink>
+          <div className="flex items-center gap-2 md:gap-3">
+            <ThemeToggle {...theme} />
+            <ButtonLink href={GITHUB_URL} className="max-sm:px-4">
+              {t.github}
+            </ButtonLink>
+          </div>
         </div>
       </Container>
     </header>

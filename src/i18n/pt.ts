@@ -11,6 +11,10 @@ export const pt: Dictionary = {
   languageSwitch: {
     label: "Idioma",
   },
+  theme: {
+    toLight: "Mudar para tema claro",
+    toDark: "Mudar para tema escuro",
+  },
   nav: {
     label: "Principal",
     links: {

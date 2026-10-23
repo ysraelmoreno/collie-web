@@ -12,6 +12,10 @@ export const en = {
   languageSwitch: {
     label: "Language",
   },
+  theme: {
+    toLight: "Switch to light theme",
+    toDark: "Switch to dark theme",
+  },
   nav: {
     label: "Main",
     links: {
