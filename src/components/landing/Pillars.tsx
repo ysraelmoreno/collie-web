@@ -28,9 +28,9 @@ function Pillar({
       className="pt-12 pb-16 lg:py-16"
     >
       <Container
-        className={`flex flex-col gap-4 lg:gap-10 xl:items-center xl:gap-16 ${reverse ? "xl:flex-row-reverse" : "xl:flex-row"}`}
+        className={`flex flex-col gap-4 lg:items-center lg:gap-10 xl:gap-16 ${reverse ? "lg:flex-row-reverse" : "lg:flex-row"}`}
       >
-        <div className="flex min-w-0 flex-col gap-4 xl:max-w-[480px] xl:flex-1">
+        <div className="flex min-w-0 flex-col gap-4 lg:max-w-[480px] lg:flex-1">
           <Eyebrow>{copy.eyebrow}</Eyebrow>
           <H2 id={`${id}-title`}>{copy.title}</H2>
           <Lead>{copy.body}</Lead>
@@ -65,11 +65,11 @@ export function Pillars({ locale }: { locale: Locale }) {
               tag="design system"
               bodyClassName="gap-[14px] p-4"
             >
-              <div className="flex flex-wrap gap-[10px]">
+              <div className="flex flex-wrap gap-[6px] lg:gap-[10px]">
                 {swatches.map((bg) => (
                   <span
                     key={bg}
-                    className={`size-10 rounded-sm border border-border ${bg}`}
+                    className={`size-8 rounded-sm lg:size-10 border border-border ${bg}`}
                   />
                 ))}
               </div>

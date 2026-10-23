@@ -15,21 +15,21 @@ import { ButtonLink, Container } from "./ui";
 export function Hero({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
   const h = t.hero;
-  // Fluid H1: the longest line fits the copy column (Manrope 800 measures ~0.5em per glyph).
+  // Fluid H1: the longest line fits the copy column (Manrope 800 measures ~0.49em per glyph).
   const fit = {
     "--chars": Math.max(...h.title.map((line) => line.length)),
   } as CSSProperties;
 
   return (
     <section className="pt-10 pb-14 lg:pt-[72px] lg:pb-24">
-      <Container className="flex flex-col gap-10 xl:flex-row xl:items-center xl:gap-8">
-        <div className="@container flex min-w-0 flex-col gap-5 lg:gap-6 xl:max-w-[620px] xl:flex-1">
+      <Container className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-8">
+        <div className="@container flex min-w-0 flex-col gap-5 lg:gap-6 lg:max-w-[620px] lg:flex-1">
           <p className="font-mono text-xs leading-4 tracking-[0.12em] text-accent-text">
             {h.eyebrow}
           </p>
           <h1
             style={fit}
-            className="text-[clamp(40px,calc(100cqi/(var(--chars)*0.52)),64px)] leading-[1.07] font-extrabold tracking-[-0.03em]"
+            className="text-[clamp(40px,calc(100cqi/(var(--chars)*0.5)),64px)] leading-[1.07] font-extrabold tracking-[-0.03em]"
           >
             {h.title.map((line) => (
               <span key={line} className="block">

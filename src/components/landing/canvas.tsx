@@ -8,8 +8,8 @@ import type { TermLine } from "@/i18n/en";
  * text), leashes are dropped and `fullOnly` items are hidden.
  */
 
-// Between xl and 1440 the side-by-side canvases are zoomed so copy keeps its width.
-export const sideZoom = "xl:max-[1439px]:[zoom:0.8]";
+// Below 1440 the side-by-side canvases are zoomed so copy keeps its width.
+export const sideZoom = "lg:max-xl:[zoom:0.6] xl:max-[1439px]:[zoom:0.8]";
 
 type Vars = CSSProperties & Record<`--${string}`, string>;
 
