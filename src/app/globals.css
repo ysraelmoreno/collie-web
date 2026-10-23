@@ -1,38 +1,114 @@
 @import "tailwindcss";
 @import "./tokens.css";
 
+/*
+ * tokens.css already uses Tailwind's theme names (--color-*, --radius-*), so the
+ * theme only registers them. Unlayered tokens.css wins over the theme layer, and
+ * `inline` makes utilities read the token variables directly.
+ */
 @theme inline {
-  --color-ink: var(--ink);
-  --color-paper: var(--paper);
-  --color-accent: var(--accent);
-  --color-accent-soft: var(--accent-soft);
-  --color-muted: var(--muted);
-  --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
-  --color-border: var(--border);
-  --color-memory: var(--memory);
-  --color-memory-2: var(--memory-2);
-  --color-success: var(--success);
-  --color-warn: var(--warn);
+  --color-*: initial;
+  --color-accent: var(--color-accent);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-ink: var(--color-ink);
+  --color-paper: var(--color-paper);
+  --color-muted: var(--color-muted);
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+  --color-border: var(--color-border);
+  --color-memory: var(--color-memory);
+  --color-memory-2: var(--color-memory-2);
+  --color-success: var(--color-success);
+  --color-bg: var(--color-bg);
+  --color-fg: var(--color-fg);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-on-accent: var(--color-on-accent);
+  --color-accent-text: var(--color-accent-text);
+  --color-white: #fff;
 
-  --radius-sm: var(--radius-s);
-  --radius-md: var(--radius-m);
-  --radius-lg: var(--radius-l);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
 
   --font-sans: var(--font-manrope), system-ui, sans-serif;
   --font-mono: var(--font-dm-mono), ui-monospace, monospace;
 }
 
+/* Small accent text: Light accent is 4.0:1 on bg, so it uses accent-soft (5.0:1) for AA. */
+:root {
+  --color-accent-text: var(--color-accent);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-accent-text: var(--color-accent-soft);
+  }
+}
+
 html {
-  color-scheme: dark;
+  color-scheme: dark light;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-weight: 500;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
+}
+
+/* Canvas motion: leashes drift, the Shepherd terminal types once. */
+@keyframes leash-drift {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+
+@keyframes type {
+  from {
+    max-width: 0;
+  }
+  to {
+    max-width: calc(var(--chars) * 1ch + 1ch);
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+}
+
+.leash {
+  animation: leash-drift 4s linear infinite;
+}
+
+/* Only on the full canvas (lg+); narrow cards wrap lines instead. */
+@media (min-width: 64rem) {
+  .typed {
+    overflow: hidden;
+    white-space: nowrap;
+    /* backwards: hidden before its turn, unconstrained once typed. */
+    animation: type calc(var(--chars) * 35ms) steps(var(--chars)) var(--delay)
+      backwards;
+  }
+
+  .appear {
+    animation: appear 1ms var(--delay) backwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .leash,
+  .typed,
+  .appear {
+    animation: none;
+  }
 }

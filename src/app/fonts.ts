@@ -1,8 +1,8 @@
 import { DM_Mono, Manrope } from "next/font/google";
 
+// Variable font: one file covers the 500 (UI) to 800 (display) range.
 export const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["500", "800"],
   variable: "--font-manrope",
 });
 

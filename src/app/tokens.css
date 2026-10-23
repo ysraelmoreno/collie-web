@@ -1,27 +1,55 @@
 /*
- * Design tokens (dark is the only theme the landing ships).
- *
- * Hand-written from the spec palette for now. Once the Designer publishes the
- * `collie-web` design system, replace this file with its export:
- *   variable.export --format css  ->  src/app/tokens.css
- * Keep the variable names below (or update the `@theme inline` map in
- * globals.css) so Tailwind utilities keep resolving.
+ * Design tokens from the `collie-web` design system (v2), exported with
+ *   collie design run variable.export --panel design-1 --params '{"format":"css"}'
+ * Adjusted by hand after export: px units on radius/space, and the Light mode
+ * moved from [data-tokens="Light"] to prefers-color-scheme. Dark is default.
  */
 :root {
-  --ink: #15171c;
-  --paper: #f4f2ed;
-  --accent: #6e9bff;
-  --accent-soft: #93a4ff;
-  --muted: #8c95b8;
-  --surface: #1f232b;
-  --surface-2: #262a33;
-  --border: #2e323b;
-  --memory: #1e2647;
-  --memory-2: #262e52;
-  --success: #6ee7b7;
-  --warn: #a14a06;
+  --color-accent: #6e9bff;
+  --color-ink: #15171c;
+  --color-paper: #f4f2ed;
+  --color-accent-soft: #93a4ff;
+  --color-muted: #8c95b8;
+  --color-surface: #1f232b;
+  --color-surface-2: #262a33;
+  --color-border: #2e323b;
+  --color-memory: #1e2647;
+  --color-memory-2: #262e52;
+  --color-success: #6ee7b7;
+  --color-warn: #a14a06;
+  --color-bg: #15171c;
+  --color-fg: #f4f2ed;
+  --color-text-secondary: #8c95b8;
+  --color-on-accent: #15171c;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-icon: 38px;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-96: 96px;
+}
 
-  --radius-s: 8px;
-  --radius-m: 12px;
-  --radius-l: 20px;
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-accent: #2f6bff;
+    --color-accent-soft: #4a5bd6;
+    --color-muted: #646b86;
+    --color-surface: #ffffff;
+    --color-surface-2: #ece9e2;
+    --color-border: #dcd8cf;
+    --color-memory: #e3e8ff;
+    --color-memory-2: #d3dbff;
+    --color-success: #0f7a55;
+    --color-bg: #f4f2ed;
+    --color-fg: #15171c;
+    --color-text-secondary: #5a5d66;
+    --color-on-accent: #ffffff;
+  }
 }
