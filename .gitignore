@@ -45,3 +45,6 @@ next-env.d.ts
 
 # QA screenshots (evidence cited in landing-qa.md stays tracked)
 docs/qa/shots/
+
+# Collie project memory (local)
+.collie/
