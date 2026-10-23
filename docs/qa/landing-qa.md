@@ -103,3 +103,67 @@ errors or warnings, reduced motion stops all animation, tokens unchanged.
 ### Rounds
 
 2 rounds. No blockers, majors or minors open.
+
+## Round 3 — ThemeToggle
+
+Build: commit `6d80462`, `npm run build` then the static preview on 4173. Design: DS v4, set `64424509483`
+(Theme=Dark|Light × State=Default|Hover|Focus) and the Nav `actions` frames of the six Landing screens
+(desktop `34359738392`, `34359738945`, `34359738624`, `34359739177`: EN|PT · 12 · toggle · 12 · GitHub; mobile
+`64424509539`, `64424509555`: toggle · 8 · GitHub).
+
+Method: Playwright 1.60 headless, 360 / 390 / 768 / 1024 / 1440 × `/`, `/pt` × system Dark / Light (20 runs), plus
+behaviour, first-paint and contrast scripts. The Collie browser panel was not used: its viewport stays at the dock width,
+it cannot emulate `prefers-color-scheme`, and no panel was open during this round.
+
+### 1. Visual — pass
+
+- 40×40, `border-radius: 12px`, one 20px SVG with `stroke-width: 1.75`, round caps. Sun in Dark, moon in Light, all 20 runs.
+- Default: icon `muted` (#8C95B8 / #646B86), no fill. Hover: icon `fg`, fill `surface-2` (#262A33 / #ECE9E2).
+  Focus (keyboard): 2px solid `accent` outline, offset 0 (= design "outside stroke"), icon `fg`. A mouse click does not
+  show the ring (`:focus-visible` false).
+- Position: between EN|PT and GitHub; gaps 12 / 12 at ≥1024, 8 / 8 below 640. Evidence: `r3/nav-all.png`, `r3/focus-*.png`.
+
+### 2. Behaviour — pass
+
+- No saved choice: follows `prefers-color-scheme`, live (system flip updates colours, icon and label).
+- Click toggles and stores `localStorage.theme`; reload keeps it; a system change does not override a saved choice;
+  the choice carries across `/` ↔ `/pt`; clearing storage goes back to the system theme.
+- Keyboard: Enter and Space toggle.
+- aria-label follows the state: EN "Switch to light theme" / "Switch to dark theme", PT "Mudar para tema claro" /
+  "Mudar para tema escuro".
+- No flash: with the saved choice opposite to the system and JS delayed 300ms, `body` already has the saved theme's
+  background at DOMContentLoaded and on the first animation frame (inline script in `<head>`, before `<body>`).
+
+### 3. Light contrast (AA)
+
+117 text nodes per page in Light (explicit choice and system, EN and PT). Every non-decorative text passes except one:
+
+- `text-secondary` #5A5D66 on bg 5.88; `muted` #646B86 on bg 4.71, on surface 5.26; `accent-soft` #4A5BD6 on bg 4.99,
+  on memory 4.59, on surface-2 4.61; `success` #0F7A55 on surface 5.34. Non-text: toggle icon 4.71, focus ring
+  (accent on bg) 4.02 — both ≥ 3:1.
+- **`on-accent` #FFFFFF on `accent` #2F6BFF = 4.499:1** — the primary CTA labels ("Get started on GitHub" /
+  "Começar no GitHub", hero and final CTA, 16px / 700, not large text) are just under 4.5:1.
+- Below 4.5 but inside `aria-hidden` illustrations (incidental text, exempt): panel tags `muted` on `surface-2` 4.34;
+  the canvas "Copy" `accent` on `surface-2` 3.71; the EN|PT separator (`aria-hidden`).
+
+Dark (explicit choice over a Light system) has no failures; the lowest real pair is `muted` on `surface-2` 4.86.
+
+### 4. Nav regressions — pass
+
+- Section links only from 1024; wordmark `zoom: 0.85` and GitHub padding 16px below 640 (22px from 640).
+- One row, no overlap, no horizontal scroll at every width / theme / locale; no console errors.
+
+### Findings
+
+| # | Route | Width | Section | Expected (design) | Actual | Severity | Screenshot |
+|---|---|---|---|---|---|---|---|
+| 5 | `/`, `/pt` | all | Hero + Final CTA, Light | AA 4.5:1 for 16px/700 labels (DS v3 `on-accent` was added for this) | White on #2F6BFF = 4.499:1. Fails AA by a hair, now that Light is user-selectable. Fix in the DS token: Light accent #2E6AFE gives 4.56 (#2D69FD 4.62), visually identical; accent stays ≥ 3:1 for the focus ring. | major | `r3/full-en-explicit.png` |
+| 6 | `/`, `/pt` | 768 | Nav | One gap value per breakpoint (12 desktop, 8 mobile) | EN\|PT → toggle 8px, toggle → GitHub 12px (inner `md:gap-3`, outer `lg:gap-3`). Uneven at 640–1023. | minor | `r3/nav-all.png` |
+
+Notes (not findings): before hydration the static HTML always says "Switch to light theme" / "Mudar para tema claro";
+React fixes it on hydration, so a light-theme visitor's screen reader could hear the wrong label for a few ms. Light
+hover fill in the set screenshot renders dark because the set sits in a Dark-mode frame; the token (`surface-2`) is right.
+
+### Rounds
+
+Round 3: 1 major (#5, design-system token), 1 minor (#6). Not yet sent to the developer/designer.
