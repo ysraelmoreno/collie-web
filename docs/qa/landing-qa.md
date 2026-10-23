@@ -68,4 +68,38 @@ normal viewport all five lines are typed within ~4s — verified by DOM width ov
 
 ## Rounds
 
-1 validation round. No blockers or majors, so no fix round was sent to the developer.
+1 validation round. No blockers or majors; the developer fixed the four minors anyway (see Round 2).
+
+## Round 2
+
+Build: commits `033ed4c`, `0833aba` (static preview on 4173). Same Playwright run, now 1440 / 1280 / 1024 / 390 / 360 ×
+`/`, `/pt` × Dark / Light (20 runs), plus focus on every interactive element.
+
+### Round 1 findings
+
+| # | Result | Evidence |
+|---|---|---|
+| 1 Build it clipped at ≤390 | **fixed.** The `pre` has `tabIndex=0`, `role="region"`, a localized label ("Build commands" / "Comandos de build") and an inset accent focus ring (offset −2px); it scrolls by keyboard. | report.json `extra.pre` |
+| 2 1024 stacked, canvases left-aligned | **fixed.** Hero and pillars are side by side from 1024: canvases zoom 0.6 at 1024–1279, 0.8 at 1280–1439, 1 at 1440. Layout balanced, nothing stacks above 1024. | `cmp/r2-en-1024-dark-hero.png`, `cmp/r2-en-1024-dark-pillar.png` |
+| 3 EN H1 62.75px at 1440 | **fixed.** 64px / 68.48px, 3 lines. PT 56.4px, 3 lines (accepted fluid size). | report.json `extra.h1` |
+| 4 Swatches wrap at 360 | **fixed.** 6 swatches in 1 row at every width. | report.json `extra.swatches` |
+
+### Asked to check
+
+- **1024 canvas at zoom 0.6:** illustration text renders at ~7.2px (9.6px at 1280). It is `aria-hidden` and decorative; the
+  cards, leashes and colours still read clearly, and the trade (no empty third of the row) is worth it. Accepted, not a finding.
+- **`:focus-visible` in `@layer base`:** all interactive elements tabbed in order (16 at ≥768: logo, 4 anchors, EN, PT,
+  GitHub, 2 hero CTAs, Copy, commands region, 2 final CTAs, footer logo, footer GitHub; 12 at 360 where anchors are hidden).
+  Every one shows a 2px solid accent outline (#6E9BFF dark, #2F6BFF light), offset 2px (−2px on the commands region).
+  Note: buttons use `transition-colors`, which in Tailwind v4 also animates `outline-color`, so the ring fades in over 150ms
+  from the text colour. Not a defect (final state verified after 250ms), just why an instant computed-style read shows
+  `on-accent`. Evidence: `r2/focus-cta-dark.png`.
+
+### Regression
+
+No regressions. Copy 0 missing (EN, PT), one `h1`, no horizontal scroll (360–1440), canvases `aria-hidden`, no console
+errors or warnings, reduced motion stops all animation, tokens unchanged.
+
+### Rounds
+
+2 rounds. No blockers, majors or minors open.
