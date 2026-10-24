@@ -35,7 +35,7 @@ export function Nav({ locale }: { locale: Locale }) {
             ))}
           </ul>
         </nav>
-        <div className="ml-auto flex items-center gap-2 lg:ml-0 lg:gap-3">
+        <div className="ml-auto flex items-center gap-2 md:gap-3 lg:ml-0">
           <LanguageSwitch locale={locale} />
           <div className="flex items-center gap-2 md:gap-3">
             <ThemeToggle {...theme} />
