@@ -28,13 +28,14 @@ export function Footer({ locale }: { locale: Locale }) {
   const t = getDictionary(locale).footer;
   return (
     <footer className="border-t border-border">
-      <Container className="flex flex-col items-center gap-6 py-7 sm:flex-row sm:justify-between">
+      <Container className="flex flex-col items-center gap-6 py-7 md:flex-row md:justify-between">
         <a href={localePath[locale]} className="rounded-sm">
           <Wordmark />
         </a>
-        <p className="text-center text-[15px] leading-[22px] text-text-secondary sm:text-left">
+        <p className="text-center text-[15px] leading-[22px] text-text-secondary md:text-left md:whitespace-nowrap">
           {t.meta}
-          <span className="block">{t.builtWith}</span>
+          <span className="hidden md:inline"> · </span>
+          <span className="block md:inline">{t.builtWith}</span>
         </p>
         <a
           href={GITHUB_URL}
