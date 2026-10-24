@@ -1,5 +1,5 @@
 /*
- * Design tokens from the `collie-web` design system (v5), exported with
+ * Design tokens from the `collie-web` design system (v6), exported with
  *   collie design run variable.export --panel design-1 --params '{"format":"css"}'
  * Adjusted by hand after export: px units on radius/space, and the Light mode
  * moved from [data-tokens="Light"] to prefers-color-scheme or an explicit
@@ -23,6 +23,7 @@
   --color-fg: #f4f2ed;
   --color-text-secondary: #8c95b8;
   --color-on-accent: #15171c;
+  --color-accent-text: var(--color-accent);
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 20px;
@@ -53,6 +54,7 @@
     --color-fg: #15171c;
     --color-text-secondary: #5a5d66;
     --color-on-accent: #ffffff;
+    --color-accent-text: var(--color-accent-soft);
   }
 }
 
@@ -70,4 +72,5 @@
   --color-fg: #15171c;
   --color-text-secondary: #5a5d66;
   --color-on-accent: #ffffff;
+  --color-accent-text: var(--color-accent-soft);
 }
