@@ -53,11 +53,19 @@ export function Lead({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function Command({ children }: { children: React.ReactNode }) {
+/** What the user asks, then the collie command the agent runs for it. */
+export function Command({
+  prompt,
+  command,
+}: {
+  prompt: string;
+  command: string;
+}) {
   return (
-    <p className="font-mono text-[13px] leading-[22px] break-words text-accent-soft">
-      {children}
-    </p>
+    <div className="flex flex-col gap-[2px] font-mono text-[13px] leading-5 break-words">
+      <p className="text-text-secondary">› {prompt}</p>
+      <p className="text-accent-text">↳ {command}</p>
+    </div>
   );
 }
 

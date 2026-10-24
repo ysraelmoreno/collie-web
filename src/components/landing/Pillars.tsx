@@ -1,4 +1,5 @@
 import { getDictionary, type Locale } from "@/i18n";
+import type { PromptCommand } from "@/i18n/en";
 import {
   Canvas,
   Lines,
@@ -17,7 +18,12 @@ function Pillar({
   children,
 }: {
   id: string;
-  copy: { eyebrow: string; title: string; body: string; command: string };
+  copy: {
+    eyebrow: string;
+    title: string;
+    body: string;
+    command: PromptCommand;
+  };
   reverse?: boolean;
   children: React.ReactNode;
 }) {
@@ -34,7 +40,7 @@ function Pillar({
           <Eyebrow>{copy.eyebrow}</Eyebrow>
           <H2 id={`${id}-title`}>{copy.title}</H2>
           <Lead>{copy.body}</Lead>
-          <Command>{copy.command}</Command>
+          <Command {...copy.command} />
         </div>
         {children}
       </Container>
@@ -82,16 +88,10 @@ export function Pillars({ locale }: { locale: Locale }) {
               </div>
             </PanelCard>
           </Placed>
-          <Placed x={330} y={200} w={400}>
-            <div className="overflow-hidden rounded-md border border-border bg-surface font-mono">
-              <div className="flex justify-between bg-surface-2 px-4 py-[10px] text-xs leading-[22px]">
-                <span className="text-muted">codex</span>
-                <span className="text-accent">{t.copy.idle}</span>
-              </div>
-              <pre className="overflow-hidden p-5 text-sm leading-[22px] text-fg">
-                {design.tokens.join("\n")}
-              </pre>
-            </div>
+          <Placed x={340} y={196} w={400} h={184}>
+            <PanelCard name="shepherd" tag="claude">
+              <Lines lines={design.shepherd} />
+            </PanelCard>
           </Placed>
         </Canvas>
       </Pillar>
@@ -106,12 +106,12 @@ export function Pillars({ locale }: { locale: Locale }) {
             "M360 305 C390 305 390 240 412 240",
           ]}
         >
-          <Placed x={40} y={40} w={320} h={150}>
+          <Placed x={40} y={30} w={320} h={170}>
             <PanelCard name="shepherd" tag="claude">
               <Lines lines={memory.shepherd} />
             </PanelCard>
           </Placed>
-          <Placed x={40} y={230} w={320} h={150}>
+          <Placed x={40} y={220} w={320} h={170}>
             <PanelCard name="api" tag="codex">
               <Lines lines={memory.api} />
             </PanelCard>
@@ -129,7 +129,7 @@ export function Pillars({ locale }: { locale: Locale }) {
           className={sideZoom}
           leashes={["M410 185 L460 185"]}
         >
-          <Placed x={40} y={70} w={370} h={230}>
+          <Placed x={40} y={82} w={370} h={256}>
             <PanelCard name="qa" tag="claude">
               <Lines lines={devices.qa} />
             </PanelCard>

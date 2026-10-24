@@ -3,6 +3,7 @@ import { getDictionary, type Locale } from "@/i18n";
 import { GITHUB_URL, README_URL } from "@/lib/site";
 import {
   Canvas,
+  cue,
   Lines,
   MemoryCard,
   PanelCard,
@@ -46,9 +47,10 @@ export function Hero({ locale }: { locale: Locale }) {
             </ButtonLink>
             <ButtonLink href={README_URL}>{h.secondary}</ButtonLink>
           </div>
-          <p className="hidden font-mono text-[13px] leading-[22px] text-muted lg:block">
-            {h.hint}
-          </p>
+          <div className="hidden flex-col gap-[2px] font-mono text-[13px] leading-5 lg:flex">
+            <p className="text-text-secondary">› {h.hint.prompt}</p>
+            <p className="text-muted">↳ {h.hint.command}</p>
+          </div>
         </div>
 
         <Canvas
@@ -56,14 +58,15 @@ export function Hero({ locale }: { locale: Locale }) {
           height={540}
           className={sideZoom}
           leashes={[
-            "M364 124 C380 124 380 150 396 150",
-            "M150 224 L150 272",
-            "M300 224 C300 290 400 290 400 330",
+            { d: "M300 272 C300 310 400 300 400 330", lit: 3000 },
+            { d: "M364 124 C380 124 380 150 396 150", lit: 4200 },
+            { d: "M150 272 L150 292", lit: 5400 },
           ]}
         >
-          <Placed x={24} y={24} w={340} h={200}>
+          <Placed x={24} y={24} w={340} h={248}>
             <PanelCard name="shepherd" tag="claude">
-              <Lines lines={h.shepherd} typing />
+              {/* Storyboard: prompt types 0.4s, commands 2.8/4.0/5.2s, reply 6.4s. */}
+              <Lines lines={h.shepherd} cues={[400, 2800, 4000, 5200, 6400]} />
             </PanelCard>
           </Placed>
           <Placed x={396} y={64} w={260} h={214} fullOnly>
@@ -75,20 +78,34 @@ export function Hero({ locale }: { locale: Locale }) {
               <div className="h-16 rounded-sm bg-surface-2" />
               <div className="h-2 w-[150px] rounded-[4px] bg-border" />
               <div className="h-2 w-[110px] rounded-[4px] bg-border" />
-              <div className="h-6 w-[72px] rounded-[6px] bg-accent" />
+              <div
+                style={cue(4400)}
+                className="to-accent h-6 w-[72px] rounded-[6px] bg-accent"
+              />
             </PanelCard>
           </Placed>
-          <Placed x={40} y={272} w={236} h={244} fullOnly>
+          <Placed x={40} y={292} w={236} h={228} fullOnly>
             <PanelCard
               name="portfolio-ios"
               tag="device"
               bodyClassName="px-4 py-[14px]"
             >
-              <Phone w={118} h={180} />
+              <Phone
+                w={118}
+                h={164}
+                card={56}
+                style={cue(5600)}
+                className="flash"
+                ctaClassName="to-accent"
+              />
             </PanelCard>
           </Placed>
           <Placed x={330} y={330} w={326}>
-            <MemoryCard {...t.memoryCard} />
+            <MemoryCard
+              {...t.memoryCard}
+              style={cue(3200)}
+              className="pulse-accent"
+            />
           </Placed>
         </Canvas>
       </Container>

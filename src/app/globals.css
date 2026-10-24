@@ -83,19 +83,16 @@ body {
   }
 }
 
-/* Canvas motion: leashes drift, the Shepherd terminal types once. */
+/*
+ * Canvas motion. Leashes always drift. On the full hero canvas (lg+) the
+ * Shepherd plays once: the prompt types, each collie command appears, its
+ * leash lights up and the panel it drives reacts, then the reply fades in.
+ * Every cue starts at --delay; elements hold their start state until then
+ * (fill-mode backwards/both) and the end state is the static design.
+ */
 @keyframes leash-drift {
   to {
     stroke-dashoffset: -22;
-  }
-}
-
-@keyframes type {
-  from {
-    max-width: 0;
-  }
-  to {
-    max-width: calc(var(--chars) * 1ch + 1ch);
   }
 }
 
@@ -105,22 +102,59 @@ body {
   }
 }
 
+@keyframes lit {
+  from {
+    stroke: var(--color-border);
+  }
+}
+
+@keyframes pulse-accent {
+  50% {
+    border-color: var(--color-accent);
+  }
+}
+
+@keyframes from-muted {
+  from {
+    background-color: var(--color-muted);
+  }
+}
+
+@keyframes flash {
+  50% {
+    filter: brightness(1.25);
+  }
+}
+
 .leash {
   animation: leash-drift 4s linear infinite;
 }
 
-/* Only on the full canvas (lg+); narrow cards wrap lines instead. */
 @media (min-width: 64rem) {
-  .typed {
-    overflow: hidden;
-    white-space: nowrap;
-    /* backwards: hidden before its turn, unconstrained once typed. */
-    animation: type calc(var(--chars) * 35ms) steps(var(--chars)) var(--delay)
-      backwards;
-  }
-
   .appear {
     animation: appear 1ms var(--delay) backwards;
+  }
+
+  .fade-in {
+    animation: appear 300ms var(--delay) backwards;
+  }
+
+  .leash.lit {
+    animation:
+      leash-drift 4s linear infinite,
+      lit 300ms var(--delay) backwards;
+  }
+
+  .pulse-accent {
+    animation: pulse-accent 600ms var(--delay);
+  }
+
+  .to-accent {
+    animation: from-muted 300ms var(--delay) backwards;
+  }
+
+  .flash {
+    animation: flash 240ms var(--delay);
   }
 }
 
@@ -129,8 +163,12 @@ body {
     scroll-behavior: auto;
   }
   .leash,
-  .typed,
-  .appear {
+  .leash.lit,
+  .appear,
+  .fade-in,
+  .pulse-accent,
+  .to-accent,
+  .flash {
     animation: none;
   }
 }

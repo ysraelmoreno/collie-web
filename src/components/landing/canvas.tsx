@@ -13,6 +13,9 @@ export const sideZoom = "lg:max-xl:[zoom:0.6] xl:max-[1439px]:[zoom:0.8]";
 
 type Vars = CSSProperties & Record<`--${string}`, string>;
 
+/** Start time (ms) of a one-pass hero cue; see the canvas motion in globals.css. */
+export const cue = (ms: number): Vars => ({ "--delay": `${ms}ms` });
+
 export function Canvas({
   width,
   height,
@@ -22,8 +25,8 @@ export function Canvas({
 }: {
   width: number;
   height: number;
-  /** SVG path data in canvas coordinates. */
-  leashes: string[];
+  /** SVG path data in canvas coordinates; `lit` (ms) lights a leash up once. */
+  leashes: (string | { d: string; lit: number })[];
   className?: string;
   children: React.ReactNode;
 }) {
@@ -38,19 +41,23 @@ export function Canvas({
         viewBox={`0 0 ${width} ${height}`}
         className="pointer-events-none absolute inset-0 hidden size-full lg:block"
       >
-        {leashes.map((d) => (
-          <path
-            key={d}
-            d={d}
-            className="leash"
-            fill="none"
-            stroke="var(--color-accent-soft)"
-            strokeOpacity={0.8}
-            strokeWidth={1.5}
-            strokeLinecap="round"
-            strokeDasharray="5 6"
-          />
-        ))}
+        {leashes.map((leash) => {
+          const { d, lit } =
+            typeof leash === "string" ? { d: leash, lit: undefined } : leash;
+          return (
+            <path
+              key={d}
+              d={d}
+              style={lit === undefined ? undefined : cue(lit)}
+              className={lit === undefined ? "leash" : "leash lit"}
+              fill="none"
+              stroke="var(--color-accent)"
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              strokeDasharray="5 6"
+            />
+          );
+        })}
       </svg>
       {children}
     </div>
@@ -111,42 +118,47 @@ export function PanelCard({
   );
 }
 
-/** Terminal lines; with `typing`, commands type in once and outputs follow. */
-export function Lines({
-  lines,
-  typing,
-}: {
-  lines: TermLine[];
-  typing?: boolean;
-}) {
-  // Start time of each line: commands take 35ms per char, outputs a beat.
-  const delays = lines.reduce<number[]>(
-    (acc, line, i) => [
-      ...acc,
-      i === 0
-        ? 600
-        : acc[i - 1] +
-          (lines[i - 1].out ? 450 : lines[i - 1].text.length * 35 + 250),
-    ],
-    [],
-  );
+/**
+ * Terminal lines: the user's prompt, the collie commands the agent runs, their
+ * output and the agent's reply. With `cues` (ms per line) they play in once:
+ * the prompt types char by char, later lines appear on their cue.
+ */
+export function Lines({ lines, cues }: { lines: TermLine[]; cues?: number[] }) {
   return (
-    <div className="flex flex-col font-mono text-xs leading-[19px]">
+    <div className="flex flex-col gap-[6px]">
       {lines.map((line, i) => {
-        const chars = line.text.length;
-        const style: Vars = {
-          "--chars": `${chars}`,
-          "--delay": `${delays[i]}ms`,
-        };
+        const at = cues?.[i];
+        if (line.kind === "prompt") {
+          return (
+            <div
+              key={line.text}
+              className="flex gap-2 rounded-sm bg-surface-2 px-[10px] py-[6px] text-[13px] leading-5"
+            >
+              <span className="font-mono text-accent-text">›</span>
+              <span className="text-fg">
+                {at === undefined
+                  ? line.text
+                  : [...line.text].map((char, c) => (
+                      <span key={c} className="appear" style={cue(at + c * 35)}>
+                        {char}
+                      </span>
+                    ))}
+              </span>
+            </div>
+          );
+        }
+        const kind = {
+          call: "font-mono text-[11px] leading-[17px] text-muted lg:text-xs lg:leading-[19px]",
+          out: "pl-[2ch] font-mono text-[11px] leading-[17px] whitespace-pre-wrap text-success lg:text-xs lg:leading-[19px]",
+          reply: "text-[13px] leading-5 text-fg",
+        }[line.kind];
         return (
           <div
             key={line.text}
-            style={typing ? style : undefined}
-            className={`${line.out ? "pl-[2ch] text-success" : "text-fg"} ${
-              typing ? (line.out ? "appear" : "typed") : ""
-            }`}
+            style={at === undefined ? undefined : cue(at)}
+            className={`${kind} ${at === undefined ? "" : line.kind === "reply" ? "fade-in" : "appear"}`}
           >
-            {line.text}
+            {line.kind === "call" ? `↳ ${line.text}` : line.text}
           </div>
         );
       })}
@@ -157,12 +169,19 @@ export function Lines({
 export function MemoryCard({
   eyebrow,
   entries,
+  className = "",
+  style,
 }: {
   eyebrow: string;
   entries: string[];
+  className?: string;
+  style?: CSSProperties;
 }) {
   return (
-    <div className="flex flex-col gap-[10px] rounded-md border border-memory-2 bg-memory p-[18px] font-mono">
+    <div
+      style={style}
+      className={`${className} flex flex-col gap-[10px] rounded-md border border-memory-2 bg-memory p-[18px] font-mono`}
+    >
       <p className="text-xs leading-4 tracking-[0.12em] text-accent-soft">
         {eyebrow}
       </p>
@@ -179,17 +198,32 @@ export function MemoryCard({
 }
 
 /** Stylised phone screen; colours stay paper/ink in both themes, like the app. */
-export function Phone({ w, h }: { w: number; h: number }) {
+export function Phone({
+  w,
+  h,
+  card = 60,
+  ctaClassName = "",
+  style,
+  className = "",
+}: {
+  w: number;
+  h: number;
+  /** Height of the white card on screen. */
+  card?: number;
+  ctaClassName?: string;
+  style?: CSSProperties;
+  className?: string;
+}) {
   return (
     <div
-      style={{ width: w, height: h }}
-      className="mx-auto flex flex-col gap-2 rounded-[20px] bg-paper px-[10px] pt-[18px] pb-[10px]"
+      style={{ ...style, width: w, height: h }}
+      className={`mx-auto flex flex-col gap-2 rounded-[20px] bg-paper px-[10px] pt-[18px] pb-[10px] ${className}`}
     >
       <div className="h-[10px] rounded-[5px] bg-ink" />
-      <div className="h-[60px] rounded-sm bg-white" />
+      <div style={{ height: card }} className="rounded-sm bg-white" />
       <div className="h-2 w-4/5 rounded-[4px] bg-muted" />
       <div className="h-2 w-3/5 rounded-[4px] bg-muted" />
-      <div className="h-[22px] rounded-[6px] bg-accent" />
+      <div className={`h-[22px] rounded-[6px] bg-accent ${ctaClassName}`} />
     </div>
   );
 }
