@@ -155,10 +155,24 @@ export const en = {
       },
     ],
   },
+  download: {
+    eyebrow: "DOWNLOAD",
+    title: "Download for macOS.",
+    body: "A signed installer with the Collie app. Open it, drag the app to Applications and start.",
+    button: "Download for macOS",
+    latest: "Latest release:",
+    stepsLabel: "Install",
+    steps: [
+      "Download the .dmg from the latest release.",
+      "Open the .dmg and drag Collie.app to Applications.",
+      "Open Collie from /Applications. The collied daemon only runs with the app there.",
+    ],
+    requirements: "Requires macOS 15 or later on a Mac with Apple silicon.",
+  },
   build: {
     eyebrow: "BUILD IT",
     title: "Build it from source.",
-    body: "There is no packaged release yet. Collie needs macOS 15 and Swift 6.2, and the app must live in /Applications before its first run.",
+    body: "Prefer to compile it yourself? Collie needs macOS 15 and Swift 6.2, and the app must live in /Applications before its first run.",
     terminal: "Terminal",
     commands: [
       "git clone https://github.com/ysraelmoreno/collie",
