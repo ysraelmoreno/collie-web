@@ -146,12 +146,13 @@ export const pt: Dictionary = {
   download: {
     eyebrow: "DOWNLOAD",
     title: "Baixe para macOS.",
-    body: "Um instalador assinado com o app do Collie. Abra, arraste o app para Aplicativos e comece.",
+    body: "Um instalador assinado e notarizado pela Apple. Abra, arraste o app para Aplicativos e comece.",
     button: "Baixar para macOS",
     latest: "Última versão:",
+    allVersions: "Todas as versões ↗",
     stepsLabel: "Instalação",
     steps: [
-      "Baixe o .dmg da release mais recente.",
+      "Baixe o Collie.dmg.",
       "Abra o .dmg e arraste o Collie.app para Aplicativos (Applications).",
       "Abra o Collie a partir de /Applications. O daemon collied só roda com o app lá.",
     ],

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/download",
+      "destination": "https://github.com/ysraelmoreno/collie/releases/latest/download/Collie.dmg",
+      "statusCode": 302
+    }
+  ]
+}

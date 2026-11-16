@@ -1,5 +1,5 @@
 import { getDictionary, type Locale } from "@/i18n";
-import { RELEASES_LATEST_URL } from "@/lib/site";
+import { DOWNLOAD_PATH, RELEASES_LATEST_URL } from "@/lib/site";
 import { LatestVersion } from "./LatestVersion";
 import { ButtonLink, Container, Eyebrow, H2, Lead } from "./ui";
 
@@ -17,10 +17,16 @@ export function Download({ locale }: { locale: Locale }) {
           <H2 id="download-title">{d.title}</H2>
           <Lead>{d.body}</Lead>
           <div className="flex flex-col gap-3 sm:items-start">
-            <ButtonLink href={RELEASES_LATEST_URL} primary>
+            <ButtonLink href={DOWNLOAD_PATH} primary>
               {d.button}
             </ButtonLink>
             <LatestVersion label={d.latest} />
+            <a
+              href={RELEASES_LATEST_URL}
+              className="text-[15px] leading-[22px] text-fg hover:text-accent-text"
+            >
+              {d.allVersions}
+            </a>
           </div>
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-3">

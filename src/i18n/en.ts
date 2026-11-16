@@ -158,12 +158,13 @@ export const en = {
   download: {
     eyebrow: "DOWNLOAD",
     title: "Download for macOS.",
-    body: "A signed installer with the Collie app. Open it, drag the app to Applications and start.",
+    body: "An installer signed and notarized by Apple. Open it, drag the app to Applications and start.",
     button: "Download for macOS",
     latest: "Latest release:",
+    allVersions: "All versions ↗",
     stepsLabel: "Install",
     steps: [
-      "Download the .dmg from the latest release.",
+      "Download Collie.dmg.",
       "Open the .dmg and drag Collie.app to Applications.",
       "Open Collie from /Applications. The collied daemon only runs with the app there.",
     ],
