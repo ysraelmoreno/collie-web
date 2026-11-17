@@ -2,7 +2,7 @@ import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { Wordmark } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { getDictionary, localePath, type Locale } from "@/i18n";
-import { GITHUB_URL } from "@/lib/site";
+import { DOWNLOAD_PATH, GITHUB_URL } from "@/lib/site";
 import { ButtonLink, Container } from "./ui";
 
 export function Nav({ locale }: { locale: Locale }) {
@@ -36,6 +36,13 @@ export function Nav({ locale }: { locale: Locale }) {
           </ul>
         </nav>
         <div className="ml-auto flex items-center gap-2 md:gap-3 lg:ml-0">
+          {/* ponytail: hidden below sm, the hero CTA sits right under the nav there */}
+          <a
+            href={DOWNLOAD_PATH}
+            className="hidden text-[15px] leading-[22px] text-text-secondary hover:text-fg sm:mr-3 sm:inline"
+          >
+            {t.download}
+          </a>
           <LanguageSwitch locale={locale} />
           <div className="flex items-center gap-2 md:gap-3">
             <ThemeToggle {...theme} />

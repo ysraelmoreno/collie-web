@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import { getDictionary, type Locale } from "@/i18n";
-import { GITHUB_URL, README_URL } from "@/lib/site";
+import { DOWNLOAD_PATH, README_URL } from "@/lib/site";
 import {
   Canvas,
   cue,
@@ -42,8 +42,8 @@ export function Hero({ locale }: { locale: Locale }) {
             {h.body}
           </p>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href={GITHUB_URL} primary>
-              {h.primary}
+            <ButtonLink href={DOWNLOAD_PATH} primary>
+              {t.download.button}
             </ButtonLink>
             <ButtonLink href={README_URL}>{h.secondary}</ButtonLink>
           </div>

@@ -23,6 +23,7 @@ export const pt: Dictionary = {
       memory: "Memória",
       devices: "Dispositivos",
     },
+    download: "Baixar",
     github: "GitHub",
   },
   hero: {

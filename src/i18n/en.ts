@@ -33,6 +33,7 @@ export const en = {
       memory: "Memory",
       devices: "Devices",
     },
+    download: "Download",
     github: "GitHub",
   },
   hero: {
