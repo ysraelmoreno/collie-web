@@ -1,4 +1,5 @@
 import { en, type Dictionary } from "./en";
+import { featuresFor } from "./features";
 
 export const pt: Dictionary = {
   meta: {
@@ -22,6 +23,7 @@ export const pt: Dictionary = {
       design: "Design",
       memory: "Memória",
       devices: "Dispositivos",
+      features: "Recursos",
     },
     download: "Baixar",
     github: "GitHub",
@@ -126,6 +128,7 @@ export const pt: Dictionary = {
       ],
     },
   },
+  features: featuresFor("pt"),
   how: {
     eyebrow: "COMO FUNCIONA",
     title: "Um pastor, paddocks e rebanhos.",

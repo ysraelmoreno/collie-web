@@ -1,3 +1,5 @@
+import { featuresFor } from "./features";
+
 /**
  * A line in a canvas terminal: the user's natural-language prompt, the collie
  * command the agent runs for it, that command's output, or the agent's reply.
@@ -32,6 +34,7 @@ export const en = {
       design: "Design",
       memory: "Memory",
       devices: "Devices",
+      features: "Features",
     },
     download: "Download",
     github: "GitHub",
@@ -138,6 +141,7 @@ export const en = {
       ] as TermLine[],
     },
   },
+  features: featuresFor("en"),
   how: {
     eyebrow: "HOW IT WORKS",
     title: "A shepherd, paddocks and herds.",

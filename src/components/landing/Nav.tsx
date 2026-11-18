@@ -12,6 +12,7 @@ export function Nav({ locale }: { locale: Locale }) {
     ["design", t.links.design],
     ["memory", t.links.memory],
     ["devices", t.links.devices],
+    ["features", t.links.features],
   ] as const;
 
   return (

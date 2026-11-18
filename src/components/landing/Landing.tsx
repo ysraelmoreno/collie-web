@@ -2,6 +2,7 @@ import type { Locale } from "@/i18n";
 import { BuildIt } from "./BuildIt";
 import { FinalCta, Footer } from "./Closing";
 import { Download } from "./Download";
+import { Features } from "./Features";
 import { Hero } from "./Hero";
 import { HowItWorks } from "./HowItWorks";
 import { Nav } from "./Nav";
@@ -16,6 +17,7 @@ export function Landing({ locale }: { locale: Locale }) {
         <Hero locale={locale} />
         <Pain locale={locale} />
         <Pillars locale={locale} />
+        <Features locale={locale} />
         <HowItWorks locale={locale} />
         <Download locale={locale} />
         <BuildIt locale={locale} />
