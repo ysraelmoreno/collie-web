@@ -42,25 +42,31 @@
   color-scheme: light;
 }
 
-/* ThemeToggle shows the sun in Dark (goes to Light) and the moon in Light. */
-.theme-moon {
+/* ThemeToggle shows the sun in Dark (goes to Light) and the moon in Light.
+   Feature clips do the same with .only-dark / .only-light. */
+.theme-moon,
+.only-light {
   display: none;
 }
 
 @media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) .theme-sun {
+  :root:not([data-theme="dark"]) .theme-sun,
+  :root:not([data-theme="dark"]) .only-dark {
     display: none;
   }
-  :root:not([data-theme="dark"]) .theme-moon {
+  :root:not([data-theme="dark"]) .theme-moon,
+  :root:not([data-theme="dark"]) .only-light {
     display: block;
   }
 }
 
-:root[data-theme="light"] .theme-sun {
+:root[data-theme="light"] .theme-sun,
+:root[data-theme="light"] .only-dark {
   display: none;
 }
 
-:root[data-theme="light"] .theme-moon {
+:root[data-theme="light"] .theme-moon,
+:root[data-theme="light"] .only-light {
   display: block;
 }
 
