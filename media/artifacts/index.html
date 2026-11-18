@@ -6,6 +6,7 @@
     <title>Collie — feature GIF template</title>
     <!-- Copy this folder to media/<id>/ and change: title, #stage content, the timeline. Rules: docs/prd/00-overview.md -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&display=block" />
+    <script src="../_theme.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
     <style>
       @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Regular.ttf"); font-weight: 400; }
@@ -19,7 +20,7 @@
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); }
       #root { position: relative; width: 1280px; height: 800px; overflow: hidden; font-family: var(--ui); color: var(--fg);
-        background-color: var(--bg); background-image: radial-gradient(circle, #262a33 1.5px, transparent 1.6px); background-size: 32px 32px; }
+        background-color: var(--bg); background-image: radial-gradient(circle, var(--dot, #262a33) 1.5px, transparent 1.6px); background-size: 32px 32px; }
       #stage { position: absolute; inset: 0 0 96px 0; } /* 1280×704 for the scene; the caption owns the bottom 96px */
 
       /* A canvas card: terminal or panel. <div class="card" style="left;top;width;height"><header><b>name</b><i>tag</i></header><div class="body">…</div></div> */
@@ -36,23 +37,23 @@
       #leashes { position: absolute; inset: 0; width: 1280px; height: 704px; pointer-events: none; }
       .leash { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 8; opacity: 0; }
       /* Owner approval card */
-      .approve { position: absolute; padding: 18px 20px; background: var(--surface); border: 1.5px solid var(--accent); border-radius: 12px; font-size: 24px; font-weight: 500; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+      .approve { position: absolute; padding: 18px 20px; background: var(--surface); border: 1.5px solid var(--accent); border-radius: 12px; font-size: 24px; font-weight: 500; opacity: 0; box-shadow: 0 16px 40px var(--shadow, rgba(0,0,0,.45)); }
       .approve small { display: block; margin-top: 4px; font-family: var(--mono); font-size: 22px; font-weight: 400; color: var(--text2); }
       .approve .btns { display: flex; gap: 10px; margin-top: 14px; }
       .approve .btn { padding: 6px 18px; border-radius: 8px; border: 1.5px solid var(--border); font-size: 22px; font-weight: 800; }
-      .approve .btn.primary { background: var(--accent); border-color: var(--accent); color: #15171c; }
+      .approve .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent, #15171c); }
       /* Captions: one per beat, numbered */
       .cap { position: absolute; left: 32px; right: 32px; bottom: 20px; height: 60px; display: flex; align-items: center; gap: 16px; padding: 0 22px;
         background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; font-size: 26px; font-weight: 500; opacity: 0; }
       .cap b { font-family: var(--mono); font-weight: 500; color: var(--accent); }
     
-      .pin { position: absolute; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; background: var(--accent); color: #15171c; display: flex; align-items: center; justify-content: center; font: 800 22px var(--ui); opacity: 0; box-shadow: 0 6px 18px rgba(0,0,0,.5); }
+      .pin { position: absolute; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; background: var(--accent); color: var(--on-accent, #15171c); display: flex; align-items: center; justify-content: center; font: 800 22px var(--ui); opacity: 0; box-shadow: 0 6px 18px rgba(0,0,0,.5); }
       .bubble { position: absolute; padding: 14px 20px; background: var(--surface-2); border: 1.5px solid var(--accent); border-radius: 12px; font-size: 22px; font-weight: 500; opacity: 0; white-space: nowrap; }
       .plan { position: absolute; top: 160px; width: 190px; height: 310px; padding: 18px; background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 12px; opacity: 0; }
       .plan h4 { font-size: 24px; font-weight: 800; } .plan .pr { margin-top: 8px; font-size: 44px; font-weight: 800; }
       .plan .bar { height: 10px; margin-top: 16px; border-radius: 5px; background: var(--border); }
       .plan .cta { position: absolute; left: 18px; right: 18px; bottom: 18px; padding: 6px 0; text-align: center; border: 1.5px solid var(--border); border-radius: 8px; font-size: 22px; font-weight: 800; }
-      .badge { position: absolute; top: -17px; right: 14px; padding: 2px 14px; border-radius: 999px; background: var(--accent); color: #15171c; font-size: 22px; font-weight: 800; opacity: 0; }
+      .badge { position: absolute; top: -17px; right: 14px; padding: 2px 14px; border-radius: 999px; background: var(--accent); color: var(--on-accent, #15171c); font-size: 22px; font-weight: 800; opacity: 0; }
       #dot { position: absolute; left: 0; top: 0; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--accent-soft); box-shadow: 0 0 14px var(--accent); opacity: 0; }
       #cursor { position: absolute; left: 0; top: 0; width: 30px; height: 30px; opacity: 0; }
       .ln { white-space: normal; margin-bottom: 8px; }
@@ -122,7 +123,7 @@
       show("#t4", 7.1); show("#t5", 7.9);
 
       cap("#c4", "#c3", 8.4);
-      tl.to("#p2", { borderColor: "#6e9bff", backgroundColor: "#2a3350", scale: 1.04, duration: 0.5, ease: "power2.out" }, 8.6);
+      tl.to("#p2", { borderColor: css("--accent"), backgroundColor: css("--tint"), scale: 1.04, duration: 0.5, ease: "power2.out" }, 8.6);
       tl.to("#badge", { opacity: 1, duration: 0.3 }, 8.8);
       tl.to("#pin", { backgroundColor: "#6ee7b7", duration: 0.2 }, 9.0);
       tl.to("#bubble", { opacity: 0, duration: 0.2 }, 9.0);

@@ -6,6 +6,7 @@
     <title>Collie — sandbox GIF</title>
     <!-- docs/prd/08-sandbox.md. Rules: docs/prd/00-overview.md -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&display=block" />
+    <script src="../_theme.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
     <style>
       @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Regular.ttf"); font-weight: 400; }
@@ -19,7 +20,7 @@
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); }
       #root { position: relative; width: 1280px; height: 800px; overflow: hidden; font-family: var(--ui); color: var(--fg);
-        background-color: var(--bg); background-image: radial-gradient(circle, #262a33 1.5px, transparent 1.6px); background-size: 32px 32px; }
+        background-color: var(--bg); background-image: radial-gradient(circle, var(--dot, #262a33) 1.5px, transparent 1.6px); background-size: 32px 32px; }
       #stage { position: absolute; inset: 0 0 96px 0; }
 
       .card { position: absolute; display: flex; flex-direction: column; background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; opacity: 0; }
@@ -42,12 +43,12 @@
       #chip { position: absolute; left: 16px; top: 410px; display: flex; gap: 14px; align-items: center; padding: 6px 16px; border: 1.5px solid var(--success); border-radius: 20px; font-family: var(--mono); font-size: 22px; color: var(--success); opacity: 0; }
       #chip u { color: var(--fg); text-decoration: none; border-left: 1.5px solid var(--border); padding-left: 14px; }
 
-      .approve { position: absolute; left: 624px; top: 330px; width: 624px; padding: 18px 22px 20px; background: var(--surface); border: 1.5px solid var(--accent); border-radius: 12px; font-size: 26px; font-weight: 800; line-height: 34px; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+      .approve { position: absolute; left: 624px; top: 330px; width: 624px; padding: 18px 22px 20px; background: var(--surface); border: 1.5px solid var(--accent); border-radius: 12px; font-size: 26px; font-weight: 800; line-height: 34px; opacity: 0; box-shadow: 0 16px 40px var(--shadow, rgba(0,0,0,.45)); }
       .approve small { display: block; font-family: var(--mono); font-size: 22px; font-weight: 400; line-height: 32px; color: var(--text2); }
       .approve small.p { color: var(--fg); }
       .approve .btns { display: flex; gap: 12px; margin-top: 14px; }
       .approve .btn { padding: 6px 22px; border-radius: 8px; border: 1.5px solid var(--border); font-size: 24px; font-weight: 800; }
-      .approve .btn.primary { background: var(--accent); border-color: var(--accent); color: #15171c; }
+      .approve .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent, #15171c); }
 
       #cur { position: absolute; left: 0; top: 0; width: 30px; height: 36px; opacity: 0; z-index: 20; filter: drop-shadow(0 3px 4px rgba(0,0,0,.6)); }
 
@@ -70,8 +71,8 @@
               <p class="lab" id="ld" style="left: 18px; top: 282px; color: var(--text2)">~/dotfiles/</p>
               <div class="frow" id="f3" style="top: 330px">eslint.config.js
                 <span class="mk" id="m3">✓</span>
-                <svg id="lockc" viewBox="0 0 26 30"><rect x="3" y="13" width="20" height="15" rx="3" fill="#ffb86b"/><path d="M8 13 V9 a5 5 0 0 1 10 0 V13" fill="none" stroke="#ffb86b" stroke-width="3"/></svg>
-                <svg id="locko" viewBox="0 0 26 30"><rect x="3" y="13" width="20" height="15" rx="3" fill="#6ee7b7"/><path d="M8 13 V9 a5 5 0 0 1 9.5 -1.5" fill="none" stroke="#6ee7b7" stroke-width="3"/></svg>
+                <svg id="lockc" viewBox="0 0 26 30"><rect x="3" y="13" width="20" height="15" rx="3" style="fill:var(--warn)"/><path d="M8 13 V9 a5 5 0 0 1 10 0 V13" fill="none" stroke-width="3" style="stroke:var(--warn)"/></svg>
+                <svg id="locko" viewBox="0 0 26 30"><rect x="3" y="13" width="20" height="15" rx="3" style="fill:var(--success)"/><path d="M8 13 V9 a5 5 0 0 1 9.5 -1.5" fill="none" stroke-width="3" style="stroke:var(--success)"/></svg>
               </div>
               <div id="chip">Granted <u>Revoke</u></div>
             </div>

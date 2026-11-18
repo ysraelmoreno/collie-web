@@ -69,7 +69,7 @@ export const loop: Record<Locale, FeatureCopy> = {
 2. **Composição do GIF** em `media/<id>/index.html` (HyperFrames + GSAP, timeline pausada, determinística). Modelo:
    `media/_template/index.html`. Referência de estilo anterior:
    `/Users/ysraelmoreno/Documents/codes/my-orchestrator-memory/docs/videos/collie-gifs/cercado/index.html`.
-3. **Renders** em `public/features/`: `<id>.mp4` (H.264, sem áudio, ≤ 1,2 MB), `<id>.jpg` (poster: o quadro final
+3. **Renders** em `public/features/` (Dark; mais `<id>-light.mp4` e `<id>-light.jpg` com `THEME=light`): `<id>.mp4` (H.264, sem áudio, ≤ 1,2 MB), `<id>.jpg` (poster: o quadro final
    ou o mais legível), `<id>.gif` (960px de largura, 15 fps, ≤ 3 MB; usado no README e redes).
 4. Copiar `<id>.mp4` e `<id>.jpg` também para `docs/pages/features-preview/media/` (a Prévia lê de lá).
 5. **Sem commit.** O Shepherd integra e commita. Não rodar `collie ask` para o Shepherd no meio (deadlock): termine e
@@ -89,7 +89,9 @@ export const loop: Record<Locale, FeatureCopy> = {
   `/Users/ysraelmoreno/Documents/codes/my-orchestrator-memory` (só leitura). Na dúvida, não mostre.
 - Nada de dado real de terceiros, nomes de projetos privados, tokens ou e-mails.
 
-Render: `scripts/capture-gif.sh <id> [segundo-do-poster]` (~40 s). Captura os quadros num painel Navegador headless do
+Render: `scripts/capture-gif.sh <id> [segundo-do-poster]` (~40 s), e de novo com `THEME=light` na frente para o clipe
+Light (mesmo segundo de poster). As cores vêm dos tokens de `:root`; `media/_theme.js` os troca em `?theme=light`. Cor
+fixa só no que não muda com o tema (tela de telefone, página de exemplo); em tween do GSAP use `css("--token")`. Captura os quadros num painel Navegador headless do
 Collie e gera `public/features/<id>.{mp4,jpg,gif}` com ffmpeg. O `npx hyperframes render` **não funciona** num terminal
 do Collie (o Chrome dele morre no sandbox); `npx hyperframes lint` funciona. A composição precisa de
 `window.__timelines.main` (timeline GSAP pausada) e `data-duration` no elemento `[data-composition-id]`. A captura usa

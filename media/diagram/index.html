@@ -6,6 +6,7 @@
     <title>Collie — feature GIF template</title>
     <!-- Copy this folder to media/<id>/ and change: title, #stage content, the timeline. Rules: docs/prd/00-overview.md -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&display=block" />
+    <script src="../_theme.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
     <style>
       @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Regular.ttf"); font-weight: 400; }
@@ -19,7 +20,7 @@
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); }
       #root { position: relative; width: 1280px; height: 800px; overflow: hidden; font-family: var(--ui); color: var(--fg);
-        background-color: var(--bg); background-image: radial-gradient(circle, #262a33 1.5px, transparent 1.6px); background-size: 32px 32px; }
+        background-color: var(--bg); background-image: radial-gradient(circle, var(--dot, #262a33) 1.5px, transparent 1.6px); background-size: 32px 32px; }
       #stage { position: absolute; inset: 0 0 96px 0; } /* 1280×704 for the scene; the caption owns the bottom 96px */
 
       /* A canvas card: terminal or panel. <div class="card" style="left;top;width;height"><header><b>name</b><i>tag</i></header><div class="body">…</div></div> */
@@ -36,11 +37,11 @@
       #leashes { position: absolute; inset: 0; width: 1280px; height: 704px; pointer-events: none; }
       .leash { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 8; opacity: 0; }
       /* Owner approval card */
-      .approve { position: absolute; padding: 18px 20px; background: var(--surface); border: 1.5px solid var(--accent); border-radius: 12px; font-size: 24px; font-weight: 500; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+      .approve { position: absolute; padding: 18px 20px; background: var(--surface); border: 1.5px solid var(--accent); border-radius: 12px; font-size: 24px; font-weight: 500; opacity: 0; box-shadow: 0 16px 40px var(--shadow, rgba(0,0,0,.45)); }
       .approve small { display: block; margin-top: 4px; font-family: var(--mono); font-size: 22px; font-weight: 400; color: var(--text2); }
       .approve .btns { display: flex; gap: 10px; margin-top: 14px; }
       .approve .btn { padding: 6px 18px; border-radius: 8px; border: 1.5px solid var(--border); font-size: 22px; font-weight: 800; }
-      .approve .btn.primary { background: var(--accent); border-color: var(--accent); color: #15171c; }
+      .approve .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent, #15171c); }
       /* Captions: one per beat, numbered */
       .cap { position: absolute; left: 32px; right: 32px; bottom: 20px; height: 60px; display: flex; align-items: center; gap: 16px; padding: 0 22px;
         background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; font-size: 26px; font-weight: 500; opacity: 0; }
@@ -82,7 +83,7 @@
           </div>
           <div id="grid"></div>
           <svg id="wires" viewBox="0 0 1280 704">
-            <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#93a4ff"/></marker></defs>
+            <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--accent-soft)"/></marker></defs>
             <path id="w1" class="wire" marker-end="url(#ah)" pathLength="1" d="M700 230 L740 230" />
             <path id="w2" class="wire" marker-end="url(#ah)" pathLength="1" d="M870 230 L905 230" />
             <path id="w3" class="wire" marker-end="url(#ah)" pathLength="1" d="M1045 230 L1085 230" />
@@ -91,7 +92,7 @@
           </svg>
           <div class="node" id="n1" style="left:600px;top:202px;width:100px">Cart</div>
           <div class="node" id="n2" style="left:740px;top:202px;width:130px">Payment</div>
-          <div class="dia" id="n3"><svg viewBox="0 0 140 120"><path d="M70 2 L138 60 L70 118 L2 60 Z" fill="#262a33" stroke="#ffb86b" stroke-width="2"/></svg><span>paid?</span></div>
+          <div class="dia" id="n3"><svg viewBox="0 0 140 120"><path d="M70 2 L138 60 L70 118 L2 60 Z" stroke-width="2" style="fill:var(--surface-2);stroke:var(--warn)"/></svg><span>paid?</span></div>
           <div class="node" id="n4" style="left:1085px;top:202px;width:130px">Order</div>
           <div class="node" id="n5" style="left:920px;top:372px;width:110px">Retry</div>
           <div class="lbl" id="no" style="left:992px;top:318px">no</div>
