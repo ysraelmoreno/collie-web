@@ -48,3 +48,8 @@ docs/qa/shots/
 
 # Collie project memory (local)
 .collie/
+
+# feature clips: tool state, capture frames, preview copies (node scripts/build-preview.mjs)
+.hyperframes/
+media/*/.frames/
+docs/pages/features-preview/media/

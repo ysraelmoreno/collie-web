@@ -4,3 +4,7 @@ brand-source
 package-lock.json
 docs
 .collie
+media
+docs/pages
+scripts/preview-template.html
+public

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=800" />
+    <title>Collie — feature GIF template</title>
+    <!-- Copy this folder to media/<id>/ and change: title, #stage content, the timeline. Rules: docs/prd/00-overview.md -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&display=block" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Regular.ttf"); font-weight: 400; }
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Medium.ttf"); font-weight: 500; }
+      :root {
+        --bg: #15171c; --surface: #1f232b; --surface-2: #262a33; --border: #2e323b;
+        --fg: #f4f2ed; --text2: #8c95b8; --accent: #6e9bff; --accent-soft: #93a4ff;
+        --success: #6ee7b7; --warn: #ffb86b;
+        --ui: "Manrope", system-ui, sans-serif; --mono: "DM Mono", ui-monospace, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1280px; height: 800px; overflow: hidden; font-family: var(--ui); color: var(--fg);
+        background-color: var(--bg); background-image: radial-gradient(circle, #262a33 1.5px, transparent 1.6px); background-size: 32px 32px; }
+      #stage { position: absolute; inset: 0 0 96px 0; } /* 1280×704 for the scene; the caption owns the bottom 96px */
+
+      /* A canvas card: terminal or panel. <div class="card" style="left;top;width;height"><header><b>name</b><i>tag</i></header><div class="body">…</div></div> */
+      .card { position: absolute; display: flex; flex-direction: column; background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; }
+      .card header { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; background: var(--surface-2); border-bottom: 1.5px solid var(--border); font-family: var(--mono); font-size: 22px; }
+      .card header b { font-weight: 500; }
+      .card header i { font-style: normal; color: var(--text2); }
+      .card .body { flex: 1; padding: 14px; font-family: var(--mono); font-size: 22px; line-height: 32px; }
+      /* Terminal lines, as on the site: prompt ›, call ↳ (accent), out (muted), reply (fg) */
+      .ln { opacity: 0; white-space: nowrap; }
+      .ln.prompt { color: var(--fg); } .ln.call { color: var(--accent); } .ln.out { color: var(--text2); }
+      .ok { color: var(--success); } .bad { color: var(--warn); }
+      /* Leash: <svg id="leashes"><path class="leash" d="…"/></svg> */
+      #leashes { position: absolute; inset: 0; width: 1280px; height: 704px; pointer-events: none; }
+      .leash { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 8; opacity: 0; }
+      /* Owner approval card */
+      .approve { position: absolute; padding: 18px 20px; background: var(--surface); border: 1.5px solid var(--accent); border-radius: 12px; font-size: 24px; font-weight: 500; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+      .approve small { display: block; margin-top: 4px; font-family: var(--mono); font-size: 22px; font-weight: 400; color: var(--text2); }
+      .approve .btns { display: flex; gap: 10px; margin-top: 14px; }
+      .approve .btn { padding: 6px 18px; border-radius: 8px; border: 1.5px solid var(--border); font-size: 22px; font-weight: 800; }
+      .approve .btn.primary { background: var(--accent); border-color: var(--accent); color: #15171c; }
+      /* Captions: one per beat, numbered */
+      .cap { position: absolute; left: 32px; right: 32px; bottom: 20px; height: 60px; display: flex; align-items: center; gap: 16px; padding: 0 22px;
+        background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; font-size: 26px; font-weight: 500; opacity: 0; }
+      .cap b { font-family: var(--mono); font-weight: 500; color: var(--accent); }
+    
+      .ln { white-space: normal; margin-bottom: 8px; }
+      .node { position: absolute; display: flex; align-items: center; justify-content: center; height: 56px; background: var(--surface-2); border: 1.5px solid var(--accent-soft); border-radius: 10px; font-size: 22px; font-weight: 800; opacity: 0; }
+      .dia { position: absolute; left: 905px; top: 170px; width: 140px; height: 120px; opacity: 0; }
+      .dia svg { position: absolute; inset: 0; } .dia span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; }
+      #wires { position: absolute; inset: 0; width: 1280px; height: 704px; pointer-events: none; }
+      .wire { fill: none; stroke: var(--accent-soft); stroke-width: 2.5; stroke-linejoin: round; opacity: 0; }
+      .lbl { position: absolute; font-size: 22px; font-weight: 500; color: var(--warn); opacity: 0; }
+      .chip { position: absolute; left: 600px; top: 606px; display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 16px; background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 10px; font: 400 22px var(--mono); opacity: 0; }
+      .chip .st { font-family: var(--ui); font-weight: 800; }
+      #cursor { position: absolute; left: 0; top: 0; width: 30px; height: 30px; opacity: 0; }
+      #grid { position: absolute; left: 581px; top: 81px; width: 658px; height: 578px; background-image: radial-gradient(circle, #3a3f4b 1.4px, transparent 1.5px); background-size: 24px 24px; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1280" data-height="800">
+      <div id="app" class="clip" data-start="0" data-duration="10" data-track-index="0">
+        <div id="stage">
+          <div class="card" style="left: 48px; top: 60px; width: 500px; height: 560px">
+            <header><b>architect</b><i>· claude</i></header>
+            <div class="body">
+              <p class="ln prompt" id="t1">› Draw the checkout flow from the code</p>
+              <p class="ln out" id="r1">reading src/checkout/cart.ts</p>
+              <p class="ln out" id="r2">reading src/checkout/pay.ts</p>
+              <p class="ln out" id="r3">reading src/checkout/order.ts</p>
+              <p class="ln call" id="t2">↳ collie diagram mermaid "flowchart LR …"</p>
+              <p class="ln out" id="t3">inserted · editable</p>
+              <p class="ln call" id="t4">↳ collie diagram get</p>
+              <p class="ln out" id="t5">docs/diagrams/checkout.drawio</p>
+            </div>
+          </div>
+          <div class="card" style="left: 580px; top: 40px; width: 660px; height: 620px">
+            <header><b>checkout.drawio</b><i>· diagram</i></header>
+            <div class="body"></div>
+          </div>
+          <div id="grid"></div>
+          <svg id="wires" viewBox="0 0 1280 704">
+            <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#93a4ff"/></marker></defs>
+            <path id="w1" class="wire" marker-end="url(#ah)" pathLength="1" d="M700 230 L740 230" />
+            <path id="w2" class="wire" marker-end="url(#ah)" pathLength="1" d="M870 230 L905 230" />
+            <path id="w3" class="wire" marker-end="url(#ah)" pathLength="1" d="M1045 230 L1085 230" />
+            <path id="w4" class="wire" marker-end="url(#ah)" pathLength="1" d="M975 290 L975 372" />
+            <path id="w5" class="wire" marker-end="url(#ah)" pathLength="1" d="M920 400 L805 400 L805 258" />
+          </svg>
+          <div class="node" id="n1" style="left:600px;top:202px;width:100px">Cart</div>
+          <div class="node" id="n2" style="left:740px;top:202px;width:130px">Payment</div>
+          <div class="dia" id="n3"><svg viewBox="0 0 140 120"><path d="M70 2 L138 60 L70 118 L2 60 Z" fill="#262a33" stroke="#ffb86b" stroke-width="2"/></svg><span>paid?</span></div>
+          <div class="node" id="n4" style="left:1085px;top:202px;width:130px">Order</div>
+          <div class="node" id="n5" style="left:920px;top:372px;width:110px">Retry</div>
+          <div class="lbl" id="no" style="left:992px;top:318px">no</div>
+          <svg id="cursor" viewBox="0 0 30 30"><path d="M4 2 L4 24 L10 18 L15 28 L19 26 L14 16 L23 16 Z" fill="#f4f2ed" stroke="#15171c" stroke-width="1.5"/></svg>
+          <div class="chip" id="chip"><span>docs/diagrams/checkout.drawio</span><span class="st" style="position:relative;width:150px"><span id="st1" style="color:var(--warn)">● modified</span><span id="st2" style="position:absolute;left:0;color:var(--success);opacity:0">✓ saved</span></span></div>
+        </div>
+        <div class="cap" id="c1"><b>1</b>Ask for the flow.</div>
+        <div class="cap" id="c2"><b>2</b>The agent draws it.</div>
+        <div class="cap" id="c3"><b>3</b>You move things by hand.</div>
+        <div class="cap" id="c4"><b>4</b>It stays in the repo.</div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const show = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, t);
+      const hide = (sel, t) => tl.to(sel, { opacity: 0, duration: 0.2 }, t);
+      const cap = (id, prev, t) => { if (prev) hide(prev, t); show(id, t); };
+      const draw = (id, t, d = 0.35) => { tl.set(id, { opacity: 1, strokeDasharray: 1, strokeDashoffset: 1 }, t); tl.to(id, { strokeDashoffset: 0, duration: d, ease: "power1.out" }, t); };
+      const pop = (id, t) => tl.fromTo(id, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, t);
+
+      tl.to("#grid", { opacity: 1, duration: 0.3 }, 0);
+      cap("#c1", null, 0.3); show("#t1", 0.6); show("#r1", 1.3); show("#r2", 1.7); show("#r3", 2.1);
+
+      cap("#c2", "#c1", 3.0); show("#t2", 3.2); show("#t3", 3.9);
+      pop("#n1", 3.8); draw("#w1", 4.1); pop("#n2", 4.3); draw("#w2", 4.6); pop("#n3", 4.8);
+      draw("#w3", 5.1); pop("#n4", 5.3); draw("#w4", 5.5); show("#no", 5.7); pop("#n5", 5.7); draw("#w5", 6.0, 0.5);
+
+      cap("#c3", "#c2", 6.7);
+      tl.set("#cursor", { x: 1180, y: 560 }, 6.7);
+      tl.to("#cursor", { opacity: 1, duration: 0.2 }, 6.8);
+      tl.to("#cursor", { x: 975, y: 410, duration: 0.5, ease: "power2.inOut" }, 7.0);
+      tl.to("#n5", { x: -70, y: 130, duration: 0.8, ease: "power2.inOut" }, 7.6);
+      tl.to("#w4", { attr: { d: "M975 290 L905 502" }, duration: 0.8, ease: "power2.inOut" }, 7.6);
+      tl.to("#w5", { attr: { d: "M850 530 L805 530 L805 258" }, duration: 0.8, ease: "power2.inOut" }, 7.6);
+      tl.to("#cursor", { x: 905, y: 540, duration: 0.8, ease: "power2.inOut" }, 7.6);
+      tl.to("#no", { x: -35, y: 65, duration: 0.8, ease: "power2.inOut" }, 7.6);
+      tl.to("#cursor", { opacity: 0, duration: 0.2 }, 8.5);
+
+      cap("#c4", "#c3", 8.7); show("#t4", 8.8); show("#t5", 9.1); show("#chip", 8.9);
+      tl.to("#st1", { opacity: 0, duration: 0.2 }, 9.3); tl.to("#st2", { opacity: 1, duration: 0.2 }, 9.3);
+      tl.to({}, { duration: 0.01 }, 10);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

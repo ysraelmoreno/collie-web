@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=800" />
+    <title>Collie — GIF browser</title>
+    <!-- Copy this folder to media/<id>/ and change: title, #stage content, the timeline. Rules: docs/prd/00-overview.md -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&display=block" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Regular.ttf"); font-weight: 400; }
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Medium.ttf"); font-weight: 500; }
+      :root {
+        --bg: #15171c; --surface: #1f232b; --surface-2: #262a33; --border: #2e323b;
+        --fg: #f4f2ed; --text2: #8c95b8; --accent: #6e9bff; --accent-soft: #93a4ff;
+        --success: #6ee7b7; --warn: #ffb86b;
+        --ui: "Manrope", system-ui, sans-serif; --mono: "DM Mono", ui-monospace, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1280px; height: 800px; overflow: hidden; font-family: var(--ui); color: var(--fg);
+        background-color: var(--bg); background-image: radial-gradient(circle, #262a33 1.5px, transparent 1.6px); background-size: 32px 32px; }
+      #stage { position: absolute; inset: 0 0 96px 0; } /* 1280×704 for the scene; the caption owns the bottom 96px */
+
+      /* A canvas card: terminal or panel. <div class="card" style="left;top;width;height"><header><b>name</b><i>tag</i></header><div class="body">…</div></div> */
+      .card { position: absolute; display: flex; flex-direction: column; background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; }
+      .card header { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; background: var(--surface-2); border-bottom: 1.5px solid var(--border); font-family: var(--mono); font-size: 22px; }
+      .card header b { font-weight: 500; }
+      .card header i { font-style: normal; color: var(--text2); }
+      .card .body { flex: 1; padding: 14px; font-family: var(--mono); font-size: 22px; line-height: 32px; }
+      /* Terminal lines, as on the site: prompt ›, call ↳ (accent), out (muted), reply (fg) */
+      .ln { opacity: 0; white-space: nowrap; }
+      .ln.prompt { color: var(--fg); } .ln.call { color: var(--accent); } .ln.out { color: var(--text2); }
+      .ok { color: var(--success); } .bad { color: var(--warn); }
+      /* Leash: <svg id="leashes"><path class="leash" d="…"/></svg> */
+      #leashes { position: absolute; inset: 0; width: 1280px; height: 704px; pointer-events: none; }
+      .leash { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 8; opacity: 0; }
+      /* Owner approval card */
+      .approve { position: absolute; padding: 18px 20px; background: var(--surface); border: 1.5px solid var(--accent); border-radius: 12px; font-size: 24px; font-weight: 500; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+      .approve small { display: block; margin-top: 4px; font-family: var(--mono); font-size: 22px; font-weight: 400; color: var(--text2); }
+      .approve .btns { display: flex; gap: 10px; margin-top: 14px; }
+      .approve .btn { padding: 6px 18px; border-radius: 8px; border: 1.5px solid var(--border); font-size: 22px; font-weight: 800; }
+      .approve .btn.primary { background: var(--accent); border-color: var(--accent); color: #15171c; }
+      /* Captions: one per beat, numbered */
+      .cap { position: absolute; left: 32px; right: 32px; bottom: 20px; height: 60px; display: flex; align-items: center; gap: 16px; padding: 0 22px;
+        background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; font-size: 26px; font-weight: 500; opacity: 0; }
+      .cap b { font-family: var(--mono); font-weight: 500; color: var(--accent); }
+
+      .site { position: relative; width: 100%; height: 100%; background: #f4f2ed; color: #15171c; font-family: var(--ui); border-radius: 0 0 10px 10px; overflow: hidden; }
+      .url { padding: 6px 14px; font-family: var(--mono); font-size: 22px; color: var(--text2); background: var(--surface-2); border-bottom: 1.5px solid var(--border); }
+      #viewport { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f4f2ed; overflow: hidden; }
+      #pagewrap { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; }
+      #page { width: 100%; padding: 30px 36px; transform-origin: top center; }
+      #page h3 { font-size: 36px; font-weight: 800; margin-bottom: 18px; }
+      #page .f { display: block; opacity: 1; margin-bottom: 14px; padding: 8px 14px; border: 2px solid #c9ccd6; border-radius: 8px; background: #fff; font-family: var(--mono); font-size: 22px; height: 46px; color: #15171c; white-space: nowrap; }
+      #page .f small { color: #8c95b8; }
+      #page .btn2 { display: block; text-align: center; padding: 10px; border-radius: 8px; background: #3b5bdb; color: #fff; font-size: 24px; font-weight: 800; }
+      #toast { position: absolute; left: 36px; right: 36px; bottom: 24px; padding: 10px 14px; border-radius: 8px; background: #0f7a55; color: #fff; font-size: 22px; font-weight: 800; opacity: 0; }
+      #errb { position: absolute; left: 36px; right: 36px; top: 262px; font-size: 22px; color: #b4570a; opacity: 0; }
+      #flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 5; }
+      #pshot { position: absolute; right: 32px; bottom: 16px; opacity: 0; }
+      .ln.tight { line-height: 32px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="12" data-width="1280" data-height="800">
+      <div id="app" class="clip" data-start="0" data-duration="12" data-track-index="0">
+        <div id="stage">
+                    <div class="card" style="left: 24px; top: 24px; width: 610px; height: 656px">
+            <header><b>shepherd</b><i>· claude</i></header>
+            <div class="body">
+              <p class="ln prompt" id="t1">› Check the signup form at 360px</p>
+              <p class="ln call" id="t2">↳ collie panel open browser<br />&nbsp;&nbsp;&nbsp;--url http://localhost:3000</p>
+              <p class="ln call" id="t3">↳ collie browser snapshot</p>
+              <p class="ln out" id="t3b">- textbox "Email" [ref=e4]<br />- button "Sign up" [ref=e6]</p>
+              <p class="ln call" id="t4">↳ collie browser fill e4 a@b.co</p>
+              <p class="ln call" id="t5">↳ collie browser click e6</p>
+              <p class="ln call" id="t6">↳ collie browser console</p>
+              <p class="ln out bad" id="t6b">[error] POST /api/signup 422</p>
+              <p class="ln ok" id="t7">fixed: email validation</p>
+              <p class="ln call" id="t8">↳ collie browser resize<br />&nbsp;&nbsp;&nbsp;--width 360 --height 780</p>
+              <p class="ln call" id="t9">↳ collie browser screenshot<br />&nbsp;&nbsp;&nbsp;--out signup-360.png</p>
+              <p class="ln out" id="t9b">saved signup-360.png</p>
+            </div>
+          </div>
+          <div class="card" id="panel" style="left: 660px; top: 24px; width: 596px; height: 656px; opacity: 0">
+            <header><b>localhost:3000</b><i>· browser</i></header>
+            <div class="site"><div id="viewport"><div id="pagewrap"><div id="page">
+              <h3>Create account</h3>
+              <span class="f" id="fe"><small id="ph">Email</small><span id="val"></span></span>
+              <span class="f"><small>Password</small></span>
+              <span class="btn2" id="sb">Sign up</span>
+              <p id="errb">POST /api/signup 422</p>
+            </div></div></div>
+            <div id="toast">✓ Account created</div><div id="flash"></div></div>
+          </div>
+        </div>
+        <div class="cap" id="c1"><b>1</b>The dev server opens on the canvas.</div>
+        <div class="cap" id="c2"><b>2</b>The agent drives it by element ref.</div>
+        <div class="cap" id="c3"><b>3</b>It reads the console and fixes.</div>
+        <div class="cap" id="c4"><b>4</b>And checks it small.</div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const show = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, t);
+      const hide = (sel, t) => tl.to(sel, { opacity: 0, duration: 0.2 }, t);
+      const cap = (id, prev, t) => { if (prev) hide(prev, t); show(id, t); };
+      // terminal scrolls up as lines pile up (the body is clipped by the card)
+      const body = document.querySelector(".card .body");
+      const lines = ["t1","t2","t3","t3b","t4","t5","t6","t6b","t7","t8","t9","t9b"];
+
+      cap("#c1", null, 0.3); show("#t1", 0.5); show("#t2", 1.1); show("#panel", 1.9);
+      cap("#c2", "#c1", 3.2); show("#t3", 3.4); show("#t3b", 3.9); show("#t4", 4.6);
+      tl.set("#val", { textContent: "a@b.co" }, 4.9); tl.set("#ph", { display: "none" }, 4.9);
+      show("#t5", 5.4); tl.fromTo("#sb", { scale: 1 }, { scale: 0.94, duration: 0.15, yoyo: true, repeat: 1 }, 5.7);
+      cap("#c3", "#c2", 6.4); show("#t6", 6.6); show("#t6b", 7.0); show("#errb", 7.0);
+      show("#t7", 7.5); hide("#errb", 7.9); show("#toast", 8.1);
+      cap("#c4", "#c3", 8.8); show("#t8", 9.0);
+      // the page is shown scaled to the 360 viewport, centred in the same panel
+      tl.to("#page", { width: 324, duration: 0.5, ease: "power2.inOut" }, 9.4); tl.to("#toast", { left: 172, right: 172, duration: 0.5, ease: "power2.inOut" }, 9.4);
+      show("#t9", 10.0); tl.fromTo("#flash", { opacity: 0 }, { opacity: 0.85, duration: 0.1, yoyo: true, repeat: 1 }, 10.3); show("#t9b", 10.5);
+      tl.to({}, { duration: 0.01 }, 12);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

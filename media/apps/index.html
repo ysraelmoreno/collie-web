@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=800" />
+    <title>Collie — apps GIF</title>
+    <!-- Copy this folder to media/<id>/ and change: title, #stage content, the timeline. Rules: docs/prd/00-overview.md -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&display=block" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Regular.ttf"); font-weight: 400; }
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Medium.ttf"); font-weight: 500; }
+      :root {
+        --bg: #15171c; --surface: #1f232b; --surface-2: #262a33; --border: #2e323b;
+        --fg: #f4f2ed; --text2: #8c95b8; --accent: #6e9bff; --accent-soft: #93a4ff;
+        --success: #6ee7b7; --warn: #ffb86b;
+        --ui: "Manrope", system-ui, sans-serif; --mono: "DM Mono", ui-monospace, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1280px; height: 800px; overflow: hidden; font-family: var(--ui); color: var(--fg);
+        background-color: var(--bg); background-image: radial-gradient(circle, #262a33 1.5px, transparent 1.6px); background-size: 32px 32px; }
+      #stage { position: absolute; inset: 0 0 96px 0; } /* 1280×704 for the scene; the caption owns the bottom 96px */
+
+      /* A canvas card: terminal or panel. <div class="card" style="left;top;width;height"><header><b>name</b><i>tag</i></header><div class="body">…</div></div> */
+      .card { position: absolute; display: flex; flex-direction: column; background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; }
+      .card header { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; background: var(--surface-2); border-bottom: 1.5px solid var(--border); font-family: var(--mono); font-size: 22px; }
+      .card header b { font-weight: 500; }
+      .card header i { font-style: normal; color: var(--text2); }
+      .card .body { flex: 1; padding: 14px; font-family: var(--mono); font-size: 22px; line-height: 32px; }
+      /* Terminal lines, as on the site: prompt ›, call ↳ (accent), out (muted), reply (fg) */
+      .ln { opacity: 0; white-space: nowrap; }
+      .ln.prompt { color: var(--fg); } .ln.call { color: var(--accent); } .ln.out { color: var(--text2); }
+      .ok { color: var(--success); } .bad { color: var(--warn); }
+      /* Leash: <svg id="leashes"><path class="leash" d="…"/></svg> */
+      #leashes { position: absolute; inset: 0; width: 1280px; height: 704px; pointer-events: none; }
+      .leash { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 8; opacity: 0; }
+      /* Owner approval card */
+      .approve { position: absolute; padding: 18px 20px; background: var(--surface); border: 1.5px solid var(--accent); border-radius: 12px; font-size: 24px; font-weight: 500; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+      .approve small { display: block; margin-top: 4px; font-family: var(--mono); font-size: 22px; font-weight: 400; color: var(--text2); }
+      .approve .btns { display: flex; gap: 10px; margin-top: 14px; }
+      .approve .btn { padding: 6px 18px; border-radius: 8px; border: 1.5px solid var(--border); font-size: 22px; font-weight: 800; }
+      .approve .btn.primary { background: var(--accent); border-color: var(--accent); color: #15171c; }
+      /* Captions: one per beat, numbered */
+      .cap { position: absolute; left: 32px; right: 32px; bottom: 20px; height: 60px; display: flex; align-items: center; gap: 16px; padding: 0 22px;
+        background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; font-size: 26px; font-weight: 500; opacity: 0; }
+      .cap b { font-family: var(--mono); font-weight: 500; color: var(--accent); }
+      .chip { position: absolute; left: 780px; top: 400px; width: 440px; padding: 14px 18px; border: 1.5px dashed var(--accent-soft); border-radius: 12px;
+        background: var(--surface); font-family: var(--mono); font-size: 22px; opacity: 0; }
+      .chip span { color: var(--text2); }
+      .ev { font-family: var(--mono); font-size: 22px; line-height: 32px; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="11" data-width="1280" data-height="800">
+      <div id="app" class="clip" data-start="0" data-duration="11" data-track-index="0">
+        <div id="stage">
+          <svg id="leashes" viewBox="0 0 1280 704"><path id="l1" class="leash" d="M600 270 L810 270" /></svg>
+          <div class="card" style="left: 48px; top: 60px; width: 600px; height: 440px">
+            <header><b>shepherd</b><i>· claude</i></header>
+            <div class="body">
+              <p class="ln prompt" id="t1">› Attach our metrics viewer</p>
+              <p class="ln call" id="t2">↳ collie app adopt metrics \</p>
+              <p class="ln call" id="t2b">&nbsp;&nbsp;&nbsp;&nbsp;--url http://127.0.0.1:8767</p>
+              <p class="ln call" id="t3">↳ collie app attach metrics</p>
+              <p class="ln out" id="t3b">ok</p>
+              <p class="ln prompt" id="t4">› Show the recent errors</p>
+              <p class="ln call" id="t5">↳ collie metrics.errors</p>
+              <p class="ln out" id="t6">2 errors</p>
+            </div>
+          </div>
+          <div class="chip" id="chip">localhost:8767 <span>· metrics viewer</span></div>
+          <div class="approve" id="appr" style="left: 716px; top: 110px; width: 520px">
+            Approve app “metrics”?
+            <small>loopback only · manifest pinned</small>
+            <div class="btns"><span class="btn">Deny</span><span class="btn primary" id="okbtn">Approve</span></div>
+          </div>
+          <div class="card" id="panel" style="left: 760px; top: 60px; width: 472px; height: 440px; opacity: 0">
+            <header><b>metrics</b><i>· app</i></header>
+            <div class="body">
+              <p class="ev" id="e1">12:01:04 sync <span class="ok">ok</span></p>
+              <p class="ev" id="e2">12:01:09 sync <span class="ok">ok</span></p>
+              <p class="ev er" id="e3">12:01:15 sync <span class="bad">timeout</span></p>
+              <p class="ev" id="e4">12:01:21 sync <span class="ok">ok</span></p>
+              <p class="ev er" id="e5">12:01:30 export <span class="bad">500</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="cap" id="c1"><b>1</b>You already have a local tool.</div>
+        <div class="cap" id="c2"><b>2</b>One command adopts it.</div>
+        <div class="cap" id="c3"><b>3</b>It becomes a live panel.</div>
+        <div class="cap" id="c4"><b>4</b>And a tool for your agents.</div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const show = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, t);
+      const hide = (sel, t) => tl.to(sel, { opacity: 0, duration: 0.2 }, t);
+      const cap = (id, prev, t) => { if (prev) hide(prev, t); show(id, t); };
+
+      cap("#c1", null, 0.3); show("#chip", 0.6);
+      tl.to("#chip", { y: -8, duration: 1, ease: "sine.inOut", yoyo: true, repeat: 1 }, 1.0);
+      cap("#c2", "#c1", 3.0); show("#t1", 3.1); show("#t2", 3.6); show("#t2b", 3.9); show("#appr", 4.5);
+      tl.to("#okbtn", { scale: 1.12, duration: 0.15, yoyo: true, repeat: 1 }, 5.3);
+      hide("#appr", 5.7);
+      cap("#c3", "#c2", 6.0); show("#t3", 6.1); show("#t3b", 6.5);
+      tl.to("#chip", { opacity: 0, duration: 0.2 }, 6.5); show("#panel", 6.6); show("#l1", 6.9);
+      ["#e1", "#e2", "#e3", "#e4", "#e5"].forEach((e, i) => show(e, 7.2 + i * 0.25));
+      cap("#c4", "#c3", 8.4); show("#t4", 8.5); show("#t5", 8.9); show("#t6", 9.3);
+      tl.to("#e1,#e2,#e4", { opacity: 0.25, duration: 0.3 }, 9.3);
+      tl.to({}, { duration: 0.01 }, 11);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

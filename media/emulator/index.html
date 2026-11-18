@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=800" />
+    <title>Collie — GIF emulator</title>
+    <!-- Copy this folder to media/<id>/ and change: title, #stage content, the timeline. Rules: docs/prd/00-overview.md -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&display=block" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Regular.ttf"); font-weight: 400; }
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Medium.ttf"); font-weight: 500; }
+      :root {
+        --bg: #15171c; --surface: #1f232b; --surface-2: #262a33; --border: #2e323b;
+        --fg: #f4f2ed; --text2: #8c95b8; --accent: #6e9bff; --accent-soft: #93a4ff;
+        --success: #6ee7b7; --warn: #ffb86b;
+        --ui: "Manrope", system-ui, sans-serif; --mono: "DM Mono", ui-monospace, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1280px; height: 800px; overflow: hidden; font-family: var(--ui); color: var(--fg);
+        background-color: var(--bg); background-image: radial-gradient(circle, #262a33 1.5px, transparent 1.6px); background-size: 32px 32px; }
+      #stage { position: absolute; inset: 0 0 96px 0; } /* 1280×704 for the scene; the caption owns the bottom 96px */
+
+      /* A canvas card: terminal or panel. <div class="card" style="left;top;width;height"><header><b>name</b><i>tag</i></header><div class="body">…</div></div> */
+      .card { position: absolute; display: flex; flex-direction: column; background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; }
+      .card header { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; background: var(--surface-2); border-bottom: 1.5px solid var(--border); font-family: var(--mono); font-size: 22px; }
+      .card header b { font-weight: 500; }
+      .card header i { font-style: normal; color: var(--text2); }
+      .card .body { flex: 1; padding: 14px; font-family: var(--mono); font-size: 22px; line-height: 32px; }
+      /* Terminal lines, as on the site: prompt ›, call ↳ (accent), out (muted), reply (fg) */
+      .ln { opacity: 0; white-space: nowrap; }
+      .ln.prompt { color: var(--fg); } .ln.call { color: var(--accent); } .ln.out { color: var(--text2); }
+      .ok { color: var(--success); } .bad { color: var(--warn); }
+      /* Leash: <svg id="leashes"><path class="leash" d="…"/></svg> */
+      #leashes { position: absolute; inset: 0; width: 1280px; height: 704px; pointer-events: none; }
+      .leash { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 8; opacity: 0; }
+      /* Owner approval card */
+      .approve { position: absolute; padding: 18px 20px; background: var(--surface); border: 1.5px solid var(--accent); border-radius: 12px; font-size: 24px; font-weight: 500; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+      .approve small { display: block; margin-top: 4px; font-family: var(--mono); font-size: 22px; font-weight: 400; color: var(--text2); }
+      .approve .btns { display: flex; gap: 10px; margin-top: 14px; }
+      .approve .btn { padding: 6px 18px; border-radius: 8px; border: 1.5px solid var(--border); font-size: 22px; font-weight: 800; }
+      .approve .btn.primary { background: var(--accent); border-color: var(--accent); color: #15171c; }
+      /* Captions: one per beat, numbered */
+      .cap { position: absolute; left: 32px; right: 32px; bottom: 20px; height: 60px; display: flex; align-items: center; gap: 16px; padding: 0 22px;
+        background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; font-size: 26px; font-weight: 500; opacity: 0; }
+      .cap b { font-family: var(--mono); font-weight: 500; color: var(--accent); }
+
+      .meter { position: absolute; left: 640px; top: 8px; width: 592px; height: 44px; display: flex; align-items: center; gap: 14px; padding: 0 14px; font-family: var(--mono); font-size: 22px; color: var(--text2); background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; opacity: 0; }
+      .meter .bar { width: 64px; height: 12px; border-radius: 6px; background: var(--surface-2); overflow: hidden; }
+      .meter .bar i { display: block; height: 100%; width: 22%; background: var(--success); border-radius: 6px; }
+      .meter .bar i.hi { width: 78%; background: var(--warn); }
+      .phone { padding: 14px !important; }
+      .screen { position: relative; width: 272px; height: 484px; border-radius: 14px; background: #05060a; overflow: hidden; font-family: var(--ui); }
+      .screen .boot { position: absolute; left: 0; right: 0; top: 200px; text-align: center; font-family: var(--mono); font-size: 22px; color: var(--text2); line-height: 32px; }
+      .screen .pbar { width: 180px; height: 8px; margin: 14px auto 0; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
+      .screen .pbar i { display: block; width: 0; height: 100%; background: var(--accent); }
+      .home { position: absolute; inset: 0; opacity: 0; }
+      .home.a { background: linear-gradient(160deg, #2b3a6b, #15171c 70%); }
+      .home.i { background: linear-gradient(160deg, #5b3a7a, #1b2340 70%); }
+      .home .clock { margin-top: 56px; text-align: center; font-size: 56px; font-weight: 800; }
+      .home .grid { display: grid; grid-template-columns: repeat(3, 56px); gap: 22px 28px; justify-content: center; margin-top: 70px; }
+      .home .grid b { height: 56px; border-radius: 14px; background: rgba(244,242,237,.22); }
+      .home.i .grid b { border-radius: 16px; }
+      .home .grid b:nth-child(2n) { background: rgba(110,155,255,.55); }
+      #p2 { opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="11" data-width="1280" data-height="800">
+      <div id="app" class="clip" data-start="0" data-duration="11" data-track-index="0">
+        <div id="stage">
+          <svg id="leashes" viewBox="0 0 1280 704"><path id="l1" class="leash" d="M606 300 L640 300" /></svg>
+          <div class="meter" id="meter">CPU <span class="bar"><i></i></span> RAM <span class="bar"><i></i></span> <span class="ok">1.5 GB · 2 cores</span></div>
+          <div class="card" style="left: 16px; top: 100px; width: 590px; height: 392px">
+            <header><b>shepherd</b><i>· claude</i></header>
+            <div class="body">
+              <p class="ln prompt" id="t1">› Boot the light emulator and open the app</p>
+              <p class="ln call" id="t2">↳ collie device list</p>
+              <p class="ln out" id="t3">[{serial:"avd:collie-lite",state:"off"}]</p>
+              <p class="ln call" id="t4">↳ collie panel open device<br />&nbsp;&nbsp;&nbsp;--serial avd:collie-lite</p>
+              <p class="ln call" id="t5">↳ collie panel open device<br />&nbsp;&nbsp;&nbsp;--serial &lt;UDID&gt;</p>
+            </div>
+          </div>
+          <div class="card" id="p1" style="left: 640px; top: 64px; width: 300px; height: 552px; opacity: 0">
+            <header><b>collie-lite</b><i>· device</i></header>
+            <div class="body phone"><div class="screen"><div class="boot" id="boot">booting…<div class="pbar"><i id="pb"></i></div></div>
+              <div class="home a" id="h1"><div class="clock">9:41</div><div class="grid"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div></div></div></div>
+          </div>
+          <div class="card" id="p2" style="left: 952px; top: 64px; width: 300px; height: 552px">
+            <header><b>iPhone 16e</b><i>· iOS Sim</i></header>
+            <div class="body phone"><div class="screen"><div class="home i" style="opacity:1"><div class="clock">9:41</div><div class="grid"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div></div></div></div>
+          </div>
+        </div>
+        <div class="cap" id="c1"><b>1</b>No device yet.</div>
+        <div class="cap" id="c2"><b>2</b>Ask for one.</div>
+        <div class="cap" id="c3"><b>3</b>It boots into a panel.</div>
+        <div class="cap" id="c4"><b>4</b>Right next to iOS.</div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const show = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, t);
+      const hide = (sel, t) => tl.to(sel, { opacity: 0, duration: 0.2 }, t);
+      const cap = (id, prev, t) => { if (prev) hide(prev, t); show(id, t); };
+
+      cap("#c1", null, 0.3); show("#t1", 0.6); show("#t2", 1.4); show("#t3", 2.2);
+      cap("#c2", "#c1", 3.2); show("#t4", 3.5); show("#p1", 4.0); tl.to("#pb", { width: "100%", duration: 2.0, ease: "power1.inOut" }, 4.4);
+      cap("#c3", "#c2", 6.2); hide("#boot", 6.3); tl.to("#h1", { opacity: 1, duration: 0.5 }, 6.3); show("#l1", 6.6); show("#meter", 6.8);
+      cap("#c4", "#c3", 8.2); show("#t5", 8.4); show("#p2", 8.9);
+      tl.to({}, { duration: 0.01 }, 11);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
