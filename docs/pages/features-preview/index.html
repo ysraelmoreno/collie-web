@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Collie Web — novas seções</title>
+<link rel="stylesheet" href="collie-lib://fonts/css?family=Manrope&family=DM%20Mono">
+<style>
+:root { --bg:#15171c; --fg:#f4f2ed; --text2:#8c95b8; --surface:#1f232b; --surface-2:#262a33; --border:#2e323b; --accent:#6e9bff; --accent-text:#6e9bff; --success:#6ee7b7; --warn:#ffb86b; --on-accent:#15171c; }
+[data-theme="light"] { --bg:#f4f2ed; --fg:#15171c; --text2:#5a5d66; --surface:#fff; --surface-2:#ece9e2; --border:#dcd8cf; --accent:#2d69fd; --accent-text:#4a5bd6; --success:#0f7a55; --warn:#a14a06; --on-accent:#fff; }
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--bg); color: var(--fg); font: 500 16px/1.55 Manrope, system-ui, sans-serif; }
+.mono { font-family: "DM Mono", ui-monospace, monospace; }
+.wrap { max-width: 1440px; margin: 0 auto; padding: 0 24px; }
+@media (min-width: 1024px) { .wrap { padding: 0 64px; } }
+.bar { position: sticky; top: 0; z-index: 2; background: var(--bg); border-bottom: 1px solid var(--border); }
+.bar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; min-height: 60px; padding-block: 10px; }
+.bar strong { font-weight: 800; margin-right: auto; }
+.bar a { color: var(--text2); text-decoration: none; font-size: 13px; }
+.bar a:hover { color: var(--fg); }
+button { font: inherit; color: var(--fg); background: none; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+button:hover { background: var(--surface-2); }
+.intro { padding: 40px 0 8px; }
+.intro h1 { font-size: 32px; line-height: 1.2; font-weight: 800; letter-spacing: -0.02em; }
+.intro p { color: var(--text2); max-width: 720px; margin-top: 8px; }
+.status { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; font-size: 12px; }
+.status span { border: 1px solid var(--border); border-radius: 999px; padding: 2px 10px; color: var(--text2); }
+.status .ok { color: var(--success); border-color: var(--success); }
+.old { margin: 24px 0 0; padding: 14px 18px; border: 1px dashed var(--border); border-radius: 12px; color: var(--text2); font-size: 13px; }
+section { padding: 48px 0 64px; }
+.row { display: flex; flex-direction: column; gap: 24px; }
+@media (min-width: 1024px) { .row { flex-direction: row; align-items: center; gap: 64px; } .row.rev { flex-direction: row-reverse; } .copy { max-width: 480px; flex: 1; } .media { width: 58%; max-width: 768px; flex-shrink: 0; } }
+.copy { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.eyebrow { font-size: 12px; letter-spacing: 0.12em; color: var(--accent-text); }
+h2 { font-size: 32px; line-height: 38px; font-weight: 800; letter-spacing: -0.02em; }
+@media (min-width: 1024px) { h2 { font-size: 44px; line-height: 52px; } }
+.lead { color: var(--text2); font-size: 18px; line-height: 28px; }
+ul { list-style: none; padding: 0; font-size: 13px; line-height: 20px; color: var(--text2); }
+.cmd { font-size: 13px; line-height: 20px; overflow-wrap: anywhere; }
+.cmd p:first-child { color: var(--text2); } .cmd p:last-child { color: var(--accent-text); }
+.media { aspect-ratio: 16/10; width: 100%; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); overflow: hidden; }
+.media video { display: block; width: 100%; height: 100%; }
+.board { height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 24px; background-image: radial-gradient(circle, var(--surface-2) 1.5px, transparent 1.6px); background-size: 24px 24px; }
+.board .tag { font-size: 12px; color: var(--warn); letter-spacing: 0.08em; }
+.board ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.board li { display: flex; gap: 12px; align-items: center; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; font-size: 15px; }
+.board li b { color: var(--accent-text); font-weight: 500; }
+.board .prd { font-size: 12px; color: var(--text2); }
+</style>
+</head>
+<body>
+<div class="bar"><div class="wrap">
+  <strong>Collie Web · prévia das novas seções</strong>
+  <nav id="toc" class="mono"></nav>
+  <button id="lang" class="mono">EN</button>
+  <button id="theme" class="mono">Light</button>
+</div></div>
+<main class="wrap">
+  <div class="intro">
+    <h1>Seções 04–11: tudo que o Collie faz</h1>
+    <p>Entram entre os pilares (01 Design, 02 Memory, 03 Devices) e "How it works". Mesmo layout dos pilares, lado alternado, um GIF por seção. Onde o GIF ainda não foi renderizado aparece o roteiro dele (as batidas do PRD).</p>
+    <div class="status mono" id="status"></div>
+    <p class="old mono">↑ Nav · Hero · Pain · 01 Design · 02 Memory · 03 Devices (sem mudança; Nav ganha o link "Features / Recursos")</p>
+  </div>
+  <div id="features"></div>
+  <p class="old mono" style="margin-bottom:64px">↓ How it works · Download · Build it · CTA · Footer (sem mudança)</p>
+</main>
+<script>
+const DATA = [{"en":{"id":"loop","eyebrow":"04 · LOOP","title":"Work that runs while you sleep.","body":"Give each task a check and approve the list once. Collie runs a fresh agent per attempt, and the check decides when a task is done. Not the agent.","bullets":["A fresh agent per attempt","You approve tasks, checks and limits on a card","Runs in a paddock, under the strict sandbox"],"command":{"prompt":"Run the open tasks until the tests pass","command":"collie work run --max 10"},"mediaAlt":"A loop runs three tasks: a failed attempt is replaced by a fresh agent until each check passes."},"pt":{"id":"loop","eyebrow":"04 · LAÇO","title":"Trabalho que roda sem você.","body":"Dê um check a cada tarefa e aprove a lista uma vez. O Collie roda um agente novo por tentativa, e é o check que decide quando a tarefa acabou. Não o agente.","bullets":["Um agente novo por tentativa","Você aprova tarefas, checks e limites num cartão","Roda num cercado, sob o sandbox estrito"],"command":{"prompt":"Rode as tarefas abertas até os testes passarem","command":"collie work run --max 10"},"mediaAlt":"Um laço roda três tarefas: uma tentativa que falha dá lugar a um agente novo até cada check passar."},"ready":true,"beats":["You list the tasks. Each one has a check.","You approve once.","A fresh agent per attempt. The check decides.","Done while you were away."],"prd":"docs/prd/01-loop.md"},{"en":{"id":"apps","eyebrow":"05 · APPS","title":"Adopt the tools you already have.","body":"Point Collie at a local tool and it becomes a live panel on the canvas. Your agents call its actions and hear its events, right where you work.","bullets":["One command, no manifest to write","Actions become agent tools, events become notices","An agent can propose an app; only you approve it"],"command":{"prompt":"Attach our metrics viewer and show the recent errors","command":"collie app adopt metrics --url http://127.0.0.1:8767"},"mediaAlt":"A local tool on localhost is adopted with one command and becomes a panel on the canvas that the agent can call."},"pt":{"id":"apps","eyebrow":"05 · APPS","title":"Adote as ferramentas que você já tem.","body":"Aponte o Collie para uma ferramenta local e ela vira um painel vivo no canvas. Seus agentes chamam as ações dela e ouvem os eventos, ali onde você trabalha.","bullets":["Um comando, sem manifesto para escrever","Ações viram ferramentas do agente, eventos viram avisos","Um agente pode propor um app; só você aprova"],"command":{"prompt":"Ligue nosso visualizador de métricas e mostre os erros recentes","command":"collie app adopt metrics --url http://127.0.0.1:8767"},"mediaAlt":"Uma ferramenta local em localhost é adotada com um comando e vira um painel no canvas que o agente consegue chamar."},"ready":true,"beats":["You already have a local tool.","One command adopts it.","It becomes a live panel.","And a tool for your agents."],"prd":"docs/prd/02-apps-adopt.md"},{"en":{"id":"network","eyebrow":"06 · NETWORK","title":"Intercept every request your app makes.","body":"The Network panel captures the emulator’s HTTP(S) traffic. Your agent reads the request that failed, then answers it with a rule of its own to test the fix, once you approve.","bullets":["Requests, responses and WebSockets from the attached emulator","Any flow as curl, or as a rule that answers in the server’s place","An agent’s rule waits for your OK; mapped flows are marked"],"command":{"prompt":"Make checkout succeed so I can test the app","command":"collie network rule-add --from 3 --status 200 --body '{\"ok\":true}'"},"mediaAlt":"The Network panel lists the emulator’s requests; the agent finds the one that returned 500, proposes a rule that answers it with 200, the owner approves on a card, and the app receives the mapped response."},"pt":{"id":"network","eyebrow":"06 · REDE","title":"Intercepte cada requisição do seu app.","body":"O painel Rede captura o tráfego HTTP(S) do emulador. Seu agente lê a requisição que falhou e a responde com uma regra própria para testar a correção, depois que você aprova.","bullets":["Requisições, respostas e WebSockets do emulador anexado","Qualquer fluxo como curl, ou como regra que responde no lugar do servidor","A regra de um agente espera o seu OK; fluxos mapeados ficam marcados"],"command":{"prompt":"Faça o checkout passar para eu testar o app","command":"collie network rule-add --from 3 --status 200 --body '{\"ok\":true}'"},"mediaAlt":"O painel Rede lista as requisições do emulador; o agente acha a que voltou 500, propõe uma regra que responde 200, o dono aprova num cartão e o app recebe a resposta mapeada."},"ready":true,"beats":["The app talks. Collie listens.","The agent finds the 500.","A rule answers instead. You approve.","The app gets the mapped answer."],"prd":"docs/prd/03-network.md"},{"en":{"id":"emulator","eyebrow":"07 · EMULATOR","title":"An emulator your Mac can afford.","body":"Collie creates a light Android emulator and boots it straight into a panel. No Android Studio window, no setup tour: ask for a device and it is on the canvas.","bullets":["collie-lite: 720×1280, 1.5 GB, 2 cores","Opening the panel boots the emulator","Android and the iOS Simulator, side by side"],"command":{"prompt":"Boot the light emulator and open the app","command":"collie panel open device --serial avd:collie-lite"},"mediaAlt":"An emulator that was off boots inside a device panel on the canvas, next to an iOS Simulator."},"pt":{"id":"emulator","eyebrow":"07 · EMULADOR","title":"Um emulador que cabe no seu Mac.","body":"O Collie cria um emulador Android leve e o liga direto num painel. Sem janela do Android Studio, sem tour de setup: peça um aparelho e ele está no canvas.","bullets":["collie-lite: 720×1280, 1,5 GB, 2 núcleos","Abrir o painel liga o emulador","Android e Simulador iOS, lado a lado"],"command":{"prompt":"Ligue o emulador leve e abra o app","command":"collie panel open device --serial avd:collie-lite"},"mediaAlt":"Um emulador desligado liga dentro de um painel de dispositivo no canvas, ao lado de um Simulador iOS."},"ready":true,"beats":["No device yet.","Ask for one.","It boots into a panel.","Right next to iOS."],"prd":"docs/prd/04-emulator.md"},{"en":{"id":"browser","eyebrow":"08 · BROWSER","title":"Agents that check their own work.","body":"A browser panel sits next to the terminal. The agent opens your dev server, clicks through the flow, reads the console and screenshots the result before telling you it works.","bullets":["Click and fill by element ref, wait for text","Console and storage, readable by the agent","Resize the page to check 360px without leaving the canvas"],"command":{"prompt":"Check the signup form at 360px","command":"collie browser snapshot"},"mediaAlt":"An agent fills a signup form in a browser panel, reads a console error, fixes it and checks the page at phone width."},"pt":{"id":"browser","eyebrow":"08 · NAVEGADOR","title":"Agentes que conferem o próprio trabalho.","body":"Um painel de navegador fica ao lado do terminal. O agente abre seu dev server, clica pelo fluxo, lê o console e tira um screenshot antes de dizer que funciona.","bullets":["Clica e preenche por ref, espera por texto","Console e storage, legíveis pelo agente","Redimensiona a página para checar 360px sem sair do canvas"],"command":{"prompt":"Confira o formulário de cadastro em 360px","command":"collie browser snapshot"},"mediaAlt":"Um agente preenche um formulário de cadastro num painel de navegador, lê um erro no console, corrige e confere a página em largura de telefone."},"ready":true,"beats":["The dev server opens on the canvas.","The agent drives it by element ref.","It reads the console.","And checks it small."],"prd":"docs/prd/05-browser.md"},{"en":{"id":"artifacts","eyebrow":"09 · ARTIFACTS","title":"Point at it. The agent fixes it.","body":"Agents start decks, dashboards, docs and prototypes from templates themed with your tokens. Pin a comment on the preview and it lands in the agent’s next prompt.","bullets":["Four templates, themed Light and Dark","Comments pinned to a spot on the page","Decks export to editable PowerPoint or PDF"],"command":{"prompt":"Draft the pricing page as a prototype","command":"collie artifact new prototype pricing"},"mediaAlt":"A comment pinned on a preview page reaches the agent, which fixes the page; the user then resolves the comment."},"pt":{"id":"artifacts","eyebrow":"09 · ARTIFACTS","title":"Aponte. O agente corrige.","body":"Agentes começam decks, dashboards, docs e protótipos por modelos com os seus tokens. Fixe um comentário na prévia e ele chega no próximo prompt do agente.","bullets":["Quatro modelos, com tema Light e Dark","Comentários fixados num ponto da página","Decks exportam para PowerPoint editável ou PDF"],"command":{"prompt":"Faça um protótipo da página de preços","command":"collie artifact new prototype pricing"},"mediaAlt":"Um comentário fixado numa prévia chega ao agente, que corrige a página; o usuário então resolve o comentário."},"ready":true,"beats":["A page from a template, in your tokens.","You pin a comment where it is wrong.","It lands in the agent's next prompt.","The agent fixes it. You resolve it."],"prd":"docs/prd/06-artifacts.md"},{"en":{"id":"diagram","eyebrow":"10 · DIAGRAM","title":"Architecture, drawn from the code.","body":"Ask for a flowchart, an ERD or a sequence and the agent draws it in a diagram panel. You drag the boxes, it reads your changes back. The file lives in your repo.","bullets":["Flowcharts, swimlanes, ERD and UML","Agents write it from Mermaid","A .drawio file, versioned with the code"],"command":{"prompt":"Draw the checkout flow from the code","command":"collie diagram mermaid"},"mediaAlt":"An agent draws a checkout flowchart in a diagram panel and the user drags one of the boxes."},"pt":{"id":"diagram","eyebrow":"10 · DIAGRAMA","title":"Arquitetura, desenhada a partir do código.","body":"Peça um fluxograma, um ERD ou uma sequência e o agente desenha num painel de diagrama. Você arrasta as caixas, ele lê suas mudanças. O arquivo mora no seu repo.","bullets":["Fluxogramas, raias, ERD e UML","Agentes escrevem a partir de Mermaid","Um arquivo .drawio, versionado com o código"],"command":{"prompt":"Desenhe o fluxo de checkout a partir do código","command":"collie diagram mermaid"},"mediaAlt":"Um agente desenha o fluxograma do checkout num painel de diagrama e o usuário arrasta uma das caixas."},"ready":true,"beats":["Ask for the flow.","The agent draws it.","You move things by hand.","It stays in the repo."],"prd":"docs/prd/07-diagram.md"},{"en":{"id":"sandbox","eyebrow":"11 · SANDBOX","title":"Agents ask to leave the paddock.","body":"Agent terminals run under the macOS sandbox. In strict mode, a write outside the project is blocked and becomes a card: the agent says why, and you allow or deny it.","bullets":["Open (default) or strict, set in Preferences","Nothing is granted without your click; revoke anytime","It limits files, not the network"],"command":{"prompt":"Update the shared config in ~/dotfiles","command":"collie access request ~/dotfiles --write"},"mediaAlt":"In strict mode a write outside the project is blocked; the agent requests access and the owner allows it on a card."},"pt":{"id":"sandbox","eyebrow":"11 · SANDBOX","title":"Agentes pedem para sair do cercado.","body":"Terminais de agente rodam sob o sandbox do macOS. No modo estrito, uma escrita fora do projeto é bloqueada e vira um cartão: o agente diz por quê, e você permite ou nega.","bullets":["Aberto (padrão) ou estrito, nas Preferências","Nada é liberado sem o seu clique; revogue quando quiser","Limita arquivos, não a rede"],"command":{"prompt":"Atualize a config compartilhada em ~/dotfiles","command":"collie access request ~/dotfiles --write"},"mediaAlt":"No modo estrito, uma escrita fora do projeto é bloqueada; o agente pede acesso e o dono permite num cartão."},"ready":true,"beats":["Agents write inside their project.","Outside is blocked.","The agent asks, with a reason.","You decide. You can revoke."],"prd":"docs/prd/08-sandbox.md"}];
+let lang = "pt";
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+function render() {
+  const root = document.getElementById("features"), toc = document.getElementById("toc"), status = document.getElementById("status");
+  root.replaceChildren(); toc.replaceChildren(); status.replaceChildren();
+  DATA.forEach((d, i) => {
+    const f = d[lang];
+    const a = el("a", "", f.eyebrow.split(" · ")[1]); a.href = "#" + f.id; a.style.marginRight = "12px"; toc.append(a);
+    status.append(el("span", d.ready ? "ok" : "", f.id + (d.ready ? " · GIF pronto" : " · roteiro")));
+    const sec = el("section"); sec.id = f.id;
+    const row = el("div", "row" + (i % 2 ? " rev" : ""));
+    const copy = el("div", "copy");
+    copy.append(el("p", "eyebrow mono", f.eyebrow), el("h2", "", f.title), el("p", "lead", f.body));
+    const ul = el("ul", "mono"); f.bullets.forEach((b) => ul.append(el("li", "", "· " + b))); copy.append(ul);
+    const cmd = el("div", "cmd mono"); cmd.append(el("p", "", "› " + f.command.prompt), el("p", "", "↳ " + f.command.command)); copy.append(cmd);
+    const media = el("div", "media");
+    if (d.ready) {
+      const v = el("video"); v.muted = v.loop = v.autoplay = v.playsInline = true; v.poster = "media/" + f.id + ".jpg"; v.src = "media/" + f.id + ".mp4"; v.setAttribute("aria-label", f.mediaAlt); media.append(v);
+    } else {
+      const board = el("div", "board");
+      board.append(el("p", "tag mono", "GIF · ROTEIRO (ainda não renderizado)"));
+      const ol = el("ol"); d.beats.forEach((b, n) => { const li = el("li"); li.append(el("b", "mono", String(n + 1)), el("span", "", b)); ol.append(li); });
+      board.append(ol, el("p", "prd mono", d.prd)); media.append(board);
+    }
+    row.append(copy, media); sec.append(row); root.append(sec);
+  });
+}
+document.getElementById("lang").onclick = (e) => { lang = lang === "pt" ? "en" : "pt"; e.target.textContent = lang === "pt" ? "EN" : "PT"; render(); };
+document.getElementById("theme").onclick = (e) => { const h = document.documentElement; const light = h.dataset.theme !== "light"; h.dataset.theme = light ? "light" : "dark"; e.target.textContent = light ? "Dark" : "Light"; };
+render();
+</script>
+</body>
+</html>

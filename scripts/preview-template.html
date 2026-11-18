@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Collie Web — novas seções</title>
+<link rel="stylesheet" href="collie-lib://fonts/css?family=Manrope&family=DM%20Mono">
+<style>
+:root { --bg:#15171c; --fg:#f4f2ed; --text2:#8c95b8; --surface:#1f232b; --surface-2:#262a33; --border:#2e323b; --accent:#6e9bff; --accent-text:#6e9bff; --success:#6ee7b7; --warn:#ffb86b; --on-accent:#15171c; }
+[data-theme="light"] { --bg:#f4f2ed; --fg:#15171c; --text2:#5a5d66; --surface:#fff; --surface-2:#ece9e2; --border:#dcd8cf; --accent:#2d69fd; --accent-text:#4a5bd6; --success:#0f7a55; --warn:#a14a06; --on-accent:#fff; }
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--bg); color: var(--fg); font: 500 16px/1.55 Manrope, system-ui, sans-serif; }
+.mono { font-family: "DM Mono", ui-monospace, monospace; }
+.wrap { max-width: 1440px; margin: 0 auto; padding: 0 24px; }
+@media (min-width: 1024px) { .wrap { padding: 0 64px; } }
+.bar { position: sticky; top: 0; z-index: 2; background: var(--bg); border-bottom: 1px solid var(--border); }
+.bar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; min-height: 60px; padding-block: 10px; }
+.bar strong { font-weight: 800; margin-right: auto; }
+.bar a { color: var(--text2); text-decoration: none; font-size: 13px; }
+.bar a:hover { color: var(--fg); }
+button { font: inherit; color: var(--fg); background: none; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+button:hover { background: var(--surface-2); }
+.intro { padding: 40px 0 8px; }
+.intro h1 { font-size: 32px; line-height: 1.2; font-weight: 800; letter-spacing: -0.02em; }
+.intro p { color: var(--text2); max-width: 720px; margin-top: 8px; }
+.status { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; font-size: 12px; }
+.status span { border: 1px solid var(--border); border-radius: 999px; padding: 2px 10px; color: var(--text2); }
+.status .ok { color: var(--success); border-color: var(--success); }
+.old { margin: 24px 0 0; padding: 14px 18px; border: 1px dashed var(--border); border-radius: 12px; color: var(--text2); font-size: 13px; }
+section { padding: 48px 0 64px; }
+.row { display: flex; flex-direction: column; gap: 24px; }
+@media (min-width: 1024px) { .row { flex-direction: row; align-items: center; gap: 64px; } .row.rev { flex-direction: row-reverse; } .copy { max-width: 480px; flex: 1; } .media { width: 58%; max-width: 768px; flex-shrink: 0; } }
+.copy { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.eyebrow { font-size: 12px; letter-spacing: 0.12em; color: var(--accent-text); }
+h2 { font-size: 32px; line-height: 38px; font-weight: 800; letter-spacing: -0.02em; }
+@media (min-width: 1024px) { h2 { font-size: 44px; line-height: 52px; } }
+.lead { color: var(--text2); font-size: 18px; line-height: 28px; }
+ul { list-style: none; padding: 0; font-size: 13px; line-height: 20px; color: var(--text2); }
+.cmd { font-size: 13px; line-height: 20px; overflow-wrap: anywhere; }
+.cmd p:first-child { color: var(--text2); } .cmd p:last-child { color: var(--accent-text); }
+.media { aspect-ratio: 16/10; width: 100%; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); overflow: hidden; }
+.media video { display: block; width: 100%; height: 100%; }
+.board { height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 24px; background-image: radial-gradient(circle, var(--surface-2) 1.5px, transparent 1.6px); background-size: 24px 24px; }
+.board .tag { font-size: 12px; color: var(--warn); letter-spacing: 0.08em; }
+.board ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.board li { display: flex; gap: 12px; align-items: center; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; font-size: 15px; }
+.board li b { color: var(--accent-text); font-weight: 500; }
+.board .prd { font-size: 12px; color: var(--text2); }
+</style>
+</head>
+<body>
+<div class="bar"><div class="wrap">
+  <strong>Collie Web · prévia das novas seções</strong>
+  <nav id="toc" class="mono"></nav>
+  <button id="lang" class="mono">EN</button>
+  <button id="theme" class="mono">Light</button>
+</div></div>
+<main class="wrap">
+  <div class="intro">
+    <h1>Seções 04–11: tudo que o Collie faz</h1>
+    <p>Entram entre os pilares (01 Design, 02 Memory, 03 Devices) e "How it works". Mesmo layout dos pilares, lado alternado, um GIF por seção. Onde o GIF ainda não foi renderizado aparece o roteiro dele (as batidas do PRD).</p>
+    <div class="status mono" id="status"></div>
+    <p class="old mono">↑ Nav · Hero · Pain · 01 Design · 02 Memory · 03 Devices (sem mudança; Nav ganha o link "Features / Recursos")</p>
+  </div>
+  <div id="features"></div>
+  <p class="old mono" style="margin-bottom:64px">↓ How it works · Download · Build it · CTA · Footer (sem mudança)</p>
+</main>
+<script>
+const DATA = /*DATA*/[];
+let lang = "pt";
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+function render() {
+  const root = document.getElementById("features"), toc = document.getElementById("toc"), status = document.getElementById("status");
+  root.replaceChildren(); toc.replaceChildren(); status.replaceChildren();
+  DATA.forEach((d, i) => {
+    const f = d[lang];
+    const a = el("a", "", f.eyebrow.split(" · ")[1]); a.href = "#" + f.id; a.style.marginRight = "12px"; toc.append(a);
+    status.append(el("span", d.ready ? "ok" : "", f.id + (d.ready ? " · GIF pronto" : " · roteiro")));
+    const sec = el("section"); sec.id = f.id;
+    const row = el("div", "row" + (i % 2 ? " rev" : ""));
+    const copy = el("div", "copy");
+    copy.append(el("p", "eyebrow mono", f.eyebrow), el("h2", "", f.title), el("p", "lead", f.body));
+    const ul = el("ul", "mono"); f.bullets.forEach((b) => ul.append(el("li", "", "· " + b))); copy.append(ul);
+    const cmd = el("div", "cmd mono"); cmd.append(el("p", "", "› " + f.command.prompt), el("p", "", "↳ " + f.command.command)); copy.append(cmd);
+    const media = el("div", "media");
+    if (d.ready) {
+      const v = el("video"); v.muted = v.loop = v.autoplay = v.playsInline = true; v.poster = "media/" + f.id + ".jpg"; v.src = "media/" + f.id + ".mp4"; v.setAttribute("aria-label", f.mediaAlt); media.append(v);
+    } else {
+      const board = el("div", "board");
+      board.append(el("p", "tag mono", "GIF · ROTEIRO (ainda não renderizado)"));
+      const ol = el("ol"); d.beats.forEach((b, n) => { const li = el("li"); li.append(el("b", "mono", String(n + 1)), el("span", "", b)); ol.append(li); });
+      board.append(ol, el("p", "prd mono", d.prd)); media.append(board);
+    }
+    row.append(copy, media); sec.append(row); root.append(sec);
+  });
+}
+document.getElementById("lang").onclick = (e) => { lang = lang === "pt" ? "en" : "pt"; e.target.textContent = lang === "pt" ? "EN" : "PT"; render(); };
+document.getElementById("theme").onclick = (e) => { const h = document.documentElement; const light = h.dataset.theme !== "light"; h.dataset.theme = light ? "light" : "dark"; e.target.textContent = light ? "Dark" : "Light"; };
+render();
+</script>
+</body>
+</html>
