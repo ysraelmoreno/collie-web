@@ -84,7 +84,7 @@ function render() {
     const cmd = el("div", "cmd mono"); cmd.append(el("p", "", "› " + f.command.prompt), el("p", "", "↳ " + f.command.command)); copy.append(cmd);
     const media = el("div", "media");
     if (d.ready) {
-      const v = el("video"); v.muted = v.loop = v.autoplay = v.playsInline = true; v.poster = "media/" + f.id + ".jpg"; v.src = "media/" + f.id + ".mp4"; v.setAttribute("aria-label", f.mediaAlt); media.append(v);
+      const v = el("video"); v.muted = v.loop = v.autoplay = v.playsInline = true; const file = "media/" + f.id + (document.documentElement.dataset.theme === "light" ? "-light" : ""); v.poster = file + ".jpg"; v.src = file + ".mp4"; v.setAttribute("aria-label", f.mediaAlt); media.append(v);
     } else {
       const board = el("div", "board");
       board.append(el("p", "tag mono", "GIF · ROTEIRO (ainda não renderizado)"));
@@ -95,7 +95,7 @@ function render() {
   });
 }
 document.getElementById("lang").onclick = (e) => { lang = lang === "pt" ? "en" : "pt"; e.target.textContent = lang === "pt" ? "EN" : "PT"; render(); };
-document.getElementById("theme").onclick = (e) => { const h = document.documentElement; const light = h.dataset.theme !== "light"; h.dataset.theme = light ? "light" : "dark"; e.target.textContent = light ? "Dark" : "Light"; };
+document.getElementById("theme").onclick = (e) => { const h = document.documentElement; const light = h.dataset.theme !== "light"; h.dataset.theme = light ? "light" : "dark"; e.target.textContent = light ? "Dark" : "Light"; render(); };
 render();
 </script>
 </body>
