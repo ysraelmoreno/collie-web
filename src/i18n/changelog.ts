@@ -12,7 +12,8 @@ export type AreaId =
   | "sandbox"
   | "agents"
   | "design"
-  | "updates";
+  | "updates"
+  | "plugins";
 
 export type Kind = "new" | "imp" | "fix";
 
@@ -37,6 +38,13 @@ export type Release = {
 
 type Area = { name: string; desc: string };
 
+export type NextGroup = {
+  id: "main" | "planned";
+  name: string;
+  desc: string;
+  items: Highlight[];
+};
+
 export type ChangelogCopy = {
   meta: { title: string; description: string };
   eyebrow: string;
@@ -49,6 +57,14 @@ export type ChangelogCopy = {
   clipAlt: (title: string) => string;
   areas: Record<AreaId, Area>;
   releases: Release[];
+  tabs: { label: string; versions: string; next: string };
+  next: {
+    meta: { title: string; description: string };
+    eyebrow: string;
+    title: string;
+    lead: string;
+    groups: NextGroup[];
+  };
 };
 
 /** Area → clip name. Areas without one (agents) have no clip. */
@@ -108,6 +124,84 @@ const en: ChangelogCopy = {
       desc: "The design panel and the figcraft engine.",
     },
     updates: { name: "Updates", desc: "How Collie updates itself." },
+    plugins: {
+      name: "Plug-ins",
+      desc: "Plug-ins that hook into the agent's work.",
+    },
+  },
+  tabs: {
+    label: "Changelog sections",
+    versions: "Versions",
+    next: "What's coming",
+  },
+  next: {
+    meta: {
+      title: "What's coming — Collie",
+      description:
+        "What is already on main and ready for the next Collie version, and what is planned after it.",
+    },
+    eyebrow: "CHANGELOG",
+    title: "What's coming to Collie.",
+    lead: "What is ready on main and what comes after. No dates: it ships when it is ready.",
+    groups: [
+      {
+        id: "main",
+        name: "On main",
+        desc: "Built and tested; ships in the next version.",
+        items: [
+          {
+            area: "app",
+            title: "Custom themes",
+            body: "Preferences › Appearance gets a theme gallery and an editor with two views of the same file, List and JSON, next to a preview. A theme is a JSON file you can send to someone else, and it reloads when saved in any editor.",
+          },
+          {
+            area: "plugins",
+            title: "Agent hooks for plug-ins",
+            body: "A plug-in declares hooks (`edit`, `stop`) and a helper. The daemon hands over the files the agent wrote and returns the answer to the agent, as guidance or a block. The helper runs in its own sandbox, offline; if it fails, it stays silent. Claude terminals only.",
+          },
+          {
+            area: "plugins",
+            title: "Vizinho and fences",
+            body: "The Vizinho plug-in, a sample: when the agent writes a file, it listens to what the sibling files do and which one to copy. Conventions almost every file follows become fence proposals; the ones you approve block the end of a turn that breaks them.",
+          },
+          {
+            area: "loop",
+            title: "Loop with explicit state",
+            body: "Every loop that stops says why, and a journal keeps the events. The Shepherd follows the state, not the terminal text. A turn that ends without a commit gets a nudge, and the commit of a daemon that died is adopted, not redone.",
+            cmd: {
+              prompt: "Wait for the loop to change state",
+              command: "collie work wait",
+            },
+          },
+          {
+            area: "app",
+            title: "Multi-select on the canvas",
+            body: "⌘-click, ⇧-click or a rectangle select several items, on the canvas and in the side panel, with the actions in one menu for all. The middle button drags the canvas.",
+          },
+        ],
+      },
+      {
+        id: "planned",
+        name: "Planned",
+        desc: "Designed, not built yet. May change.",
+        items: [
+          {
+            area: "loop",
+            title: "Parallel loop",
+            body: "Up to 4 tasks at once, each in its own worktree. Only tasks that do not touch the same files run together; each one enters the paddock one at a time, and the gate runs again on the integrated tree.",
+            cmd: {
+              prompt: "Run the tasks, two at a time",
+              command: "collie work run --parallel 2",
+            },
+          },
+          {
+            area: "app",
+            title: "Import a terminal theme",
+            body: "Bring in a Ghostty or iTerm theme, with the terminal's ANSI colors.",
+          },
+        ],
+      },
+    ],
   },
   releases: [
     {
@@ -472,6 +566,80 @@ const pt: ChangelogCopy = {
     },
     design: { name: "Design", desc: "Painel de design e o motor figcraft." },
     updates: { name: "Atualizações", desc: "Como o Collie se atualiza." },
+    plugins: {
+      name: "Plug-ins",
+      desc: "Plug-ins que entram no trabalho do agente.",
+    },
+  },
+  tabs: { label: "Seções do changelog", versions: "Versões", next: "Em breve" },
+  next: {
+    meta: {
+      title: "Em breve — Collie",
+      description:
+        "O que já está pronto na main para a próxima versão do Collie e o que está planejado depois.",
+    },
+    eyebrow: "CHANGELOG",
+    title: "O que vem no Collie.",
+    lead: "O que já está pronto na main e o que vem depois. Sem datas: entra quando estiver pronto.",
+    groups: [
+      {
+        id: "main",
+        name: "Na main",
+        desc: "Pronto e testado; entra na próxima versão.",
+        items: [
+          {
+            area: "app",
+            title: "Temas personalizados",
+            body: "Preferências › Aparência ganha uma galeria de temas e um editor com duas vistas do mesmo arquivo, Lista e JSON, ao lado de uma prévia. O tema é um arquivo JSON que você pode mandar para outra pessoa, e recarrega quando salvo em qualquer editor.",
+          },
+          {
+            area: "plugins",
+            title: "Ganchos de agente para plug-ins",
+            body: "Um plug-in declara ganchos (`edit`, `stop`) e um helper. O daemon entrega os arquivos que o agente escreveu e devolve a resposta ao agente, como orientação ou bloqueio. O helper roda no próprio sandbox, sem rede; se falhar, fica em silêncio. Só terminais Claude.",
+          },
+          {
+            area: "plugins",
+            title: "Vizinho e Cercas",
+            body: "Plug-in de exemplo: quando o agente escreve um arquivo, ouve o que os arquivos irmãos fazem e qual tomar de modelo. Convenções que quase todo arquivo segue viram propostas de cerca; as que você aprova bloqueiam o fim de um turno que as quebra.",
+          },
+          {
+            area: "loop",
+            title: "Laço com estado explícito",
+            body: "Todo laço que para diz por quê, e um diário guarda os eventos. O Pastor acompanha pelo estado, não pelo texto do terminal. Um turno que termina sem commit leva um toque, e o commit de um daemon que caiu é adotado, não refeito.",
+            cmd: {
+              prompt: "Espere o laço mudar de estado",
+              command: "collie work wait",
+            },
+          },
+          {
+            area: "app",
+            title: "Seleção múltipla no canvas",
+            body: "⌘-clique, ⇧-clique ou um retângulo selecionam vários itens, no canvas e no painel lateral, com as ações num menu para todos. O botão do meio arrasta o canvas.",
+          },
+        ],
+      },
+      {
+        id: "planned",
+        name: "Planejado",
+        desc: "Desenhado, ainda não construído. Pode mudar.",
+        items: [
+          {
+            area: "loop",
+            title: "Laço em paralelo",
+            body: "Até 4 tarefas ao mesmo tempo, cada uma num worktree próprio. Só rodam juntas tarefas que não tocam os mesmos arquivos; cada uma entra no cercado uma de cada vez, e o gate roda de novo na árvore integrada.",
+            cmd: {
+              prompt: "Rode as tarefas, duas de cada vez",
+              command: "collie work run --parallel 2",
+            },
+          },
+          {
+            area: "app",
+            title: "Importar tema de terminal",
+            body: "Trazer um tema do Ghostty ou do iTerm, com as cores ANSI do terminal.",
+          },
+        ],
+      },
+    ],
   },
   releases: [
     {

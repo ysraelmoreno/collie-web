@@ -1,6 +1,8 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { AreaFilter } from "./AreaFilter";
+import { Rich, Tag } from "./parts";
+import { Tabs } from "./Tabs";
 import { FeatureVideo } from "@/components/landing/FeatureVideo";
 import { Nav } from "@/components/landing/Nav";
 import { Footer } from "@/components/landing/Closing";
@@ -47,38 +49,6 @@ const dateLabel = (iso: string, locale: Locale) => {
   return `${d.getUTCDate()} ${month} ${d.getUTCFullYear()}`;
 };
 
-/** `backticks` in copy become inline code. */
-function Rich({ text }: { text: string }) {
-  return text.split("`").map((part, i) =>
-    i % 2 ? (
-      <code
-        key={i}
-        className="rounded-[4px] bg-surface-2 px-[5px] py-px font-mono text-[0.88em] [overflow-wrap:anywhere]"
-      >
-        {part}
-      </code>
-    ) : (
-      part
-    ),
-  );
-}
-
-function Tag({
-  className = "",
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <span
-      className={`inline-block rounded-full border px-2 py-px font-mono text-[11px] leading-4 tracking-[0.06em] whitespace-nowrap uppercase ${className || "border-border text-text-secondary"}`}
-    >
-      {children}
-    </span>
-  );
-}
-
 export function Changelog({ locale }: { locale: Locale }) {
   const t: ChangelogCopy = changelog[locale];
   const used = new Set(t.releases.flatMap((r) => r.items.map((i) => i.area)));
@@ -118,16 +88,18 @@ export function Changelog({ locale }: { locale: Locale }) {
     <>
       <Nav locale={locale} current="changelog" />
       <main>
-        <Container className="pt-12 pb-16 lg:pt-16 lg:pb-24">
-          <header className="flex flex-col gap-3 pb-8">
+        <Container className="pt-10 pb-16 lg:pt-[72px] lg:pb-24">
+          <header className="flex flex-col gap-3 pb-3">
             <Eyebrow>{t.eyebrow}</Eyebrow>
-            <h1 className="text-[40px] leading-[44px] font-extrabold tracking-[-0.03em] lg:text-[56px] lg:leading-[62px]">
+            <h1 className="text-[40px] leading-[44px] font-extrabold tracking-[-0.03em] lg:text-[56px] lg:leading-[60px]">
               {t.title}
             </h1>
-            <div className="max-w-[640px]">
+            <div className="max-w-[800px]">
               <Lead>{t.lead}</Lead>
             </div>
           </header>
+
+          <Tabs locale={locale} current="versions" className="mb-3" />
 
           <AreaFilter
             label={t.filterLabel}

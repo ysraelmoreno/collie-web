@@ -44,7 +44,7 @@ export function AreaFilter({
       hidden
       role="group"
       aria-label={label}
-      className="mb-8 flex flex-wrap gap-2 font-mono text-xs leading-4"
+      className="mb-10 flex flex-wrap gap-2 font-mono text-xs leading-4"
     >
       {[{ id: "all", name: all }, ...areas].map((a) => (
         <button

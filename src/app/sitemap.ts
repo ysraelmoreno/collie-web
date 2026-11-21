@@ -3,6 +3,8 @@ import {
   changelogAlternates,
   changelogPath,
   hreflangAlternates,
+  nextAlternates,
+  nextPath,
   localePath,
   locales,
 } from "@/i18n";
@@ -19,6 +21,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...locales.map((locale) => ({
       url: absoluteUrl(changelogPath[locale]),
       alternates: { languages: changelogAlternates },
+    })),
+    ...locales.map((locale) => ({
+      url: absoluteUrl(nextPath[locale]),
+      alternates: { languages: nextAlternates },
     })),
   ];
 }

@@ -9,9 +9,12 @@ import { ButtonLink, Container } from "./ui";
 export function Nav({
   locale,
   current,
+  switchPaths,
 }: {
   locale: Locale;
   current?: "changelog";
+  /** Where the EN|PT switch points; defaults to the changelog (or home). */
+  switchPaths?: Record<Locale, string>;
 }) {
   const { nav: t, theme } = getDictionary(locale);
   const base = current ? localePath[locale] : "";
@@ -64,7 +67,7 @@ export function Nav({
           </a>
           <LanguageSwitch
             locale={locale}
-            paths={current ? changelogPath : localePath}
+            paths={switchPaths ?? (current ? changelogPath : localePath)}
           />
           <div className="flex items-center gap-2 md:gap-3">
             <ThemeToggle {...theme} />

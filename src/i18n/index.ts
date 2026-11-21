@@ -21,6 +21,11 @@ export const changelogPath: Record<Locale, string> = {
   pt: "/pt/changelog",
 };
 
+export const nextPath: Record<Locale, string> = {
+  en: "/changelog/next",
+  pt: "/pt/changelog/next",
+};
+
 const alternates = (paths: Record<Locale, string>) => ({
   en: absoluteUrl(paths.en),
   "pt-BR": absoluteUrl(paths.pt),
@@ -29,15 +34,27 @@ const alternates = (paths: Record<Locale, string>) => ({
 
 export const hreflangAlternates = alternates(localePath);
 export const changelogAlternates = alternates(changelogPath);
+export const nextAlternates = alternates(nextPath);
 
 export function localeMetadata(
   locale: Locale,
-  page: "home" | "changelog" = "home",
+  page: "home" | "changelog" | "next" = "home",
 ): Metadata {
   const { ogLocale } = getDictionary(locale).meta;
   const { title, description } =
-    page === "home" ? getDictionary(locale).meta : changelog[locale].meta;
-  const paths = page === "home" ? localePath : changelogPath;
+    page === "home"
+      ? getDictionary(locale).meta
+      : page === "next"
+        ? changelog[locale].next.meta
+        : changelog[locale].meta;
+  const paths = { home: localePath, changelog: changelogPath, next: nextPath }[
+    page
+  ];
+  const languages = {
+    home: hreflangAlternates,
+    changelog: changelogAlternates,
+    next: nextAlternates,
+  }[page];
   const url = absoluteUrl(paths[locale]);
   return {
     metadataBase: new URL(absoluteUrl("/")),
@@ -45,7 +62,7 @@ export function localeMetadata(
     description,
     alternates: {
       canonical: url,
-      languages: page === "home" ? hreflangAlternates : changelogAlternates,
+      languages,
     },
     openGraph: {
       type: "website",
