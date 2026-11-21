@@ -1,30 +1,31 @@
 import type { MetadataRoute } from "next";
 import {
-  changelogAlternates,
+  alternates,
   changelogPath,
-  hreflangAlternates,
-  nextAlternates,
-  nextPath,
+  featuresPath,
   localePath,
   locales,
+  nextPath,
+  postPaths,
+  type Locale,
 } from "@/i18n";
+import { postSlugs } from "@/i18n/posts";
 import { absoluteUrl } from "@/lib/site";
 
 export const dynamic = "force-static";
 
+const page = (paths: Record<Locale, string>) =>
+  locales.map((locale) => ({
+    url: absoluteUrl(paths[locale]),
+    alternates: { languages: alternates(paths) },
+  }));
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
-    ...locales.map((locale) => ({
-      url: absoluteUrl(localePath[locale]),
-      alternates: { languages: hreflangAlternates },
-    })),
-    ...locales.map((locale) => ({
-      url: absoluteUrl(changelogPath[locale]),
-      alternates: { languages: changelogAlternates },
-    })),
-    ...locales.map((locale) => ({
-      url: absoluteUrl(nextPath[locale]),
-      alternates: { languages: nextAlternates },
-    })),
-  ];
+    localePath,
+    changelogPath,
+    nextPath,
+    featuresPath,
+    ...postSlugs.map(postPaths),
+  ].flatMap(page);
 }

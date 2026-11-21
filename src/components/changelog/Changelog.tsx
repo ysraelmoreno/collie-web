@@ -1,5 +1,3 @@
-import { existsSync } from "node:fs";
-import { join } from "node:path";
 import { AreaFilter } from "./AreaFilter";
 import { Rich, Tag } from "./parts";
 import { Tabs } from "./Tabs";
@@ -16,6 +14,7 @@ import {
   type Kind,
 } from "@/i18n/changelog";
 import type { Locale } from "@/i18n";
+import { hasClip } from "@/lib/clips";
 
 const KINDS: Kind[] = ["new", "imp", "fix"];
 
@@ -24,15 +23,6 @@ const kindStyle: Record<Kind, string> = {
   imp: "border-success text-success",
   fix: "border-warn text-warn",
 };
-
-// ponytail: checked at build (static export). A clip not recorded yet just leaves the card as text.
-const hasClip = (clip?: string) =>
-  !!clip &&
-  [clip, `${clip}-light`].every((f) =>
-    ["mp4", "jpg"].every((ext) =>
-      existsSync(join(process.cwd(), "public/features", `${f}.${ext}`)),
-    ),
-  );
 
 const dateLabel = (iso: string, locale: Locale) => {
   const d = new Date(`${iso}T00:00:00Z`);
