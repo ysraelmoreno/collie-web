@@ -5,14 +5,14 @@ import { changelogPath, getDictionary, localePath, type Locale } from "@/i18n";
 import { DOWNLOAD_PATH, GITHUB_URL } from "@/lib/site";
 import { ButtonLink, Container } from "./ui";
 
-/** `current="changelog"` links the section anchors back to the landing page. */
+/** Off the landing page (`current` set), the section anchors link back to it. */
 export function Nav({
   locale,
   current,
   switchPaths,
 }: {
   locale: Locale;
-  current?: "changelog";
+  current?: "changelog" | "features";
   /** Where the EN|PT switch points; defaults to the changelog (or home). */
   switchPaths?: Record<Locale, string>;
 }) {
@@ -49,7 +49,7 @@ export function Nav({
             <li>
               <a
                 href={changelogHref}
-                aria-current={current ? "page" : undefined}
+                aria-current={current === "changelog" ? "page" : undefined}
                 className="hover:text-fg aria-[current=page]:text-fg"
               >
                 {t.links.changelog}
