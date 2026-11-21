@@ -30,7 +30,7 @@ Mensagem: o agente vê o que o app realmente mandou e recebeu, e para de adivinh
 | Eyebrow | `06 · NETWORK` | `06 · REDE` |
 | H2 | Intercept every request your app makes. | Intercepte cada requisição do seu app. |
 | Lead | The Network panel captures the emulator’s HTTP(S) traffic. Your agent reads the request that failed, then answers it with a rule of its own to test the fix, once you approve. | O painel Rede captura o tráfego HTTP(S) do emulador. Seu agente lê a requisição que falhou e a responde com uma regra própria para testar a correção, depois que você aprova. |
-| Bullets | Requests, responses and WebSockets from the attached emulator · Any flow as curl, or as a rule that answers in the server’s place · An agent’s rule waits for your OK; mapped flows are marked | Requisições, respostas e WebSockets do emulador anexado · Qualquer fluxo como curl, ou como regra que responde no lugar do servidor · A regra de um agente espera o seu OK; fluxos mapeados ficam marcados |
+| Bullets | Requests and responses from the attached emulator · Any flow as curl, or as a rule that answers in the server’s place · An agent’s rule waits for your OK; mapped flows are marked | Requisições e respostas do emulador anexado · Qualquer fluxo como curl, ou como regra que responde no lugar do servidor · A regra de um agente espera o seu OK; fluxos mapeados ficam marcados |
 | Prompt | Make checkout succeed so I can test the app | Faça o checkout passar para eu testar o app |
 | Command | `collie network rule-add --from 3 --status 200 --body '{"ok":true}'` | igual |
 

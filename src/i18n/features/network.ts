@@ -7,7 +7,7 @@ export const network: Record<Lang, FeatureCopy> = {
     title: "Intercept every request your app makes.",
     body: "The Network panel captures the emulator’s HTTP(S) traffic. Your agent reads the request that failed, then answers it with a rule of its own to test the fix, once you approve.",
     bullets: [
-      "Requests, responses and WebSockets from the attached emulator",
+      "Requests and responses from the attached emulator",
       "Any flow as curl, or as a rule that answers in the server’s place",
       "An agent’s rule waits for your OK; mapped flows are marked",
     ],
@@ -24,7 +24,7 @@ export const network: Record<Lang, FeatureCopy> = {
     title: "Intercepte cada requisição do seu app.",
     body: "O painel Rede captura o tráfego HTTP(S) do emulador. Seu agente lê a requisição que falhou e a responde com uma regra própria para testar a correção, depois que você aprova.",
     bullets: [
-      "Requisições, respostas e WebSockets do emulador anexado",
+      "Requisições e respostas do emulador anexado",
       "Qualquer fluxo como curl, ou como regra que responde no lugar do servidor",
       "A regra de um agente espera o seu OK; fluxos mapeados ficam marcados",
     ],
