@@ -100,6 +100,23 @@ button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-co
 .C td.v { white-space: nowrap; font-family: "DM Mono", monospace; font-size: 13px; }
 .C td.v small { display: block; color: var(--text2); font-size: 11px; }
 @media (max-width: 640px) { .C table, .C tbody, .C tr, .C td { display: block; } .C thead { display: none; } .C tr { border-bottom: 1px solid var(--border); padding: 10px 0; } .C td { border: 0; padding: 2px 0; } }
+
+/* tabs + roadmap */
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin: 8px 0 24px; }
+.tabs button { border: 0; border-bottom: 2px solid transparent; border-radius: 0; padding: 10px 14px; color: var(--text2); background: none; }
+.tabs button[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--accent-text); }
+.tabs button span { font-size: 11px; color: var(--text2); margin-left: 6px; }
+.road .stage { display: grid; gap: 16px; padding: 32px 0; border-top: 1px solid var(--border); }
+@media (min-width: 1024px) { .road .stage { grid-template-columns: 220px 1fr; gap: 48px; } .road .side { position: sticky; top: 84px; align-self: start; } }
+.road .stage h2 { font-size: 24px; font-weight: 800; letter-spacing: -.01em; }
+.road .side p { color: var(--text2); font-size: 14px; margin-top: 6px; }
+.road .items { display: grid; gap: 12px; }
+@media (min-width: 1024px) { .road .items { grid-template-columns: 1fr 1fr; } }
+.road .item { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+.road .item h3 { font-size: 18px; font-weight: 800; }
+.road .item p { color: var(--text2); font-size: 15px; }
+.road .item .meta { display: flex; gap: 6px; flex-wrap: wrap; }
+.road .disclaimer { color: var(--text2); font-size: 13px; margin: 0 0 8px; }
 </style>
 </head>
 <body>
@@ -132,6 +149,7 @@ const AREAS = {
   network: { name: "Rede", desc: "Painel Rede: interceptar, mapear e atrasar tráfego.", clip: "network" },
   apps: { name: "Apps do cercado", desc: "Ferramentas locais adotadas como apps do cercado.", clip: "apps" },
   sandbox: { name: "Sandbox", desc: "O que cada agente pode ler e escrever.", clip: "sandbox" },
+  plugins: { name: "Plug-ins", desc: "Plug-ins externos e o que eles podem fazer." },
   agents: { name: "Agentes", desc: "Pastor, terminais e a conversa entre eles." },
   design: { name: "Design", desc: "Painel de design e o motor figcraft.", clip: "design" },
   updates: { name: "Atualizações", desc: "Como o Collie se atualiza.", clip: "updates" },
@@ -213,10 +231,25 @@ const RELEASES = [
     ] },
 ];
 const KIND = { new: "Novo", imp: "Melhorado", fix: "Corrigido" };
+// Source: ysraelmoreno/collie CHANGELOG [Unreleased], commits v0.1.7..main, docs/superpowers/roadmap/.
+const ROADMAP = [
+  { id: "main", name: "Na main", desc: "Pronto e testado; entra na próxima versão.", tag: "k-imp", items: [
+    { area: "app", title: "Temas personalizados", body: "Preferências › Aparência ganha uma galeria de temas e um editor com duas vistas do mesmo arquivo, Lista e JSON, ao lado de uma prévia. O tema é um arquivo JSON que você pode mandar para outra pessoa, e recarrega quando salvo em qualquer editor." },
+    { area: "plugins", title: "Ganchos de agente para plug-ins", body: "Um plug-in declara ganchos (<code>edit</code>, <code>stop</code>) e um helper. O daemon entrega os arquivos que o agente escreveu e devolve a resposta ao agente, como orientação ou bloqueio. O helper roda no próprio sandbox, sem rede; se falhar, fica em silêncio. Só terminais Claude." },
+    { area: "plugins", title: "Vizinho e Cercas", body: "Plug-in de exemplo: quando o agente escreve um arquivo, ouve o que os arquivos irmãos fazem e qual tomar de modelo. Convenções que quase todo arquivo segue viram propostas de cerca; as que você aprova bloqueiam o fim de um turno que as quebra." },
+    { area: "loop", title: "Laço com estado explícito", body: "Todo laço que para diz por quê, e um diário guarda os eventos. O Pastor acompanha pelo estado, não pelo texto do terminal. Um turno que termina sem commit leva um toque, e o commit de um daemon que caiu é adotado, não refeito.", cmd: ["Espere o laço mudar de estado", "collie work wait"] },
+    { area: "app", title: "Seleção múltipla no canvas", body: "⌘-clique, ⇧-clique ou um retângulo selecionam vários itens, no canvas e no painel lateral, com as ações num menu para todos. O botão do meio arrasta o canvas." },
+  ] },
+  { id: "planned", name: "Planejado", desc: "Desenhado, ainda não construído. Pode mudar.", tag: "", items: [
+    { area: "loop", title: "Laço em paralelo", body: "Até 4 tarefas ao mesmo tempo, cada uma num worktree próprio. Só rodam juntas tarefas que não tocam os mesmos arquivos; cada uma entra no cercado uma de cada vez, e o gate roda de novo na árvore integrada.", cmd: ["Rode as tarefas, duas de cada vez", "collie work run --parallel 2"] },
+    { area: "app", title: "Importar tema de terminal", body: "Trazer um tema do Ghostty ou do iTerm, com as cores ANSI do terminal." },
+  ] },
+];
 const LATEST = RELEASES[0].v;
 
-let opt = "A", theme = "dark", areaFilter = "all", cArea = "loop";
+let tab = "rel", opt = "A", theme = "dark", areaFilter = "all", cArea = "loop";
 try { opt = localStorage.getItem("cl-opt") || "A"; } catch {}
+if (location.hash === "#next") { tab = "next"; opt = "A"; }
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const src = (clip, ext) => `media/${clip}${theme === "light" ? "-light" : ""}.${ext}`;
 const video = (clip, alt) => clip ? `<div class="media"><video data-clip="${clip}" ${reduce ? "controls" : "autoplay loop"} muted playsinline poster="${src(clip, "jpg")}" src="${src(clip, "mp4")}" aria-label="${alt}"></video></div>` : "";
@@ -283,13 +316,27 @@ function viewC() {
   </div></div>`;
 }
 
+function tabs() {
+  const n = ROADMAP.reduce((a, g) => a + g.items.length, 0);
+  return `<div class="tabs mono" role="tablist"><button role="tab" data-tab="rel" aria-selected="${tab === "rel"}">Versões<span>${RELEASES.length}</span></button><button role="tab" data-tab="next" aria-selected="${tab === "next"}">Em breve<span>${n}</span></button></div>`;
+}
+
+function viewNext() {
+  return `<div class="road"><p class="disclaimer">O que já está pronto na main e o que vem depois. Sem datas: entra quando estiver pronto.</p>${ROADMAP.map((g) => `
+    <section class="stage" id="${g.id}">
+      <div class="side"><h2>${g.name}</h2><p>${g.desc}</p></div>
+      <div class="items">${g.items.map((i) => `<div class="item"><div class="meta"><span class="tag mono">${AREAS[i.area].name}</span></div><h3>${i.title}</h3><p>${i.body}</p>${cmd(i.cmd)}</div>`).join("")}</div>
+    </section>`).join("")}</div>`;
+}
+
 function render() {
-  document.getElementById("view").innerHTML = { A: viewA, B: viewB, C: viewC }[opt]();
+  document.getElementById("view").innerHTML = opt === "A" ? tabs() + (tab === "next" ? viewNext() : viewA()) : { B: viewB, C: viewC }[opt]();
   document.querySelectorAll("[data-opt]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.opt === opt));
 }
 document.addEventListener("click", (e) => {
   const b = e.target.closest("button"); if (!b) return;
   if (b.dataset.opt) { opt = b.dataset.opt; try { localStorage.setItem("cl-opt", opt); } catch {} render(); scrollTo(0, 0); }
+  else if (b.dataset.tab) { tab = b.dataset.tab; history.replaceState(null, "", tab === "next" ? "#next" : location.pathname); render(); }
   else if (b.dataset.area) { areaFilter = b.dataset.area; render(); }
   else if (b.dataset.carea) { cArea = b.dataset.carea; render(); }
   else if (b.id === "theme") {
