@@ -53,3 +53,6 @@ docs/qa/shots/
 .hyperframes/
 media/*/.frames*/
 docs/pages/features-preview/media/
+
+# local build/scratch output (never commit)
+.build/
