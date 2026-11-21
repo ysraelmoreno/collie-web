@@ -1,5 +1,5 @@
 import { getDictionary, type Locale } from "@/i18n";
-import { Container, Eyebrow, H2 } from "./ui";
+import { Container, Eyebrow, H2, LearnMore } from "./ui";
 
 export function HowItWorks({ locale }: { locale: Locale }) {
   const t = getDictionary(locale).how;
@@ -23,6 +23,7 @@ export function HowItWorks({ locale }: { locale: Locale }) {
             </li>
           ))}
         </ol>
+        <LearnMore locale={locale} slug="shepherd" />
       </Container>
     </section>
   );

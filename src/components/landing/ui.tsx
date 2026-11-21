@@ -1,3 +1,6 @@
+import { postPaths, type Locale } from "@/i18n";
+import { postsUi } from "@/i18n/posts";
+
 export function Container({
   className = "",
   children,
@@ -66,6 +69,18 @@ export function Command({
       <p className="text-text-secondary">› {prompt}</p>
       <p className="text-accent-text">↳ {command}</p>
     </div>
+  );
+}
+
+/** "Learn more →" under a landing section: goes to that feature's post. */
+export function LearnMore({ locale, slug }: { locale: Locale; slug: string }) {
+  return (
+    <a
+      href={postPaths(slug)[locale]}
+      className="self-start text-[15px] leading-[22px] text-accent-text hover:underline"
+    >
+      {postsUi[locale].learnMore}
+    </a>
   );
 }
 

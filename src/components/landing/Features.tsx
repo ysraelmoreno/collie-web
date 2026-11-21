@@ -1,6 +1,6 @@
 import { getDictionary, type Locale } from "@/i18n";
 import { FeatureVideo } from "./FeatureVideo";
-import { Command, Container, Eyebrow, H2, Lead } from "./ui";
+import { Command, Container, Eyebrow, H2, LearnMore, Lead } from "./ui";
 
 /** Sections 04–11: one per feature, all from `t.features` (docs/prd/00-overview.md). */
 export function Features({ locale }: { locale: Locale }) {
@@ -28,6 +28,7 @@ export function Features({ locale }: { locale: Locale }) {
                 ))}
               </ul>
               <Command {...f.command} />
+              <LearnMore locale={locale} slug={f.id} />
             </div>
             <FeatureVideo id={f.id} label={f.mediaAlt} />
           </Container>

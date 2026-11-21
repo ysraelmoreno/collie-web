@@ -9,14 +9,16 @@ import {
   Placed,
   sideZoom,
 } from "./canvas";
-import { Command, Container, Eyebrow, H2, Lead } from "./ui";
+import { Command, Container, Eyebrow, H2, LearnMore, Lead } from "./ui";
 
 function Pillar({
+  locale,
   id,
   copy,
   reverse,
   children,
 }: {
+  locale: Locale;
   id: string;
   copy: {
     eyebrow: string;
@@ -41,6 +43,7 @@ function Pillar({
           <H2 id={`${id}-title`}>{copy.title}</H2>
           <Lead>{copy.body}</Lead>
           <Command {...copy.command} />
+          <LearnMore locale={locale} slug={id} />
         </div>
         {children}
       </Container>
@@ -63,7 +66,7 @@ export function Pillars({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <Pillar id="design" copy={design}>
+      <Pillar locale={locale} id="design" copy={design}>
         <Canvas width={768} height={420} className={sideZoom} leashes={[]}>
           <Placed x={40} y={40} w={420} h={290}>
             <PanelCard
@@ -96,7 +99,7 @@ export function Pillars({ locale }: { locale: Locale }) {
         </Canvas>
       </Pillar>
 
-      <Pillar id="memory" copy={memory} reverse>
+      <Pillar locale={locale} id="memory" copy={memory} reverse>
         <Canvas
           width={768}
           height={420}
@@ -122,7 +125,7 @@ export function Pillars({ locale }: { locale: Locale }) {
         </Canvas>
       </Pillar>
 
-      <Pillar id="devices" copy={devices}>
+      <Pillar locale={locale} id="devices" copy={devices}>
         <Canvas
           width={768}
           height={420}
