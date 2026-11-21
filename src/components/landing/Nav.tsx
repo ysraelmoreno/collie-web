@@ -1,7 +1,13 @@
 import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { Wordmark } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { changelogPath, getDictionary, localePath, type Locale } from "@/i18n";
+import {
+  changelogPath,
+  featuresPath,
+  getDictionary,
+  localePath,
+  type Locale,
+} from "@/i18n";
 import { DOWNLOAD_PATH, GITHUB_URL } from "@/lib/site";
 import { ButtonLink, Container } from "./ui";
 
@@ -23,9 +29,12 @@ export function Nav({
     ["design", t.links.design],
     ["memory", t.links.memory],
     ["devices", t.links.devices],
-    ["features", t.links.features],
   ] as const;
-  const changelogHref = changelogPath[locale];
+  // Page links after the section anchors; the current page gets aria-current.
+  const pages = [
+    ["features", t.links.features, featuresPath[locale]],
+    ["changelog", t.links.changelog, changelogPath[locale]],
+  ] as const;
 
   return (
     <header>
@@ -46,15 +55,17 @@ export function Nav({
                 </a>
               </li>
             ))}
-            <li>
-              <a
-                href={changelogHref}
-                aria-current={current === "changelog" ? "page" : undefined}
-                className="hover:text-fg aria-[current=page]:text-fg"
-              >
-                {t.links.changelog}
-              </a>
-            </li>
+            {pages.map(([id, label, href]) => (
+              <li key={id}>
+                <a
+                  href={href}
+                  aria-current={current === id ? "page" : undefined}
+                  className="hover:text-fg aria-[current=page]:text-fg"
+                >
+                  {label}
+                </a>
+              </li>
+            ))}
           </ul>
         </nav>
         <div className="ml-auto flex items-center gap-2 md:gap-3 lg:ml-0">
