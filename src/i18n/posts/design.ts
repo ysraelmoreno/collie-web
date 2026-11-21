@@ -82,7 +82,7 @@ export const design: Post = {
               },
               {
                 title: "Open a Design panel",
-                body: "In the app: Open panel… → Design, then pick a file or type a name under New file… and click Create. Or ask a Shepherd. It creates the file if it does not exist.",
+                body: "In the app: **Abrir painel…** (Open panel…) → **Design**, then pick a file or type a name under **Novo arquivo…** (New file…) and click **Criar** (Create). Or ask a Shepherd. It creates the file if it does not exist.",
                 ask: "Open a Design panel for the sign-in screen",
                 command: "collie panel open design --file sign-in",
               },
@@ -94,7 +94,7 @@ export const design: Post = {
               },
               {
                 title: "Create and publish a design system",
-                body: "Every change needs a reason. Use the Design Systems panel in the app (Open panel… → Design Systems) or the commands. Publishing from a terminal needs a leash to the system's Design panel.",
+                body: "Every change needs a reason. Use the **Design Systems** panel in the app (**Abrir painel…** → **Design Systems**) or the commands. Publishing from a terminal needs a leash to the system's Design panel.",
                 command: "collie design system create collie-web --reason \"first tokens\"",
               },
               {
@@ -134,7 +134,7 @@ export const design: Post = {
           },
           {
             kind: "p",
-            text: "Can I undo a switch? Yes. collie design system undo toggles between the last two systems of the scope. For an older one, use the panel's History or use.",
+            text: "Can I undo a switch? Yes. collie design system undo toggles between the last two systems of the scope. For an older one, use **Histórico** (History) in the Design Systems panel, or use.",
           },
         ],
       },

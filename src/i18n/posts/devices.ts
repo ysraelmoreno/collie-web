@@ -13,7 +13,7 @@ export const devices: Post = {
         blocks: [
           {
             kind: "p",
-            text: "The Device panel shows a screen on the canvas, and you drive it with mouse and keyboard. For Android, the video comes from scrcpy and the commands run through adb. For the iOS Simulator, video and input come from AXe and the commands run through simctl. The daemon runs the commands.",
+            text: "The **Dispositivo** (Device) panel shows a screen on the canvas, and you drive it with mouse and keyboard. For Android, the video comes from scrcpy and the commands run through adb. For the iOS Simulator, video and input come from AXe and the commands run through simctl. The daemon runs the commands.",
           },
           {
             kind: "p",
@@ -45,7 +45,7 @@ export const devices: Post = {
               "Reading the screen: collie device ui returns the UI tree with refs (e1, e2, …). collie device screenshot saves a PNG and returns its path, width and height.",
               "Acting: tap takes coordinates or --ref e3. swipe, text and key (Back, Enter, Home… or a keycode) cover the rest. logcat, install and launch appear in the Android examples.",
               "Reach: a terminal needs a leash to the panel on the canvas. A panel in a dock is reachable by every terminal.",
-              "Panel input: click or drag is touch, scroll is scroll, and the keyboard works with the panel focused. Android has Back, Home and Recents in the bar. iOS has Home and Lock.",
+              "Panel input: click or drag is touch, scroll is scroll, and the keyboard works with the panel focused. Android has **Voltar** (Back), **Início** (Home) and **Recentes** (Recents) in the bar. iOS has **Início** and **Bloquear** (Lock).",
               "iOS coordinates are in points, not pixels. collie device list shows platform: \"ios\", the UDID as the serial, and the state (booted or shutdown).",
               "Powered-off Android emulators show up in collie device list as avd:<name> with state off. Opening the panel of one boots it and waits for the boot, up to 3 minutes. Collie never turns an emulator off.",
             ],
@@ -76,7 +76,7 @@ export const devices: Post = {
               },
               {
                 title: "Open the panel",
-                body: "In the app: Open panel… → Device and pick the device. A powered-off simulator is booted when you open its panel (it can take up to about 2 minutes). Or ask a Shepherd. Without --serial it opens the only online device.",
+                body: "In the app: **Abrir painel…** (Open panel…) → **Dispositivo** and pick the device. A powered-off simulator is booted when you open its panel (it can take up to about 2 minutes). Or ask a Shepherd. Without --serial it opens the only online device.",
                 ask: "Open the Pixel on the canvas",
                 command: "collie panel open device --serial <serial>",
               },
@@ -124,7 +124,7 @@ export const devices: Post = {
       },
     ],
     commands: [
-      { command: "collie panel open device --serial <serial|UDID>", does: "Open a Device panel (the only online device without --serial)." },
+      { command: "collie panel open device --serial <serial|UDID>", does: "Open a **Dispositivo** panel (the only online device without --serial)." },
       { command: "collie device list", does: "List devices: serial, state, model, product, panels." },
       { command: "collie device screenshot", does: "Save a PNG; returns path, width and height." },
       { command: "collie device ui", does: "UI tree with refs (e1, e2, …)." },

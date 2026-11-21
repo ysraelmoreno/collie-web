@@ -57,7 +57,7 @@ export const memory: Post = {
             kind: "list",
             items: [
               "Isolation: an agent reads its own lot, its project and global. Another lot is out of reach, even in the same paddock. Only you and a Shepherd that reaches every member of a lot can search it (--lot, --all).",
-              "Proposals: when a piece of work closes, and when a session ends, Collie proposes memories. They wait in Review → Proposals until you approve, edit or discard them. After 14 days without review they become discarded (you can restore them). Nothing is deleted on its own.",
+              "Proposals: when a piece of work closes, and when a session ends, Collie proposes memories. They wait in **Revisar → Propostas** (Review → Proposals) until you approve, edit or discard them. After 14 days without review they become discarded (you can restore them). Nothing is deleted on its own.",
               "Lifecycle: a new project memory is provisional and is archived after 21 days if nobody uses it. Used in 2 days and 2 different sessions, it becomes earned. Long-term memories (up to 12 per project) enter whole at session start. Pinned or edited memories never age out on their own.",
               "Judging: each memory injected in full starts with a short id. The agent judges it with collie memory flag <id> --useful, --wrong or --outdated. Wrong and outdated mark it contested and ask the curator to check it again.",
               "Conversation capture: after a task, the curator reads the new part of the Claude conversation (only your text and the agent's, no tool output, no secrets, up to 12,000 characters) and saves up to 5 decisions and pitfalls as active. A preference of yours becomes a proposal, only if you said it yourself. Only Claude has a transcript, so Codex is not captured.",
@@ -96,7 +96,7 @@ export const memory: Post = {
               },
               {
                 title: "Review proposals and watch the numbers",
-                body: "In the app, open the Memory panel and Review. collie memory stats summarizes coverage, injections, dead memories and repeated corrections; add --json for machine output.",
+                body: "In the app, open the **Memória** (Memory) panel and its **Revisar** tab. collie memory stats summarizes coverage, injections, dead memories and repeated corrections; add --json for machine output.",
                 command: "collie memory stats --since 7d",
               },
             ],
@@ -112,7 +112,7 @@ export const memory: Post = {
             items: [
               "Injection at session start, on prompts and after compaction is Claude only. Codex reads notes with collie lot board and comments with collie comment list.",
               "Collie does not measure savings. It shows trends (tokens per finished task, repeated corrections, searches per task) and says there is no controlled comparison.",
-              "Memory a sandboxed agent saves with --scope project or --scope global is injected into free terminals of that project (or of all, for global). Review it in Review before you trust it in a free terminal.",
+              "Memory a sandboxed agent saves with --scope project or --scope global is injected into free terminals of that project (or of all, for global). Check it in **Revisar** before you trust it in a free terminal.",
               "Capture reads each stretch once and counts against the curator's daily limit. When the limit is hit, it waits for the next day.",
               "A lot memory can be moved to the project with collie memory promote <id>.",
             ],

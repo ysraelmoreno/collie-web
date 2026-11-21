@@ -3,7 +3,7 @@ import type { Post } from "./types";
 export const shepherd: Post = {
   en: {
     slug: "shepherd",
-    eyebrow: "CONCEPTS · SHEPHERD",
+    eyebrow: "00 · BASICS",
     title: "A shepherd, paddocks and herds.",
     lead: "A lead agent summons the others, leashes them to the work and checks their output. Every task gets its own paddock, and a herd saves a team to use again.",
     sections: [
@@ -13,7 +13,7 @@ export const shepherd: Post = {
         blocks: [
           {
             kind: "p",
-            text: "Collie has three base ideas. The Shepherd is an agent terminal you mark as Shepherd: it can summon agents, open panels and create paddocks. A paddock is a workspace for one task, usually a git worktree with its own branch. A herd is a saved team of terminals and panels you can apply again.",
+            text: "Collie has three base ideas. The Shepherd is an agent terminal you mark as **Pastor** (Shepherd): it can summon agents, open panels and create paddocks. A paddock is a workspace for one task, usually a git worktree with its own branch. A herd is a saved team of terminals and panels you can apply again.",
           },
           {
             kind: "p",
@@ -42,7 +42,7 @@ export const shepherd: Post = {
           {
             kind: "list",
             items: [
-              "Shepherd: tick Shepherd when you create or edit a terminal. A terminal that is not a Shepherd cannot summon, leash or create paddocks.",
+              "Shepherd: tick **Pastor** when you create or edit a terminal. A terminal that is not a Shepherd cannot summon, leash or create paddocks.",
               "Leash: collie summon <name> creates an agent already leashed to you (--preset, --cwd, --paddock, --model, --connect, and a first prompt). collie leash a b ties two agents that are both leashed to you, and collie unleash removes it. To reach a terminal you do not reach, collie leash request <name> shows a card in the app and you decide.",
               "Talking: collie list shows who you reach. collie ask <name> \"…\" sends a prompt and waits for the reply, or returns an id with --no-wait (collie ask result <id>). collie check <name> reads its output, and --screen shows the screen as drawn now. collie dismiss <name> kills an agent leashed to you.",
               "Paddock: collie paddock create <name> makes a git worktree off your repository (name: a-z, 0-9 and -). With --folder it works in place on an existing folder, git or not. Branches created by Collie are named collie/<name>. A terminal outside any paddock sits in the Pasture, which is not a paddock.",
@@ -66,7 +66,7 @@ export const shepherd: Post = {
               },
               {
                 title: "Create a Shepherd",
-                body: "In the app, create a new terminal, pick an agent preset and tick Shepherd. It can then summon agents, open panels and create paddocks, and it reaches only who is leashed to it.",
+                body: "In the app, click **Novo terminal** (New terminal), pick an agent preset and tick **Pastor**. It can then summon agents, open panels and create paddocks, and it reaches only who is leashed to it.",
               },
               {
                 title: "Give the task a paddock",
@@ -110,7 +110,7 @@ export const shepherd: Post = {
               "A Shepherd only reaches what is leashed to it. A free terminal (no sandbox) has no leashes, and none reaches it.",
               "A folder paddock has no branch, so no land, no pull request and no merge close. Deleting it removes only Collie's record, never the folder.",
               "Undoing a failed herd apply removes terminals and panels it created. The paddock is only removed if it has no commits, no uncommitted changes, no ignored files and no terminal left in it. Design files it created stay, with a warning. If the service crashes mid-apply, what was created stays and you remove it by hand.",
-              "A saved herd never stores terminal history, tokens, Design links, environment variables, absolute paths or cwd. Device panels and other plug-ins are skipped with a warning.",
+              "A saved herd never stores terminal history, tokens, Design links, environment variables, absolute paths or cwd. **Dispositivo** (Device) panels and other plug-ins are skipped with a warning.",
               "A .collieherd file is JSON, up to 256 KiB, 20 terminals and 20 panels. An imported file is not trusted: you see every command and prompt before saving it, and nothing is created until you apply it.",
               "Import, export and remove for herds are app only.",
             ],
@@ -150,7 +150,7 @@ export const shepherd: Post = {
   },
   pt: {
     slug: "shepherd",
-    eyebrow: "CONCEITOS · PASTOR",
+    eyebrow: "00 · CONCEITOS",
     title: "Um pastor, cercados e rebanhos.",
     lead: "Um agente líder chama os outros, liga cada um ao trabalho e confere o que entregaram. Cada tarefa ganha o seu cercado, e um rebanho guarda uma equipe para usar de novo.",
     sections: [
