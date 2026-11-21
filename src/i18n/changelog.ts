@@ -137,63 +137,17 @@ const en: ChangelogCopy = {
   next: {
     meta: {
       title: "What's coming — Collie",
-      description:
-        "What is already on main and ready for the next Collie version, and what is planned after it.",
+      description: "What is planned for the next Collie versions.",
     },
     eyebrow: "CHANGELOG",
     title: "What's coming to Collie.",
-    lead: "What is ready on main and what comes after. No dates: it ships when it is ready.",
+    lead: "What is planned for Collie. No dates: it ships when it is ready.",
     groups: [
-      {
-        id: "main",
-        name: "On main",
-        desc: "Built and tested; ships in the next version.",
-        items: [
-          {
-            area: "app",
-            title: "Custom themes",
-            body: "Preferences › Appearance gets a theme gallery and an editor with two views of the same file, List and JSON, next to a preview. A theme is a JSON file you can send to someone else, and it reloads when saved in any editor.",
-          },
-          {
-            area: "plugins",
-            title: "Agent hooks for plug-ins",
-            body: "A plug-in declares hooks (`edit`, `stop`) and a helper. The daemon hands over the files the agent wrote and returns the answer to the agent, as guidance or a block. The helper runs in its own sandbox, offline; if it fails, it stays silent. Claude terminals only.",
-          },
-          {
-            area: "plugins",
-            title: "Vizinho and fences",
-            body: "The Vizinho plug-in, a sample: when the agent writes a file, it listens to what the sibling files do and which one to copy. Conventions almost every file follows become fence proposals; the ones you approve block the end of a turn that breaks them.",
-          },
-          {
-            area: "loop",
-            title: "Loop with explicit state",
-            body: "Every loop that stops says why, and a journal keeps the events. The Shepherd follows the state, not the terminal text. A turn that ends without a commit gets a nudge, and the commit of a daemon that died is adopted, not redone.",
-            cmd: {
-              prompt: "Wait for the loop to change state",
-              command: "collie work wait",
-            },
-          },
-          {
-            area: "app",
-            title: "Multi-select on the canvas",
-            body: "⌘-click, ⇧-click or a rectangle select several items, on the canvas and in the side panel, with the actions in one menu for all. The middle button drags the canvas.",
-          },
-        ],
-      },
       {
         id: "planned",
         name: "Planned",
         desc: "Designed, not built yet. May change.",
         items: [
-          {
-            area: "loop",
-            title: "Parallel loop",
-            body: "Up to 4 tasks at once, each in its own worktree. Only tasks that do not touch the same files run together; each one enters the paddock one at a time, and the gate runs again on the integrated tree.",
-            cmd: {
-              prompt: "Run the tasks, two at a time",
-              command: "collie work run --parallel 2",
-            },
-          },
           {
             area: "app",
             title: "Import a terminal theme",
@@ -204,6 +158,114 @@ const en: ChangelogCopy = {
     ],
   },
   releases: [
+    {
+      v: "0.1.8",
+      date: "2026-11-21",
+      headline: "Parallel loops, agent hooks for plug-ins and custom themes.",
+      highlights: [
+        {
+          area: "loop",
+          title: "Parallel loop",
+          body: "Up to 4 tasks at once, each in its own worktree. Tasks declare what they touch and what they need; they merge one at a time and the gate runs again after each merge. Every loop that stops says why.",
+          cmd: {
+            prompt: "Run the tasks, two at a time",
+            command: "collie work run --parallel 2",
+          },
+        },
+        {
+          area: "plugins",
+          title: "Agent hooks and Vizinho",
+          body: "A plug-in declares hooks (`edit`, `stop`) and a helper that answers the agent, as guidance or a block, in its own sandbox with no network. The sample Vizinho plug-in says what sibling files do and turns conventions you approve into fences.",
+        },
+      ],
+      items: [
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie work run --parallel <n>` (at most 4): each task in a lane, merged one at a time, gate again after each merge; `work task add --scope --needs`.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie work wait` answers when the work changes; `work status --events` shows the loop journal; every stop records its reason.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie work history` reads an immutable summary of each closed work; `work usage` shows tokens per attempt.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie work task reopen` puts a deferred task back in the queue; loop agents are named after their task.",
+        },
+        {
+          k: "new",
+          area: "app",
+          t: "Loops section in the Rail with the running loop, and a See all modal with tasks and the last 20 closed works.",
+        },
+        {
+          k: "new",
+          area: "app",
+          t: "Custom themes: a gallery and an editor (List and JSON) in Preferences › Appearance; a theme is a JSON file that reloads on save.",
+        },
+        {
+          k: "new",
+          area: "app",
+          t: "Multi-select on the canvas and side panel (⌘-click, ⇧-click, rectangle); the middle button pans the canvas.",
+        },
+        {
+          k: "new",
+          area: "app",
+          t: "What Collie does: an info icon opens 17 cards, one per feature, with how to call it.",
+        },
+        {
+          k: "new",
+          area: "app",
+          t: "Dropping files or an image on a terminal pastes their paths, so the agent attaches them.",
+        },
+        {
+          k: "new",
+          area: "plugins",
+          t: "Agent hooks (`edit`, `stop`) for plug-ins, Claude terminals only; the sample Vizinho plug-in with fences.",
+        },
+        {
+          k: "imp",
+          area: "loop",
+          t: "The loop stops at the model's usage limit without spending an attempt; default model for loop agents in Preferences › Loops.",
+        },
+        {
+          k: "imp",
+          area: "loop",
+          t: "A turn that ends early with no commit gets a nudge; after a daemon crash, the commit already made is kept.",
+        },
+        {
+          k: "imp",
+          area: "agents",
+          t: "The Shepherd hears only when a task is deferred or a loop ends (`--notify end`), and is told once when its session grows large.",
+        },
+        {
+          k: "imp",
+          area: "memory",
+          t: "The Stop hook asks for memories at most every 20 minutes, and never during a loop.",
+        },
+        {
+          k: "imp",
+          area: "updates",
+          t: "The installer DMG has a background and positioned icons.",
+        },
+        {
+          k: "fix",
+          area: "loop",
+          t: "Gate leftovers go to a quarantine in `.git` instead of being deleted; a task no longer stays in progress after an out-of-phase event.",
+        },
+        {
+          k: "fix",
+          area: "agents",
+          t: "An orphaned `collie work wait` no longer hides a Shepherd that is editing.",
+        },
+      ],
+    },
     {
       v: "0.1.7",
       date: "2026-11-20",
@@ -575,63 +637,17 @@ const pt: ChangelogCopy = {
   next: {
     meta: {
       title: "Em breve — Collie",
-      description:
-        "O que já está pronto na main para a próxima versão do Collie e o que está planejado depois.",
+      description: "O que está planejado para as próximas versões do Collie.",
     },
     eyebrow: "CHANGELOG",
     title: "O que vem no Collie.",
-    lead: "O que já está pronto na main e o que vem depois. Sem datas: entra quando estiver pronto.",
+    lead: "O que está planejado para o Collie. Sem datas: entra quando estiver pronto.",
     groups: [
-      {
-        id: "main",
-        name: "Na main",
-        desc: "Pronto e testado; entra na próxima versão.",
-        items: [
-          {
-            area: "app",
-            title: "Temas personalizados",
-            body: "Preferências › Aparência ganha uma galeria de temas e um editor com duas vistas do mesmo arquivo, Lista e JSON, ao lado de uma prévia. O tema é um arquivo JSON que você pode mandar para outra pessoa, e recarrega quando salvo em qualquer editor.",
-          },
-          {
-            area: "plugins",
-            title: "Ganchos de agente para plug-ins",
-            body: "Um plug-in declara ganchos (`edit`, `stop`) e um helper. O daemon entrega os arquivos que o agente escreveu e devolve a resposta ao agente, como orientação ou bloqueio. O helper roda no próprio sandbox, sem rede; se falhar, fica em silêncio. Só terminais Claude.",
-          },
-          {
-            area: "plugins",
-            title: "Vizinho e Cercas",
-            body: "Plug-in de exemplo: quando o agente escreve um arquivo, ouve o que os arquivos irmãos fazem e qual tomar de modelo. Convenções que quase todo arquivo segue viram propostas de cerca; as que você aprova bloqueiam o fim de um turno que as quebra.",
-          },
-          {
-            area: "loop",
-            title: "Laço com estado explícito",
-            body: "Todo laço que para diz por quê, e um diário guarda os eventos. O Pastor acompanha pelo estado, não pelo texto do terminal. Um turno que termina sem commit leva um toque, e o commit de um daemon que caiu é adotado, não refeito.",
-            cmd: {
-              prompt: "Espere o laço mudar de estado",
-              command: "collie work wait",
-            },
-          },
-          {
-            area: "app",
-            title: "Seleção múltipla no canvas",
-            body: "⌘-clique, ⇧-clique ou um retângulo selecionam vários itens, no canvas e no painel lateral, com as ações num menu para todos. O botão do meio arrasta o canvas.",
-          },
-        ],
-      },
       {
         id: "planned",
         name: "Planejado",
         desc: "Desenhado, ainda não construído. Pode mudar.",
         items: [
-          {
-            area: "loop",
-            title: "Laço em paralelo",
-            body: "Até 4 tarefas ao mesmo tempo, cada uma num worktree próprio. Só rodam juntas tarefas que não tocam os mesmos arquivos; cada uma entra no cercado uma de cada vez, e o gate roda de novo na árvore integrada.",
-            cmd: {
-              prompt: "Rode as tarefas, duas de cada vez",
-              command: "collie work run --parallel 2",
-            },
-          },
           {
             area: "app",
             title: "Importar tema de terminal",
@@ -642,6 +658,114 @@ const pt: ChangelogCopy = {
     ],
   },
   releases: [
+    {
+      v: "0.1.8",
+      date: "2026-11-21",
+      headline: "Laço em paralelo, ganchos de agente para plug-ins e temas.",
+      highlights: [
+        {
+          area: "loop",
+          title: "Laço em paralelo",
+          body: "Até 4 tarefas ao mesmo tempo, cada uma num worktree próprio. As tarefas dizem o que tocam e do que dependem; entram uma de cada vez e o gate roda de novo depois de cada merge. Todo laço que para diz por quê.",
+          cmd: {
+            prompt: "Rode as tarefas, duas de cada vez",
+            command: "collie work run --parallel 2",
+          },
+        },
+        {
+          area: "plugins",
+          title: "Ganchos de agente e Vizinho",
+          body: "Um plug-in declara ganchos (`edit`, `stop`) e um helper que responde ao agente, como orientação ou bloqueio, no próprio sandbox e sem rede. O plug-in de exemplo Vizinho diz o que os arquivos irmãos fazem e transforma em cercas as convenções que você aprova.",
+        },
+      ],
+      items: [
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie work run --parallel <n>` (até 4): cada tarefa numa raia, merge uma de cada vez, gate de novo depois de cada merge; `work task add --scope --needs`.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie work wait` responde quando o trabalho muda; `work status --events` mostra o diário do laço; toda parada guarda o motivo.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie work history` lê o resumo imutável de cada trabalho fechado; `work usage` mostra os tokens por tentativa.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie work task reopen` devolve à fila uma tarefa adiada; os agentes do laço levam o nome da tarefa.",
+        },
+        {
+          k: "new",
+          area: "app",
+          t: "Seção Laços no Trilho com o laço rodando, e um modal Ver tudo com as tarefas e os últimos 20 trabalhos fechados.",
+        },
+        {
+          k: "new",
+          area: "app",
+          t: "Temas personalizados: galeria e editor (Lista e JSON) em Preferências › Aparência; o tema é um arquivo JSON que recarrega ao salvar.",
+        },
+        {
+          k: "new",
+          area: "app",
+          t: "Seleção múltipla no canvas e no painel lateral (⌘-clique, ⇧-clique, retângulo); o botão do meio arrasta o canvas.",
+        },
+        {
+          k: "new",
+          area: "app",
+          t: "O que o Collie faz: um ícone de info abre 17 cards, um por funcionalidade, com como chamar cada uma.",
+        },
+        {
+          k: "new",
+          area: "app",
+          t: "Arrastar arquivos ou uma imagem para um terminal cola os caminhos, e o agente anexa.",
+        },
+        {
+          k: "new",
+          area: "plugins",
+          t: "Ganchos de agente (`edit`, `stop`) para plug-ins, só em terminais Claude; plug-in de exemplo Vizinho com cercas.",
+        },
+        {
+          k: "imp",
+          area: "loop",
+          t: "O laço para no limite de uso do modelo sem gastar tentativa; modelo padrão dos agentes do laço em Preferências › Laços.",
+        },
+        {
+          k: "imp",
+          area: "loop",
+          t: "Um turno que termina cedo sem commit leva um toque; depois de uma queda do daemon, o commit já feito é mantido.",
+        },
+        {
+          k: "imp",
+          area: "agents",
+          t: "O Pastor só é avisado quando uma tarefa é adiada ou um laço termina (`--notify end`), e ouve uma vez quando a sessão fica grande.",
+        },
+        {
+          k: "imp",
+          area: "memory",
+          t: "O gancho Stop pede memórias no máximo a cada 20 minutos, e nunca durante um laço.",
+        },
+        {
+          k: "imp",
+          area: "updates",
+          t: "O DMG de instalação tem fundo e ícones posicionados.",
+        },
+        {
+          k: "fix",
+          area: "loop",
+          t: "Sobras do gate vão para uma quarentena dentro do `.git` em vez de serem apagadas; uma tarefa não fica mais em andamento por um evento fora de fase.",
+        },
+        {
+          k: "fix",
+          area: "agents",
+          t: "Um `collie work wait` órfão não esconde mais um Pastor que está editando.",
+        },
+      ],
+    },
     {
       v: "0.1.7",
       date: "2026-11-20",
