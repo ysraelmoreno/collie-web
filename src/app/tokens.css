@@ -18,7 +18,7 @@
   --color-memory: #1e2647;
   --color-memory-2: #262e52;
   --color-success: #6ee7b7;
-  --color-warn: #a14a06;
+  --color-warn: #ffb86b;
   --color-bg: #15171c;
   --color-fg: #f4f2ed;
   --color-text-secondary: #8c95b8;
@@ -50,6 +50,7 @@
     --color-memory: #e3e8ff;
     --color-memory-2: #d3dbff;
     --color-success: #0f7a55;
+    --color-warn: #a14a06;
     --color-bg: #f4f2ed;
     --color-fg: #15171c;
     --color-text-secondary: #5a5d66;
@@ -68,6 +69,7 @@
   --color-memory: #e3e8ff;
   --color-memory-2: #d3dbff;
   --color-success: #0f7a55;
+  --color-warn: #a14a06;
   --color-bg: #f4f2ed;
   --color-fg: #15171c;
   --color-text-secondary: #5a5d66;

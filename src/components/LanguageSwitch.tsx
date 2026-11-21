@@ -2,7 +2,13 @@ import { Fragment } from "react";
 import { getDictionary, localePath, locales, type Locale } from "@/i18n";
 
 // Plain <a>: each locale has its own root layout, so switching is a full load anyway.
-export function LanguageSwitch({ locale }: { locale: Locale }) {
+export function LanguageSwitch({
+  locale,
+  paths = localePath,
+}: {
+  locale: Locale;
+  paths?: Record<Locale, string>;
+}) {
   return (
     <nav
       aria-label={getDictionary(locale).languageSwitch.label}
@@ -16,7 +22,7 @@ export function LanguageSwitch({ locale }: { locale: Locale }) {
             </span>
           )}
           <a
-            href={localePath[l]}
+            href={paths[l]}
             hrefLang={getDictionary(l).meta.lang}
             aria-current={l === locale ? "page" : undefined}
             className="text-muted hover:text-fg aria-[current=page]:text-fg"

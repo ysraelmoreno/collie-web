@@ -1,12 +1,20 @@
 import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { Wordmark } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { getDictionary, localePath, type Locale } from "@/i18n";
+import { changelogPath, getDictionary, localePath, type Locale } from "@/i18n";
 import { DOWNLOAD_PATH, GITHUB_URL } from "@/lib/site";
 import { ButtonLink, Container } from "./ui";
 
-export function Nav({ locale }: { locale: Locale }) {
+/** `current="changelog"` links the section anchors back to the landing page. */
+export function Nav({
+  locale,
+  current,
+}: {
+  locale: Locale;
+  current?: "changelog";
+}) {
   const { nav: t, theme } = getDictionary(locale);
+  const base = current ? localePath[locale] : "";
   const links = [
     ["product", t.links.product],
     ["design", t.links.design],
@@ -14,6 +22,7 @@ export function Nav({ locale }: { locale: Locale }) {
     ["devices", t.links.devices],
     ["features", t.links.features],
   ] as const;
+  const changelogHref = changelogPath[locale];
 
   return (
     <header>
@@ -26,14 +35,23 @@ export function Nav({ locale }: { locale: Locale }) {
           <Wordmark />
         </a>
         <nav aria-label={t.label} className="mx-auto hidden lg:block">
-          <ul className="flex gap-9 text-[15px] leading-[22px] text-text-secondary">
+          <ul className="flex gap-5 xl:gap-9 text-[15px] leading-[22px] text-text-secondary">
             {links.map(([id, label]) => (
               <li key={id}>
-                <a href={`#${id}`} className="hover:text-fg">
+                <a href={`${base}#${id}`} className="hover:text-fg">
                   {label}
                 </a>
               </li>
             ))}
+            <li>
+              <a
+                href={changelogHref}
+                aria-current={current ? "page" : undefined}
+                className="hover:text-fg aria-[current=page]:text-fg"
+              >
+                {t.links.changelog}
+              </a>
+            </li>
           </ul>
         </nav>
         <div className="ml-auto flex items-center gap-2 md:gap-3 lg:ml-0">
@@ -44,7 +62,10 @@ export function Nav({ locale }: { locale: Locale }) {
           >
             {t.download}
           </a>
-          <LanguageSwitch locale={locale} />
+          <LanguageSwitch
+            locale={locale}
+            paths={current ? changelogPath : localePath}
+          />
           <div className="flex items-center gap-2 md:gap-3">
             <ThemeToggle {...theme} />
             <ButtonLink href={GITHUB_URL} className="max-sm:px-4">

@@ -35,6 +35,7 @@ export const en = {
       memory: "Memory",
       devices: "Devices",
       features: "Features",
+      changelog: "Changelog",
     },
     download: "Download",
     github: "GitHub",
@@ -199,6 +200,7 @@ export const en = {
     body: "Open source under the MIT license. Clone it, build it, and put your agents on the same page.",
   },
   footer: {
+    changelog: "Changelog",
     meta: "MIT License · macOS 15",
     builtWith: "This site was built with Collie",
     github: "GitHub ↗",

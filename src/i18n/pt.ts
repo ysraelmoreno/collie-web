@@ -24,6 +24,7 @@ export const pt: Dictionary = {
       memory: "Memória",
       devices: "Dispositivos",
       features: "Recursos",
+      changelog: "Changelog",
     },
     download: "Baixar",
     github: "GitHub",
@@ -180,6 +181,7 @@ export const pt: Dictionary = {
     body: "Código aberto sob licença MIT. Clone, compile e coloque seus agentes na mesma página.",
   },
   footer: {
+    changelog: "Changelog",
     meta: "Licença MIT · macOS 15",
     builtWith: "Este site foi construído com Collie",
     github: "GitHub ↗",

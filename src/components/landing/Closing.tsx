@@ -1,5 +1,5 @@
 import { Logo, Wordmark } from "@/components/Logo";
-import { getDictionary, localePath, type Locale } from "@/i18n";
+import { changelogPath, getDictionary, localePath, type Locale } from "@/i18n";
 import { GITHUB_URL, README_URL } from "@/lib/site";
 import { ButtonLink, Container, H2 } from "./ui";
 
@@ -37,12 +37,20 @@ export function Footer({ locale }: { locale: Locale }) {
           <span className="hidden md:inline"> · </span>
           <span className="block md:inline">{t.builtWith}</span>
         </p>
-        <a
-          href={GITHUB_URL}
-          className="whitespace-nowrap text-[15px] leading-[22px] text-fg hover:text-accent-text"
-        >
-          {t.github}
-        </a>
+        <div className="flex gap-6 text-[15px] leading-[22px]">
+          <a
+            href={changelogPath[locale]}
+            className="whitespace-nowrap text-fg hover:text-accent-text"
+          >
+            {t.changelog}
+          </a>
+          <a
+            href={GITHUB_URL}
+            className="whitespace-nowrap text-fg hover:text-accent-text"
+          >
+            {t.github}
+          </a>
+        </div>
       </Container>
     </footer>
   );
