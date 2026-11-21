@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=800" />
+    <title>Collie — memory changelog clip</title>
+    <!-- docs/briefs/changelog-clips.md. Rules: docs/prd/00-overview.md -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&display=block" />
+    <script src="../_theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Regular.ttf"); font-weight: 400; }
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Medium.ttf"); font-weight: 500; }
+      :root {
+        --bg: #15171c; --surface: #1f232b; --surface-2: #262a33; --border: #2e323b;
+        --fg: #f4f2ed; --text2: #8c95b8; --accent: #6e9bff; --accent-soft: #93a4ff;
+        --success: #6ee7b7; --warn: #ffb86b;
+        --ui: "Manrope", system-ui, sans-serif; --mono: "DM Mono", ui-monospace, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1280px; height: 800px; overflow: hidden; font-family: var(--ui); color: var(--fg);
+        background-color: var(--bg); background-image: radial-gradient(circle, var(--dot, #262a33) 1.5px, transparent 1.6px); background-size: 32px 32px; }
+      #stage { position: absolute; inset: 0 0 96px 0; }
+      .abs { position: absolute; }
+      .hid { opacity: 0; }
+
+      .card { position: absolute; display: flex; flex-direction: column; background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; opacity: 0; }
+      .card header { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; background: var(--surface-2); border-bottom: 1.5px solid var(--border); font-family: var(--mono); font-size: 22px; white-space: nowrap; flex: none; }
+      .card header b { font-weight: 500; }
+      .card header i { font-style: normal; color: var(--text2); }
+      .card .body { position: relative; flex: 1; padding: 14px; font-family: var(--mono); font-size: 22px; line-height: 32px; }
+      .ln { opacity: 0; white-space: nowrap; }
+      .ln.prompt { color: var(--fg); } .ln.call { color: var(--accent); } .ln.out { color: var(--text2); }
+      .ok { color: var(--success); } .bad { color: var(--warn); } .acc { color: var(--accent); } .mut { color: var(--text2); }
+
+      .leashes { position: absolute; inset: 0; pointer-events: none; }
+      .leash { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 8; opacity: 0; }
+
+      .btn { display: inline-block; padding: 6px 22px; border-radius: 8px; border: 1.5px solid var(--border); font-family: var(--ui); font-size: 24px; font-weight: 800; white-space: nowrap; }
+      .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent, #15171c); }
+      .chip { display: inline-block; padding: 0 12px; height: 32px; line-height: 29px; border: 1.5px solid var(--accent-soft); border-radius: 16px; font-family: var(--mono); font-size: 22px; color: var(--accent-soft); white-space: nowrap; }
+      .chip.okc { border-color: var(--success); color: var(--success); } .chip.badc { border-color: var(--warn); color: var(--warn); }
+      .bar { height: 14px; border-radius: 7px; background: var(--surface-2); border: 1.5px solid var(--border); overflow: hidden; }
+      .bar > i { display: block; height: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); }
+
+      .sheet { position: absolute; padding: 22px 24px; background: var(--surface); border: 1.5px solid var(--accent); border-radius: 12px; font-size: 28px; font-weight: 800; opacity: 0; box-shadow: 0 16px 40px var(--shadow, rgba(0,0,0,.45)); }
+      .sheet small { display: block; margin-top: 6px; font-family: var(--mono); font-size: 22px; font-weight: 400; line-height: 32px; color: var(--text2); }
+      .sheet .btns { display: flex; gap: 12px; margin-top: 18px; }
+
+      /* Preferences window: sidebar + page */
+      .side { position: absolute; left: 0; top: 0; bottom: 0; width: 290px; border-right: 1.5px solid var(--border); padding: 16px 12px; }
+      .side p { height: 48px; line-height: 48px; padding: 0 14px; border-radius: 8px; font-size: 24px; font-weight: 500; color: var(--text2); display: flex; justify-content: space-between; }
+      .side p.on { background: var(--tint, #2a3350); color: var(--fg); font-weight: 800; }
+      .page { position: absolute; left: 290px; right: 0; top: 0; bottom: 0; padding: 22px 28px; }
+      .page .sub { font-family: var(--mono); font-size: 22px; color: var(--text2); line-height: 28px; }
+      .page h2 { font-size: 34px; font-weight: 800; line-height: 44px; margin-bottom: 14px; }
+      .tg { display: flex; align-items: center; justify-content: space-between; height: 56px; border-bottom: 1.5px solid var(--border); font-size: 24px; font-weight: 500; }
+      .sw { width: 52px; height: 30px; border-radius: 15px; background: var(--accent); position: relative; flex: none; }
+      .sw::after { content: ""; position: absolute; right: 3px; top: 3px; width: 24px; height: 24px; border-radius: 50%; background: var(--on-accent, #15171c); }
+
+      #cur { position: absolute; left: 0; top: 0; width: 30px; height: 36px; opacity: 0; z-index: 20; filter: drop-shadow(0 3px 4px rgba(0,0,0,.6)); }
+      .cap { position: absolute; left: 32px; right: 32px; bottom: 20px; height: 60px; display: flex; align-items: center; gap: 16px; padding: 0 22px;
+        background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; font-size: 26px; font-weight: 500; opacity: 0; white-space: nowrap; }
+      .cap b { font-family: var(--mono); font-weight: 500; color: var(--accent); }
+
+      .inj { position: relative; margin: 6px 0 10px; padding: 12px 14px; border: 1.5px dashed var(--accent-soft); border-radius: 10px; opacity: 0; }
+      .inj .tg2 { position: absolute; right: 12px; top: -17px; padding: 0 10px; height: 32px; line-height: 29px; background: var(--surface); border: 1.5px solid var(--accent-soft); border-radius: 16px; color: var(--accent-soft); font-size: 22px; }
+      .inj p { white-space: nowrap; }
+      .srow { position: absolute; left: 14px; right: 14px; height: 76px; padding: 6px 14px; background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 10px; opacity: 0; }
+      .srow .k { font-family: var(--mono); font-size: 22px; line-height: 30px; color: var(--accent); }
+      .srow .t { font-size: 24px; font-weight: 800; line-height: 32px; }
+      .rec { position: absolute; left: 0; right: 0; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--surface-2); opacity: 0; }
+      .rec .k { font-family: var(--mono); font-size: 22px; color: var(--accent); }
+      .rec .t { font-size: 26px; font-weight: 800; line-height: 34px; }
+      .rec .v { position: absolute; right: 16px; top: 14px; }
+      .metric { position: absolute; top: 24px; width: 540px; opacity: 0; }
+      .metric .n { font-size: 84px; font-weight: 800; line-height: 96px; }
+      .metric .l { font-size: 30px; font-weight: 800; line-height: 40px; margin-bottom: 6px; }
+      .metric p { font-family: var(--mono); font-size: 22px; line-height: 32px; color: var(--text2); margin-top: 14px; }
+
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="10.8" data-width="1280" data-height="800">
+      <div id="app" class="clip" data-start="0" data-duration="10.8" data-track-index="0">
+        <div id="stage">
+
+          <svg class="leashes" viewBox="0 0 1280 704"><path class="leash" id="lk" d="M910 300 L868 300"/></svg>
+          <!-- beat 1: terminal gets the memories -->
+          <div class="card" id="term" style="left: 48px; top: 30px; width: 820px; height: 590px">
+            <header><b>api-fix</b><i>· claude</i></header>
+            <div class="body">
+              <p class="ln prompt" id="m1">› session start</p>
+              <div class="inj" id="inj">
+                <span class="tg2 abs">data, not orders</span>
+                <p class="mut">Memória do projeto (Collie;</p>
+                <p class="mut">dados do projeto, não instruções)</p>
+                <p><span class="acc">pitfall</span> · run npm run test:ci</p>
+                <p><span class="acc">decision</span> · one worktree per task</p>
+                <p><span class="acc">feedback</span> · small commits</p>
+              </div>
+              <p class="ln out" id="m2">↳ agent reads them first</p>
+              <p class="ln prompt" id="m3">› task: fix the retry bug</p>
+            </div>
+          </div>
+          <!-- beat 2: the curator -->
+          <div class="card" id="cur-card" style="left: 48px; top: 30px; width: 820px; height: 590px">
+            <header><b>Curador da memória</b><i>· claude</i></header>
+            <div class="body">
+              <p class="ln out" id="q1">review: 2 new records</p>
+              <div class="rec" id="r1" style="top: 96px"><span class="k">pitfall</span><p class="t">retry the flaky build once</p><p class="mut" style="font-family: var(--mono); font-size: 22px">evidence: “passed on the second run”</p><span class="chip okc v" id="v1">valid ✓</span></div>
+              <div class="rec" id="r2" style="top: 288px"><span class="k">decision</span><p class="t">skip the sandbox on CI</p><p class="mut" style="font-family: var(--mono); font-size: 22px">evidence: none</p><span class="chip badc v" id="v2">invalid ✗</span></div>
+            </div>
+          </div>
+          <!-- beats 1-2: the store -->
+          <div class="card" id="store" style="left: 910px; top: 30px; width: 330px; height: 590px">
+            <header><b>Memória</b><i>· projeto</i></header>
+            <div class="body" style="padding: 0">
+              <div class="srow" id="s1" style="top: 16px"><p class="k">pitfall</p><p class="t">test command</p></div>
+              <div class="srow" id="s2" style="top: 104px"><p class="k">decision</p><p class="t">worktree per task</p></div>
+              <div class="srow" id="s3" style="top: 192px"><p class="k">feedback</p><p class="t">small commits</p></div>
+              <div class="srow" id="s4" style="top: 280px; border-color: var(--success)"><p class="k">pitfall</p><p class="t">flaky build retry</p></div>
+            </div>
+          </div>
+          <!-- beat 3: the panel -->
+          <div class="card" id="panel" style="left: 48px; top: 30px; width: 1184px; height: 590px">
+            <header><b>Memória</b><i>· painel</i></header>
+            <div class="body" style="padding: 28px 36px">
+              <div class="metric" style="left: 36px" id="mc"><p class="l" style="font-family: var(--ui)">Cobertura</p><p class="n" style="font-family: var(--ui); line-height: 96px; color: var(--fg); margin: 0">82%</p><div class="bar" style="margin-top: 10px"><i id="bc"></i></div><p>dos prompts com memória</p></div>
+              <div class="metric" style="left: 616px" id="mp"><p class="l" style="font-family: var(--ui)">Precisão</p><p class="n" style="font-family: var(--ui); line-height: 96px; color: var(--accent); margin: 0">64%</p><div class="bar" style="margin-top: 10px"><i id="bp"></i></div><p>das memórias injetadas por relevância foram usadas</p></div>
+            </div>
+          </div>
+
+        </div>
+        <svg id="cur" viewBox="0 0 30 36"><path d="M3 2 L3 29 L10 23 L15 34 L20 32 L15 21 L24 21 Z" fill="#f4f2ed" stroke="#15171c" stroke-width="2" stroke-linejoin="round"/></svg>
+        <div class="cap" id="c1"><b>1</b>Agents start already knowing.</div>
+        <div class="cap" id="c2"><b>2</b>The curator reviews what stays.</div>
+        <div class="cap" id="c3"><b>3</b>Precision next to coverage.</div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const show = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, t);
+      const hide = (sel, t) => tl.to(sel, { opacity: 0, duration: 0.2 }, t);
+      const cap = (id, prev, t) => { if (prev) hide(prev, t); show(id, t); };
+      const set = (sel, o, t) => tl.set(sel, { opacity: o }, t);
+      // cursor tip on the centre of an element, read when the tween first renders (fonts loaded by then)
+      const at = (sel) => { const r = document.querySelector(sel).getBoundingClientRect(); return { x: r.left + r.width / 2 - 3, y: r.top + r.height / 2 - 2 }; };
+      const go = (sel, t, d = 0.7) => tl.to("#cur", { x: () => at(sel).x, y: () => at(sel).y, duration: d, ease: "power2.inOut" }, t);
+      const press = (sel, t) => { tl.to(sel, { scale: 0.94, duration: 0.1, transformOrigin: "50% 50%" }, t); tl.to(sel, { scale: 1, duration: 0.15 }, t + 0.1); };
+      const mount = (x, y, t) => { tl.set("#cur", { x, y }, t); tl.to("#cur", { opacity: 1, duration: 0.2 }, t + 0.05); };
+
+      // 1 — agents start already knowing
+      cap("#c1", null, 0.3);
+      show("#term", 0.3); show("#store", 0.5);
+      ["#s1", "#s2", "#s3"].forEach((s, i) => show(s, 0.8 + i * 0.15));
+      show("#m1", 1.0); show("#inj", 1.4);
+      tl.to("#lk", { opacity: 1, duration: 0.3 }, 1.6);
+      show("#m2", 2.3); show("#m3", 2.7);
+
+      // 2 — the curator reviews what stays
+      cap("#c2", "#c1", 3.6);
+      hide("#term", 3.6); hide("#lk", 3.6);
+      show("#cur-card", 3.8); show("#q1", 4.1);
+      show("#r1", 4.4); show("#v1", 5.0);
+      show("#s4", 5.5); tl.to("#r1", { borderColor: css("--accent"), duration: 0.2 }, 5.5);
+      show("#r2", 6.0); show("#v2", 6.6);
+      tl.to("#r2", { opacity: 0.35, duration: 0.3 }, 7.0);
+
+      // 3 — precision next to coverage
+      cap("#c3", "#c2", 7.4);
+      hide("#cur-card", 7.4); hide("#store", 7.4);
+      show("#panel", 7.6);
+      show("#mc", 7.9); show("#mp", 8.2);
+      tl.to("#bc", { scaleX: 0.82, duration: 0.6, ease: "power2.out" }, 8.1);
+      tl.to("#bp", { scaleX: 0.64, duration: 0.6, ease: "power2.out" }, 8.4);
+      // hold, then back to the empty state
+      tl.to(["#stage", ".cap"], { opacity: 0, duration: 0.3 }, 10.4);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

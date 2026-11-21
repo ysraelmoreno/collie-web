@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=800" />
+    <title>Collie — design changelog clip</title>
+    <!-- docs/briefs/changelog-clips.md. Rules: docs/prd/00-overview.md -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&display=block" />
+    <script src="../_theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Regular.ttf"); font-weight: 400; }
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Medium.ttf"); font-weight: 500; }
+      :root {
+        --bg: #15171c; --surface: #1f232b; --surface-2: #262a33; --border: #2e323b;
+        --fg: #f4f2ed; --text2: #8c95b8; --accent: #6e9bff; --accent-soft: #93a4ff;
+        --success: #6ee7b7; --warn: #ffb86b;
+        --ui: "Manrope", system-ui, sans-serif; --mono: "DM Mono", ui-monospace, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1280px; height: 800px; overflow: hidden; font-family: var(--ui); color: var(--fg);
+        background-color: var(--bg); background-image: radial-gradient(circle, var(--dot, #262a33) 1.5px, transparent 1.6px); background-size: 32px 32px; }
+      #stage { position: absolute; inset: 0 0 96px 0; }
+      .abs { position: absolute; }
+      .hid { opacity: 0; }
+
+      .card { position: absolute; display: flex; flex-direction: column; background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; opacity: 0; }
+      .card header { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; background: var(--surface-2); border-bottom: 1.5px solid var(--border); font-family: var(--mono); font-size: 22px; white-space: nowrap; flex: none; }
+      .card header b { font-weight: 500; }
+      .card header i { font-style: normal; color: var(--text2); }
+      .card .body { position: relative; flex: 1; padding: 14px; font-family: var(--mono); font-size: 22px; line-height: 32px; }
+      .ln { opacity: 0; white-space: nowrap; }
+      .ln.prompt { color: var(--fg); } .ln.call { color: var(--accent); } .ln.out { color: var(--text2); }
+      .ok { color: var(--success); } .bad { color: var(--warn); } .acc { color: var(--accent); } .mut { color: var(--text2); }
+
+      .leashes { position: absolute; inset: 0; pointer-events: none; }
+      .leash { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 8; opacity: 0; }
+
+      .btn { display: inline-block; padding: 6px 22px; border-radius: 8px; border: 1.5px solid var(--border); font-family: var(--ui); font-size: 24px; font-weight: 800; white-space: nowrap; }
+      .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent, #15171c); }
+      .chip { display: inline-block; padding: 0 12px; height: 32px; line-height: 29px; border: 1.5px solid var(--accent-soft); border-radius: 16px; font-family: var(--mono); font-size: 22px; color: var(--accent-soft); white-space: nowrap; }
+      .chip.okc { border-color: var(--success); color: var(--success); } .chip.badc { border-color: var(--warn); color: var(--warn); }
+      .bar { height: 14px; border-radius: 7px; background: var(--surface-2); border: 1.5px solid var(--border); overflow: hidden; }
+      .bar > i { display: block; height: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); }
+
+      .sheet { position: absolute; padding: 22px 24px; background: var(--surface); border: 1.5px solid var(--accent); border-radius: 12px; font-size: 28px; font-weight: 800; opacity: 0; box-shadow: 0 16px 40px var(--shadow, rgba(0,0,0,.45)); }
+      .sheet small { display: block; margin-top: 6px; font-family: var(--mono); font-size: 22px; font-weight: 400; line-height: 32px; color: var(--text2); }
+      .sheet .btns { display: flex; gap: 12px; margin-top: 18px; }
+
+      /* Preferences window: sidebar + page */
+      .side { position: absolute; left: 0; top: 0; bottom: 0; width: 290px; border-right: 1.5px solid var(--border); padding: 16px 12px; }
+      .side p { font-family: var(--ui); height: 48px; line-height: 48px; padding: 0 14px; border-radius: 8px; font-size: 24px; font-weight: 500; color: var(--text2); display: flex; justify-content: space-between; white-space: nowrap; }
+      .side p.on { background: var(--tint, #2a3350); color: var(--fg); font-weight: 800; }
+      .page { position: absolute; left: 290px; right: 0; top: 0; bottom: 0; padding: 22px 28px; }
+      .page .sub { font-family: var(--mono); font-size: 22px; color: var(--text2); line-height: 28px; }
+      .page h2 { font-family: var(--ui); font-size: 34px; font-weight: 800; line-height: 44px; margin-bottom: 14px; }
+      .tg { font-family: var(--ui); display: flex; align-items: center; justify-content: space-between; height: 56px; border-bottom: 1.5px solid var(--border); font-size: 24px; font-weight: 500; }
+      .sw { width: 52px; height: 30px; border-radius: 15px; background: var(--accent); position: relative; flex: none; }
+      .sw::after { content: ""; position: absolute; right: 3px; top: 3px; width: 24px; height: 24px; border-radius: 50%; background: var(--on-accent, #15171c); }
+
+      #cur { position: absolute; left: 0; top: 0; width: 30px; height: 36px; opacity: 0; z-index: 20; filter: drop-shadow(0 3px 4px rgba(0,0,0,.6)); }
+      .cap { position: absolute; left: 32px; right: 32px; bottom: 20px; height: 60px; display: flex; align-items: center; gap: 16px; padding: 0 22px;
+        background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; font-size: 26px; font-weight: 500; opacity: 0; white-space: nowrap; }
+      .cap b { font-family: var(--mono); font-weight: 500; color: var(--accent); }
+
+      .dp-empty, .dp-ready { position: absolute; inset: 0; opacity: 0; }
+      .dp-empty .msg { position: absolute; left: 50%; top: 150px; transform: translateX(-50%); width: 600px; text-align: center; font-family: var(--ui); font-size: 26px; font-weight: 500; line-height: 36px; }
+      .dp-empty .btnrow { position: absolute; left: 0; right: 0; top: 270px; text-align: center; }
+      .ghost { position: absolute; left: 50%; top: 24px; transform: translateX(-50%); width: 260px; height: 100px; border: 2px dashed var(--border); border-radius: 12px; }
+      .frm { position: absolute; left: 159px; top: 30px; width: 520px; height: 440px; background: var(--bg); border: 1.5px solid var(--border); border-radius: 12px; }
+      .frm .hd { height: 56px; border-bottom: 1.5px solid var(--border); padding: 0 18px; line-height: 54px; font-family: var(--mono); font-size: 22px; color: var(--text2); }
+      .frm .bl { position: absolute; border-radius: 8px; background: var(--border); }
+      .frm .bt { position: absolute; left: 24px; top: 336px; width: 200px; height: 52px; border-radius: 10px; background: var(--accent); }
+      .tag2 { position: absolute; right: 18px; top: 18px; }
+      .pf-row { position: absolute; left: 28px; right: 28px; top: 120px; padding: 16px 20px; background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 12px; height: 136px; }
+      .pf-row .tt { font-size: 28px; font-weight: 800; line-height: 38px; }
+      .pf-row .st { position: absolute; left: 20px; right: 20px; top: 66px; font-family: var(--mono); font-size: 22px; line-height: 32px; color: var(--text2); opacity: 0; }
+      .pf-row .st .bar { margin-top: 10px; }
+      .pf-row .bt2 { position: absolute; left: 20px; top: 70px; }
+
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="10.6" data-width="1280" data-height="800">
+      <div id="app" class="clip" data-start="0" data-duration="10.6" data-track-index="0">
+        <div id="stage">
+
+          <!-- the Design panel: missing engine, then ready -->
+          <div class="card" id="dp" style="left: 220px; top: 30px; width: 840px; height: 590px">
+            <header><b>Design</b><i>· painel</i></header>
+            <div class="body" style="padding: 0">
+              <div class="dp-empty" id="de">
+                <div class="ghost"></div>
+                <p class="msg">Necessário para o painel Design e collie design.</p>
+                <div class="btnrow"><span class="btn primary" id="dl">Baixar (24 MB)</span></div>
+              </div>
+              <div class="dp-ready" id="dr">
+                <div class="frm">
+                  <div class="hd">frame · sign-in<span class="chip okc abs" style="right: 14px; top: 11px; line-height: 29px">figcraft ✓</span></div>
+                  <div class="bl" style="left: 24px; top: 84px; width: 300px; height: 26px"></div>
+                  <div class="bl" style="left: 24px; top: 130px; width: 460px; height: 56px"></div>
+                  <div class="bl" style="left: 24px; top: 204px; width: 460px; height: 56px"></div>
+                  <div class="bl" style="left: 24px; top: 278px; width: 220px; height: 24px"></div>
+                  <div class="bt"></div>
+                </div>
+                              </div>
+            </div>
+          </div>
+          <!-- Preferências › Desenho e sandbox -->
+          <div class="card" id="win" style="left: 48px; top: 24px; width: 1184px; height: 640px">
+            <header><b>Collie</b><i>· Preferências</i></header>
+            <div class="body" style="padding: 0">
+              <div class="side"><p>Aparência</p><p class="on">Desenho e sandbox</p><p>Memória</p><p>Atualizações</p></div>
+              <div class="page" style="left: 290px">
+                <p class="sub">Preferências</p><h2>Desenho e sandbox</h2>
+                <div class="pf-row">
+                  <p class="tt">Motor de design · figcraft</p>
+                  <div class="bt2" id="bt2"><span class="btn primary">Baixar (24 MB)</span></div>
+                  <div class="st" id="st1">12 MB de 24 MB<div class="bar"><i id="dbar"></i></div></div>
+                  <div class="st" id="st2" style="top: 72px">Conferindo assinatura…</div>
+                  <div class="st" id="st3" style="top: 72px; color: var(--success)">✓ installed · Application Support</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <svg id="cur" viewBox="0 0 30 36"><path d="M3 2 L3 29 L10 23 L15 34 L20 32 L15 21 L24 21 Z" fill="#f4f2ed" stroke="#15171c" stroke-width="2" stroke-linejoin="round"/></svg>
+        <div class="cap" id="c1"><b>1</b>The design engine, on demand.</div>
+        <div class="cap" id="c2"><b>2</b>Downloaded, verified, installed.</div>
+        <div class="cap" id="c3"><b>3</b>The panel is ready.</div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const show = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, t);
+      const hide = (sel, t) => tl.to(sel, { opacity: 0, duration: 0.2 }, t);
+      const cap = (id, prev, t) => { if (prev) hide(prev, t); show(id, t); };
+      const set = (sel, o, t) => tl.set(sel, { opacity: o }, t);
+      // cursor tip on the centre of an element, read when the tween first renders (fonts loaded by then)
+      const at = (sel) => { const r = document.querySelector(sel).getBoundingClientRect(); return { x: r.left + r.width / 2 - 3, y: r.top + r.height / 2 - 2 }; };
+      const go = (sel, t, d = 0.7) => tl.to("#cur", { x: () => at(sel).x, y: () => at(sel).y, duration: d, ease: "power2.inOut" }, t);
+      const press = (sel, t) => { tl.to(sel, { scale: 0.94, duration: 0.1, transformOrigin: "50% 50%" }, t); tl.to(sel, { scale: 1, duration: 0.15 }, t + 0.1); };
+      const mount = (x, y, t) => { tl.set("#cur", { x, y }, t); tl.to("#cur", { opacity: 1, duration: 0.2 }, t + 0.05); };
+
+      // 1 — the design engine, on demand
+      cap("#c1", null, 0.3);
+      show("#dp", 0.3); show("#de", 0.6);
+      mount(1000, 560, 1.8); go("#dl", 1.9, 0.8); press("#dl", 2.75);
+
+      // 2 — downloaded, verified, installed
+      cap("#c2", "#c1", 3.2);
+      hide("#dp", 3.0); hide("#cur", 3.0);
+      show("#win", 3.3);
+      tl.to("#bt2", { opacity: 0, duration: 0.2 }, 4.0);
+      show("#st1", 4.1);
+      tl.to("#dbar", { scaleX: 1, duration: 1.6, ease: "none" }, 4.2);
+      hide("#st1", 5.9); show("#st2", 6.0);
+      hide("#st2", 6.9); show("#st3", 7.0);
+
+      // 3 — the panel is ready
+      cap("#c3", "#c2", 7.6);
+      hide("#win", 7.6);
+      set("#de", 0, 7.5); show("#dp", 7.8); show("#dr", 8.0);
+      // hold, then back to the empty state
+      tl.to(["#stage", ".cap"], { opacity: 0, duration: 0.3 }, 10.2);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
