@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Changelog — 3 opções</title>
+<link rel="stylesheet" href="collie-lib://fonts/css?family=Manrope&family=DM%20Mono">
+<style>
+:root { --bg:#15171c; --fg:#f4f2ed; --text2:#8c95b8; --surface:#1f232b; --surface-2:#262a33; --border:#2e323b; --accent:#6e9bff; --accent-text:#6e9bff; --success:#6ee7b7; --warn:#ffb86b; --memory:#1e2647; --on-accent:#15171c; }
+[data-theme="light"] { --bg:#f4f2ed; --fg:#15171c; --text2:#5a5d66; --surface:#fff; --surface-2:#ece9e2; --border:#dcd8cf; --accent:#2d69fd; --accent-text:#4a5bd6; --success:#0f7a55; --warn:#a14a06; --memory:#e4e8fb; --on-accent:#fff; }
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--bg); color: var(--fg); font: 500 16px/1.55 Manrope, system-ui, sans-serif; }
+.mono, code { font-family: "DM Mono", ui-monospace, monospace; }
+code { font-size: .88em; background: var(--surface-2); border-radius: 4px; padding: 1px 5px; overflow-wrap: anywhere; }
+a { color: var(--accent-text); }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+@media (min-width: 1024px) { .wrap { padding: 0 48px; } }
+button { font: inherit; color: var(--fg); background: none; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+button:hover { background: var(--surface-2); }
+button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+/* bar */
+.bar { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--border); }
+.bar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 60px; padding-block: 10px; }
+.bar strong { font-weight: 800; margin-right: auto; }
+.bar .opts { display: flex; gap: 6px; }
+
+.page-head { padding: 48px 0 24px; }
+.page-head .eyebrow { font-size: 12px; letter-spacing: .12em; color: var(--accent-text); }
+.page-head h1 { font-size: 40px; line-height: 1.1; font-weight: 800; letter-spacing: -.03em; margin-top: 8px; }
+@media (min-width: 1024px) { .page-head h1 { font-size: 56px; } }
+.page-head p { color: var(--text2); max-width: 640px; margin-top: 12px; font-size: 18px; line-height: 28px; }
+.note { font-size: 12px; color: var(--text2); border: 1px dashed var(--border); border-radius: 12px; padding: 10px 14px; margin-top: 16px; max-width: 720px; }
+
+/* shared bits */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 32px; }
+.chips button { font-size: 12px; border-radius: 999px; padding: 3px 12px; }
+.tag { display: inline-block; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; border-radius: 999px; padding: 1px 8px; border: 1px solid var(--border); color: var(--text2); white-space: nowrap; }
+.k-new { color: var(--accent-text); border-color: var(--accent-text); }
+.k-imp { color: var(--success); border-color: var(--success); }
+.k-fix { color: var(--warn); border-color: var(--warn); }
+.media { aspect-ratio: 16/10; width: 100%; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); overflow: hidden; }
+.media video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cmd { font-size: 13px; line-height: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+.cmd p:first-child { color: var(--text2); } .cmd p:last-child { color: var(--accent-text); }
+.list { list-style: none; padding: 0; display: grid; gap: 10px; }
+.list li { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: baseline; font-size: 15px; line-height: 24px; }
+.list li .area { font-size: 12px; color: var(--text2); }
+@media (max-width: 640px) { .list li { grid-template-columns: 1fr; gap: 2px; } }
+.group-h { font-size: 12px; letter-spacing: .12em; color: var(--text2); margin: 28px 0 12px; }
+
+/* A: timeline */
+.A .rel { display: grid; gap: 16px; padding: 40px 0; border-top: 1px solid var(--border); }
+@media (min-width: 1024px) { .A .rel { grid-template-columns: 220px 1fr; gap: 48px; } .A .side { position: sticky; top: 84px; align-self: start; } }
+.A .ver { font-size: 32px; font-weight: 800; letter-spacing: -.02em; line-height: 1; }
+.A .date { color: var(--text2); font-size: 13px; margin-top: 6px; }
+.A .latest { margin-top: 10px; }
+.A .headline { font-size: 24px; line-height: 32px; font-weight: 800; letter-spacing: -.01em; }
+.A .hl { display: grid; gap: 16px; margin-top: 20px; padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; }
+@media (min-width: 1024px) { .A .hl { grid-template-columns: 1fr 1.25fr; align-items: center; gap: 24px; padding: 20px; } }
+.A .hl h3 { font-size: 20px; font-weight: 800; }
+.A .hl p { color: var(--text2); font-size: 15px; margin-top: 6px; }
+.A .hl .cmd { margin-top: 12px; }
+
+/* B: highlights */
+.B .hero { display: grid; gap: 24px; padding: 8px 0 48px; }
+@media (min-width: 1024px) { .B .hero { grid-template-columns: 1fr 1.4fr; align-items: center; gap: 56px; } }
+.B .hero .ver { font-size: 14px; color: var(--accent-text); letter-spacing: .1em; }
+.B .hero h2 { font-size: 36px; line-height: 42px; font-weight: 800; letter-spacing: -.02em; margin-top: 8px; }
+.B .hero p { color: var(--text2); margin-top: 12px; font-size: 17px; line-height: 27px; }
+.B .hero .media { border-radius: 20px; }
+.B .reel { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); margin-bottom: 56px; }
+.B .reel figure { margin: 0; }
+.B .reel figcaption { font-size: 14px; margin-top: 8px; } .B .reel figcaption span { color: var(--text2); }
+.B .cards { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); padding-bottom: 64px; }
+.B .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.B .card .top { display: flex; justify-content: space-between; align-items: baseline; }
+.B .card .v { font-size: 22px; font-weight: 800; }
+.B .card .d { font-size: 12px; color: var(--text2); }
+.B .card h3 { font-size: 16px; line-height: 23px; font-weight: 800; }
+.B .card .counts { display: flex; gap: 6px; flex-wrap: wrap; }
+.B .card details summary { cursor: pointer; font-size: 13px; color: var(--accent-text); list-style: none; }
+.B .card details ul { list-style: none; padding: 0; margin-top: 10px; display: grid; gap: 8px; font-size: 14px; line-height: 21px; }
+.B .card details li { display: flex; gap: 8px; align-items: baseline; }
+
+/* C: by area */
+.C .layout { display: grid; gap: 24px; padding-bottom: 64px; }
+@media (min-width: 1024px) { .C .layout { grid-template-columns: 220px 1fr; gap: 48px; } .C nav.areas { position: sticky; top: 84px; align-self: start; } }
+.C nav.areas { display: flex; flex-wrap: wrap; gap: 4px; }
+@media (min-width: 1024px) { .C nav.areas { flex-direction: column; } }
+.C nav.areas button { text-align: left; border-color: transparent; display: flex; justify-content: space-between; gap: 12px; }
+.C nav.areas button span { color: var(--text2); font-size: 12px; }
+.C nav.areas button[aria-pressed="true"] span { color: inherit; }
+.C .area-h h2 { font-size: 32px; font-weight: 800; letter-spacing: -.02em; }
+.C .area-h p { color: var(--text2); margin-top: 6px; max-width: 600px; }
+.C .area-h .media { margin-top: 20px; max-width: 720px; border-radius: 20px; }
+.C table { width: 100%; border-collapse: collapse; margin-top: 28px; font-size: 15px; line-height: 23px; }
+.C th { text-align: left; font: 500 11px "DM Mono", monospace; letter-spacing: .1em; color: var(--text2); text-transform: uppercase; padding: 8px 12px 8px 0; border-bottom: 1px solid var(--border); }
+.C td { padding: 12px 12px 12px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+.C td.v { white-space: nowrap; font-family: "DM Mono", monospace; font-size: 13px; }
+.C td.v small { display: block; color: var(--text2); font-size: 11px; }
+@media (max-width: 640px) { .C table, .C tbody, .C tr, .C td { display: block; } .C thead { display: none; } .C tr { border-bottom: 1px solid var(--border); padding: 10px 0; } .C td { border: 0; padding: 2px 0; } }
+</style>
+</head>
+<body>
+<div class="bar"><div class="wrap">
+  <strong>Changelog · 3 opções</strong>
+  <div class="opts mono" role="group" aria-label="Opção">
+    <button data-opt="A" aria-pressed="true">A · Linha do tempo</button>
+    <button data-opt="B">B · Destaques</button>
+    <button data-opt="C">C · Por área</button>
+  </div>
+  <button id="theme" class="mono">Light</button>
+</div></div>
+
+<main class="wrap">
+  <header class="page-head">
+    <p class="eyebrow mono">CHANGELOG</p>
+    <h1>O que mudou no Collie.</h1>
+    <p>Cada versão, o que entrou, melhorou e foi corrigido. Do mais novo para o mais antigo.</p>
+    <p class="note mono">Prévia de design. Conteúdo tirado das releases v0.1.0–v0.1.7 e dos commits entre elas (feat/fix). Clipes reaproveitados de public/features (Laço, Apps, Rede, Sandbox); áreas sem clipe (Trilho, Memória, Atualizações, Design) precisam de um novo. Versão EN vem junto quando a opção for escolhida.</p>
+  </header>
+  <div id="view"></div>
+</main>
+
+<script>
+// k: new | imp | fix. clip: name in media/ (dark; "-light" variant for Light).
+const AREAS = {
+  app: { name: "Janela e Trilho", desc: "A janela principal: canvas, Trilho, cartões de terminal e Preferências.", clip: "trilho" },
+  loop: { name: "Laço", desc: "Tarefas com check rodando sozinhas, um agente novo por tentativa.", clip: "loop" },
+  memory: { name: "Memória", desc: "O que os agentes lembram entre sessões e o curador que cuida disso.", clip: "memory" },
+  network: { name: "Rede", desc: "Painel Rede: interceptar, mapear e atrasar tráfego.", clip: "network" },
+  apps: { name: "Apps do cercado", desc: "Ferramentas locais adotadas como apps do cercado.", clip: "apps" },
+  sandbox: { name: "Sandbox", desc: "O que cada agente pode ler e escrever.", clip: "sandbox" },
+  agents: { name: "Agentes", desc: "Pastor, terminais e a conversa entre eles." },
+  design: { name: "Design", desc: "Painel de design e o motor figcraft.", clip: "design" },
+  updates: { name: "Atualizações", desc: "Como o Collie se atualiza.", clip: "updates" },
+};
+const RELEASES = [
+  { v: "0.1.7", date: "20 nov 2026", headline: "Trilho: cercados numa coluna, agentes numa árvore.",
+    highlights: [{ area: "app", title: "Trilho", body: "Nova disposição da janela: os cercados numa coluna, um painel de contexto com a árvore de agentes e abas Canvas/Preferências. As Preferências abrem como aba na própria janela." }],
+    items: [
+      { k: "new", area: "app", t: "Trilho: coluna de cercados, painel de contexto com a árvore de agentes, abas Canvas/Preferências." },
+      { k: "new", area: "memory", t: "Terminais Cursor: a memória lê o transcript e captura quando ele cresce." },
+      { k: "imp", area: "memory", t: "Curador sem limite diário por padrão; o limite passa a ser escolha sua." },
+      { k: "fix", area: "app", t: "O Pasto some do Trilho enquanto está vazio." },
+      { k: "fix", area: "memory", t: "Curador com claude: perfil do sandbox ajustado ao que uma execução real precisa (USER, dyld, pasta temporária)." },
+    ] },
+  { v: "0.1.6", date: "19 nov 2026", headline: "Laço com gate, evidência e confiança por cercado.",
+    highlights: [{ area: "loop", title: "Gate e evidência no laço", body: "Um comando de gate julga cada tarefa depois do check, e a evidência da tarefa aprovada aparece no status, no painel e no aviso.", cmd: ["Rode as tarefas, mas só aprove se o build passar", "collie work run --gate \"npm run build\""] }],
+    items: [
+      { k: "new", area: "loop", t: "Gate do laço: <code>collie work run --gate \"&lt;cmd&gt;\"</code>." },
+      { k: "new", area: "loop", t: "Evidência da tarefa aprovada no status, no painel e no aviso do laço." },
+      { k: "new", area: "loop", t: "\"Sempre neste cercado\" no cartão do laço; página Laços nas Preferências." },
+      { k: "new", area: "memory", t: "Uma armadilha ou decisão pode ser garantida por um check (enforcedBy); armadilhas recorrentes sem check viram candidatas a regra." },
+      { k: "imp", area: "loop", t: "O status diz o que o laço está fazendo (agente, check, gate); o resumo mostra os números e commits revertidos." },
+      { k: "imp", area: "agents", t: "O Pastor fica sabendo de cada tarefa do laço quando ela termina." },
+      { k: "fix", area: "agents", t: "O daemon não cai mais quando um terminal é encerrado no meio de uma troca de modelo." },
+      { k: "fix", area: "loop", t: "O laço não espera mais o Pastor ficar ocioso para seguir." },
+    ] },
+  { v: "0.1.5", date: "18 nov 2026", headline: "Escolha quem cura sua memória.",
+    highlights: [{ area: "memory", title: "Curador de memória à sua escolha", body: "O curador revisa o que os agentes guardaram. Agora você escolhe quem faz isso (Claude ou Cursor), dá o consentimento e testa antes, nas Preferências." }],
+    items: [
+      { k: "new", area: "memory", t: "Escolher, consentir e testar o provedor do curador nas Preferências." },
+      { k: "new", area: "memory", t: "Provedor Cursor para o curador, isolado e sem ferramentas." },
+      { k: "fix", area: "memory", t: "O curador acha o claude em pastas conhecidas mesmo sem PATH, e diz quando o problema é o ambiente." },
+      { k: "fix", area: "memory", t: "O id do modelo é validado; o Cursor sempre roda em sandbox." },
+    ] },
+  { v: "0.1.4", date: "18 nov 2026", headline: "Laço autônomo e um curador para a memória.",
+    highlights: [
+      { area: "loop", title: "Laço autônomo", body: "Dê um spec e um check a cada tarefa, aprove a lista num cartão com limites e deixe rodar. Um agente novo por tentativa; o check decide quando acabou.", cmd: ["Rode as tarefas abertas até os testes passarem", "collie work run --max 10"] },
+      { area: "network", title: "Rede confia no que o macOS confia", body: "O painel Rede verifica o servidor de destino com o bundle de confiança do macOS e respeita a sua configuração do mitmproxy." },
+    ],
+    items: [
+      { k: "new", area: "loop", t: "<code>collie work run</code> e <code>work stop</code>; tarefas com spec e check; aprovação num cartão." },
+      { k: "new", area: "loop", t: "<code>/collie:loop</code> em terminais Claude e Cursor; painel Work mostra o estado e permite parar." },
+      { k: "new", area: "memory", t: "Curador de memória com sandbox próprio (nega por padrão) e registro de procedência." },
+      { k: "new", area: "memory", t: "Precisão ao lado da cobertura, uso com evidência, validade provisória por tipo." },
+      { k: "new", area: "memory", t: "Mapas cujo arquivo mudou desde o commit âncora são contestados." },
+      { k: "new", area: "app", t: "Preferências › Memória: preferência de memória do Cursor e Confiar; selo de memória nos cartões Cursor." },
+      { k: "new", area: "network", t: "Bundle de confiança do macOS em todo início do mitmdump." },
+      { k: "fix", area: "memory", t: "Memória injetada vai rotulada como dado, escapada e limpa; veredictos do curador falham fechado." },
+      { k: "fix", area: "network", t: "Diz a causa quando o <code>adb root</code> é recusado." },
+    ] },
+  { v: "0.1.3", date: "17 nov 2026", headline: "Sandbox explica por que a detecção está desligada.",
+    highlights: [{ area: "sandbox", title: "Detecção que se explica", body: "Quando a detecção do sandbox está desligada, a tag diz o motivo e como resolver. Sem admin, vira um aviso único em vez de uma tag vermelha." }],
+    items: [
+      { k: "imp", area: "sandbox", t: "O watcher diz por que a detecção está desligada; a tag nomeia o motivo e a correção." },
+      { k: "imp", area: "sandbox", t: "Sem admin: um toast único, não uma tag vermelha fixa." },
+    ] },
+  { v: "0.1.2", date: "17 nov 2026", headline: "O Collie se atualiza sozinho.",
+    highlights: [{ area: "updates", title: "Atualizações dentro do app", body: "O Collie checa, baixa e verifica a nova versão, troca o app e reabre. A versão anterior fica guardada." }],
+    items: [
+      { k: "new", area: "updates", t: "Página Atualizações e folha de instalação nas Preferências." },
+      { k: "new", area: "updates", t: "O daemon checa, baixa e verifica o dmg, troca o app, guarda a versão anterior e reabre." },
+      { k: "new", area: "agents", t: "Dica de reiniciar quando um comando não existe no daemon antigo." },
+      { k: "imp", area: "agents", t: "O Pastor delega com <code>collie summon</code>, não com subagentes próprios." },
+    ] },
+  { v: "0.1.1", date: "17 nov 2026", headline: "Motor de design fora do dmg.",
+    highlights: [{ area: "design", title: "Motor de design sob demanda", body: "O motor de design não vem mais no dmg. O painel de design oferece o download, e o Collie baixa, verifica e instala em Preferências › Desenho e sandbox." }],
+    items: [
+      { k: "new", area: "design", t: "Baixe, verifique e instale o motor de design em Preferências › Desenho e sandbox." },
+      { k: "new", area: "design", t: "O painel de design oferece o download quando o motor falta." },
+    ] },
+  { v: "0.1.0", date: "16 nov 2026", headline: "Primeira versão baixável.",
+    highlights: [
+      { area: "apps", title: "Adote suas ferramentas", body: "Uma ferramenta local vira app do cercado, com escolha (--pick), aviso (--notify) e consultas (last, since=last, match).", cmd: ["Use o meu servidor de mocks como app", "collie app adopt --pick"] },
+    ],
+    items: [
+      { k: "new", area: "apps", t: "<code>collie app adopt</code> com <code>--pick</code>, <code>--notify</code> e modo consulta." },
+      { k: "new", area: "agents", t: "<code>collie reply</code>, remetente verificado e espera no grafo de impasse." },
+      { k: "new", area: "network", t: "Painel Rede: map local, atraso e queda de respostas, com <code>collie network rule-*</code>." },
+    ] },
+];
+const KIND = { new: "Novo", imp: "Melhorado", fix: "Corrigido" };
+const LATEST = RELEASES[0].v;
+
+let opt = "A", theme = "dark", areaFilter = "all", cArea = "loop";
+try { opt = localStorage.getItem("cl-opt") || "A"; } catch {}
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const src = (clip, ext) => `media/${clip}${theme === "light" ? "-light" : ""}.${ext}`;
+const video = (clip, alt) => clip ? `<div class="media"><video data-clip="${clip}" ${reduce ? "controls" : "autoplay loop"} muted playsinline poster="${src(clip, "jpg")}" src="${src(clip, "mp4")}" aria-label="${alt}"></video></div>` : "";
+const tag = (k) => `<span class="tag mono k-${k}">${KIND[k]}</span>`;
+const cmd = (c) => c ? `<div class="cmd mono"><p>› ${c[0]}</p><p>↳ ${c[1]}</p></div>` : "";
+const groups = (items) => ["new", "imp", "fix"].map((k) => {
+  const rows = items.filter((i) => i.k === k);
+  return rows.length ? `<p class="group-h mono">${KIND[k].toUpperCase()}</p><ul class="list">${rows.map((i) => `<li><span class="area mono">${AREAS[i.area].name}</span><span>${i.t}</span></li>`).join("")}</ul>` : "";
+}).join("");
+
+function chips() {
+  const used = new Set(RELEASES.flatMap((r) => r.items.map((i) => i.area)));
+  return `<div class="chips mono" role="group" aria-label="Filtrar por área"><button data-area="all" aria-pressed="${areaFilter === "all"}">Tudo</button>${Object.keys(AREAS).filter((a) => used.has(a)).map((a) => `<button data-area="${a}" aria-pressed="${areaFilter === a}">${AREAS[a].name}</button>`).join("")}</div>`;
+}
+
+function viewA() {
+  const rels = RELEASES.map((r) => ({ ...r, items: r.items.filter((i) => areaFilter === "all" || i.area === areaFilter), highlights: r.highlights.filter((h) => areaFilter === "all" || h.area === areaFilter) })).filter((r) => r.items.length);
+  return `<div class="A">${chips()}${rels.map((r) => `
+    <article class="rel" id="v${r.v}">
+      <div class="side"><p class="ver">${r.v}</p><p class="date mono">${r.date}</p>${r.v === LATEST ? `<p class="latest"><span class="tag mono k-new">Mais recente</span></p>` : ""}</div>
+      <div>
+        <h2 class="headline">${r.headline}</h2>
+        ${r.highlights.map((h) => `<div class="hl"><div><span class="tag mono">${AREAS[h.area].name}</span><h3 style="margin-top:10px">${h.title}</h3><p>${h.body}</p>${cmd(h.cmd)}</div>${video(AREAS[h.area].clip, h.title) || `<div class="media" style="display:grid;place-items:center;color:var(--text2);font-size:13px"><span class="mono">clipe a gravar: ${h.title}</span></div>`}</div>`).join("")}
+        ${groups(r.items)}
+      </div>
+    </article>`).join("")}</div>`;
+}
+
+function viewB() {
+  const r0 = RELEASES[0];
+  const reel = RELEASES.flatMap((r) => r.highlights.filter((h) => AREAS[h.area].clip).map((h) => ({ ...h, v: r.v })));
+  const count = (r, k) => r.items.filter((i) => i.k === k).length;
+  return `<div class="B">
+    <section class="hero">
+      <div><p class="ver mono">NOVO NA ${r0.v} · ${r0.date.toUpperCase()}</p><h2>${r0.headline}</h2><p>${r0.highlights[0].body}</p>
+        <ul class="list" style="margin-top:20px">${r0.items.slice(1, 4).map((i) => `<li><span>${tag(i.k)}</span><span>${i.t}</span></li>`).join("")}</ul></div>
+      <div class="media" style="display:grid;place-items:center;color:var(--text2);font-size:13px"><span class="mono">clipe a gravar: Trilho (0.1.7)</span></div>
+    </section>
+    <p class="group-h mono">EM VÍDEO</p>
+    <div class="reel">${reel.map((h) => `<figure>${video(AREAS[h.area].clip, h.title)}<figcaption>${h.title} <span class="mono">· ${h.v}</span></figcaption></figure>`).join("")}</div>
+    <p class="group-h mono">TODAS AS VERSÕES</p>
+    <div class="cards">${RELEASES.map((r) => `
+      <article class="card" id="v${r.v}">
+        <div class="top"><span class="v">${r.v}</span><span class="d mono">${r.date}</span></div>
+        <h3>${r.headline}</h3>
+        <div class="counts">${["new", "imp", "fix"].filter((k) => count(r, k)).map((k) => `<span class="tag mono k-${k}">${count(r, k)} ${KIND[k]}</span>`).join("")}</div>
+        <details${r.v === LATEST ? " open" : ""}><summary class="mono">Ver mudanças ↓</summary><ul>${r.items.map((i) => `<li>${tag(i.k)}<span>${i.t}</span></li>`).join("")}</ul></details>
+      </article>`).join("")}</div>
+  </div>`;
+}
+
+function viewC() {
+  const rows = RELEASES.flatMap((r) => r.items.map((i) => ({ ...i, v: r.v, date: r.date })));
+  const n = (a) => rows.filter((x) => x.area === a).length;
+  const a = AREAS[cArea];
+  return `<div class="C"><div class="layout">
+    <nav class="areas mono" aria-label="Áreas">${Object.keys(AREAS).filter(n).map((k) => `<button data-carea="${k}" aria-pressed="${k === cArea}">${AREAS[k].name}<span>${n(k)}</span></button>`).join("")}</nav>
+    <div>
+      <div class="area-h"><h2>${a.name}</h2><p>${a.desc}</p>${video(a.clip, a.name)}</div>
+      <table><thead><tr><th>Versão</th><th>Tipo</th><th>Mudança</th></tr></thead><tbody>
+        ${rows.filter((x) => x.area === cArea).map((x) => `<tr><td class="v">${x.v}<small>${x.date}</small></td><td>${tag(x.k)}</td><td>${x.t}</td></tr>`).join("")}
+      </tbody></table>
+    </div>
+  </div></div>`;
+}
+
+function render() {
+  document.getElementById("view").innerHTML = { A: viewA, B: viewB, C: viewC }[opt]();
+  document.querySelectorAll("[data-opt]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.opt === opt));
+}
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.opt) { opt = b.dataset.opt; try { localStorage.setItem("cl-opt", opt); } catch {} render(); scrollTo(0, 0); }
+  else if (b.dataset.area) { areaFilter = b.dataset.area; render(); }
+  else if (b.dataset.carea) { cArea = b.dataset.carea; render(); }
+  else if (b.id === "theme") {
+    theme = theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = theme; b.textContent = theme === "dark" ? "Light" : "Dark";
+    document.querySelectorAll("video[data-clip]").forEach((v) => { v.poster = src(v.dataset.clip, "jpg"); v.src = src(v.dataset.clip, "mp4"); });
+  }
+});
+render();
+</script>
+</body>
+</html>
