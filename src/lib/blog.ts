@@ -94,7 +94,7 @@ const esc = (t: string) =>
   t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 // Fenced code gets the design's header: ```lang file/name.ext → label is the file name, else the language.
-const md = new Marked({
+export const md = new Marked({
   renderer: {
     code({ text, lang }) {
       const [language, ...file] = (lang ?? "").trim().split(/\s+/);
