@@ -90,7 +90,7 @@ If several nodes match, you get a list and pick one with `--nth N`.
 
 - `collie device find "X"` locates an element on screen. Add `--scroll` and it swipes and looks again until it finds it, until the tree stops changing (end of the list), or until `--max` (default 8).
 - `collie device wait --text "Settings"` waits for text to appear. `--gone` waits for it to vanish. `--stable` waits for the screen to settle. This replaces `sleep` followed by another `ui`. With the helper (below), `--stable` follows the screen's own events: it is stable once none arrives for `--quiet` ms (default 300). Without the helper, it compares two identical dumps.
-- `tap --text` and `find` understand `+`, `x`, `☰`, `<` and `>`, and the id of a button with no label (`configuration_fab` is read as "configuration fab"). When nothing matches, `find` lists the clickable ids with no label.
+- `tap --text` and `find` understand `+`, `x`, `☰`, `<` and `>`, and the id of a button with no label (`settings_button` is read as "settings button"). When nothing matches, `find` lists the clickable ids with no label.
 
 ### A resident reader on Android
 

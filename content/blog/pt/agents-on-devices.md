@@ -90,7 +90,7 @@ Se mais de um nó casa, você recebe uma lista e escolhe com `--nth N`.
 
 - `collie device find "X"` localiza um elemento na tela. Com `--scroll`, ele desliza e procura de novo até achar, até a árvore parar de mudar (fim da lista) ou até `--max` (padrão 8).
 - `collie device wait --text "Settings"` espera o texto aparecer. `--gone` espera sumir. `--stable` espera a tela se acalmar. Isso troca `sleep` seguido de outro `ui`. Com o helper (abaixo), `--stable` acompanha os eventos da própria tela: ela está estável quando nenhum evento chega por `--quiet` ms (padrão 300). Sem o helper, ele compara dois dumps iguais.
-- `tap --text` e `find` entendem `+`, `x`, `☰`, `<` e `>`, e o id de um botão sem rótulo (`configuration_fab` é lido como "configuration fab"). Quando nada casa, o `find` lista os ids clicáveis sem rótulo.
+- `tap --text` e `find` entendem `+`, `x`, `☰`, `<` e `>`, e o id de um botão sem rótulo (`settings_button` é lido como "settings button"). Quando nada casa, o `find` lista os ids clicáveis sem rótulo.
 
 ### Um leitor residente no Android
 
