@@ -144,10 +144,58 @@ const en: ChangelogCopy = {
     lead: "What is planned for Collie. No dates: it ships when it is ready.",
     groups: [
       {
+        id: "main",
+        name: "On main",
+        desc: "Built and tested; ships in the next version.",
+        items: [
+          {
+            area: "agents",
+            title: "Fast screen reads on Android",
+            body: "A small accessibility service on the device (`collie-helper.apk`) reads the screen in tens of milliseconds, instead of `uiautomator`. Emulators get it on their own; a physical phone only after `collie device helper install`, because the service reads the whole screen. If it fails, Collie falls back to `uiautomator` and tries again.",
+            cmd: {
+              prompt: "Check how the device screen is being read",
+              command: "collie device helper status",
+            },
+          },
+          {
+            area: "agents",
+            title: "OCR when the tree does not help",
+            body: "When the accessibility tree is poor, `collie device screen` reads the screenshot, on Android and iOS; items show as `(ocr)`, with refs `o1`…. `--ocr` forces it, `--no-ocr` turns it off, `--region x1,y1,x2,y2` limits the area. `find` and `tap --text` with no match in the tree try OCR and tap the center of the box.",
+            cmd: {
+              prompt: "Read this screen, text included",
+              command: "collie device screen --ocr",
+            },
+          },
+          {
+            area: "agents",
+            title: "Wait for the screen to settle",
+            body: "`collie device wait --stable` follows the screen's own events: it is stable once no event arrives for `--quiet` ms (default 300). Without the helper, it goes back to comparing two equal reads.",
+            cmd: {
+              prompt: "Wait until the screen stops changing",
+              command: "collie device wait --stable",
+            },
+          },
+          {
+            area: "agents",
+            title: "Tap by symbol or id",
+            body: "`tap --text` and `find` understand `+`, `x`, `☰`, `<` and `>`, and the id of a button with no label (`configuration_fab` = \"configuration fab\"). When nothing matches, `find` lists the clickable ids with no label. Icon names like `chevron` drop out of the screen read.",
+            cmd: {
+              prompt: "Tap the plus button",
+              command: 'collie device tap --text "+"',
+            },
+          },
+        ],
+      },
+      {
         id: "planned",
         name: "Planned",
         desc: "Designed, not built yet. May change.",
         items: [
+          {
+            area: "loop",
+            title: "Reviewer and acceptance in the loop",
+            body: "After `check` and `gate`, another agent judges the diff and the evidence against the spec. Each task gets an executable acceptance check: a scenario on the device, in the browser or in the app, beyond the test. Push and release stay manual.",
+          },
           {
             area: "app",
             title: "Import a terminal theme",
@@ -644,10 +692,58 @@ const pt: ChangelogCopy = {
     lead: "O que está planejado para o Collie. Sem datas: entra quando estiver pronto.",
     groups: [
       {
+        id: "main",
+        name: "Na main",
+        desc: "Pronto e testado; entra na próxima versão.",
+        items: [
+          {
+            area: "agents",
+            title: "Leitura rápida da tela no Android",
+            body: "Um serviço de acessibilidade pequeno no aparelho (`collie-helper.apk`) lê a tela em dezenas de milissegundos, no lugar do `uiautomator`. O emulador ganha sozinho; o aparelho físico só depois de `collie device helper install`, porque o serviço lê a tela inteira. Se falhar, o Collie volta ao `uiautomator` e tenta de novo.",
+            cmd: {
+              prompt: "Veja como a tela do aparelho está sendo lida",
+              command: "collie device helper status",
+            },
+          },
+          {
+            area: "agents",
+            title: "OCR quando a árvore não ajuda",
+            body: "Quando a árvore de acessibilidade é pobre, `collie device screen` lê o screenshot, no Android e no iOS; os itens aparecem como `(ocr)`, com refs `o1`…. `--ocr` força, `--no-ocr` desliga, `--region x1,y1,x2,y2` limita a área. `find` e `tap --text` sem casamento na árvore tentam o OCR e tocam no centro da caixa.",
+            cmd: {
+              prompt: "Leia esta tela, texto incluído",
+              command: "collie device screen --ocr",
+            },
+          },
+          {
+            area: "agents",
+            title: "Esperar a tela estabilizar",
+            body: "`collie device wait --stable` acompanha os eventos da própria tela: ela está estável quando nenhum evento chega por `--quiet` ms (padrão 300). Sem o helper, volta a comparar duas leituras iguais.",
+            cmd: {
+              prompt: "Espere a tela parar de mudar",
+              command: "collie device wait --stable",
+            },
+          },
+          {
+            area: "agents",
+            title: "Tocar por símbolo ou id",
+            body: "`tap --text` e `find` entendem `+`, `x`, `☰`, `<` e `>`, e o id de um botão sem rótulo (`configuration_fab` = \"configuration fab\"). Quando não acham, `find` lista os ids clicáveis sem rótulo. Nomes de ícone como `chevron` saem da leitura da tela.",
+            cmd: {
+              prompt: "Toque no botão de mais",
+              command: 'collie device tap --text "+"',
+            },
+          },
+        ],
+      },
+      {
         id: "planned",
         name: "Planejado",
         desc: "Desenhado, ainda não construído. Pode mudar.",
         items: [
+          {
+            area: "loop",
+            title: "Revisor e aceite no laço",
+            body: "Depois do `check` e do `gate`, outro agente julga o diff e a evidência contra o spec. Cada tarefa ganha um critério de aceite executável: um cenário no aparelho, no navegador ou no app, além do teste. O push e o release continuam manuais.",
+          },
           {
             area: "app",
             title: "Importar tema de terminal",
