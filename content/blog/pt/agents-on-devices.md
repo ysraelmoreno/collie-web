@@ -17,6 +17,7 @@ Lançado desde a 0.1.0:
 - Os mesmos comandos `collie device` para os dois: `ui`, `screenshot`, `tap`, `swipe`, `text`, `key`.
 - O `collie-lite`, um emulador Android leve que o Collie cria para Macs pequenos. Emuladores desligados aparecem em `collie device list` como `avd:<nome>`, e abrir o painel de um deles o liga.
 - Configuração do Android SDK em **Preferências → Android**, sem precisar do Android Studio.
+- A tela desenhada dentro de uma moldura conforme o tipo de aparelho (celular, dobrável, tablet, iPhone moderno, iPhone com botão home, iPad), escolhida automaticamente (0.1.8). Painéis pequenos e aparelhos físicos não mostram moldura.
 
 O fluxo é o do [post de Dispositivos](/pt/features/devices): o agente lê a árvore de UI, toca pelo ref, tira um screenshot. Você assiste no painel.
 
@@ -30,10 +31,14 @@ Ele não conseguiu fazer do jeito que queríamos. Acabou escrevendo scripts em P
 
 Num emulador Android, cronometramos um passo:
 
-| Passo | Tempo |
-|---|---|
-| `collie device ui` | 2,2 a 3,3 s (4 amostras) |
-| `collie device tap --ref` | 0,1 s |
+```stats
+items:
+  - value: 2,2 a 3,3 s
+    label: "`collie device ui`"
+    note: 4 amostras
+  - value: 0,1 s
+    label: "`collie device tap --ref`"
+```
 
 Quase todo o tempo de um passo ver → agir era o dump da UI. E a árvore tinha de 49 a 67 linhas, a maioria containers de layout só com id. Um botão só com ícone aparecia como `Button` com apenas um resource id, sem texto. Quem busca por texto não acha nada.
 
@@ -41,7 +46,11 @@ Nossa hipótese, ainda não confirmada: esse modelo nem recebe imagem de volta d
 
 ## O que mudou na main
 
-Nada disso está numa versão lançada ainda. A última tag é a v0.1.9. Está integrado na `main`.
+```callout
+kind: status
+title: Na main, ainda não lançado
+body: "Tudo nesta seção está integrado na `main`. A última tag é a v0.1.9, e nada disso está numa versão lançada."
+```
 
 ### Uma árvore menor
 
@@ -51,8 +60,16 @@ Nada disso está numa versão lançada ainda. A última tag é a v0.1.9. Está i
 
 `tap`, `swipe`, `text`, `key` e `launch` aceitam `--then ui`. O daemon age, espera, lê a tela e devolve, com refs novos. Uma chamada por passo, não duas.
 
-```sh
-collie device tap --ref e3 --then ui
+```compare
+before:
+  title: Duas chamadas
+  items:
+    - "`collie device tap --ref e3`"
+    - "`collie device ui`"
+after:
+  title: Uma chamada
+  items:
+    - "`collie device tap --ref e3 --then ui`"
 ```
 
 ### Tocar pelo rótulo
@@ -72,13 +89,45 @@ Se mais de um nó casa, você recebe uma lista e escolhe com `--nth N`.
 ### Achar e esperar
 
 - `collie device find "X"` localiza um elemento na tela. Com `--scroll`, ele desliza e procura de novo até achar, até a árvore parar de mudar (fim da lista) ou até `--max` (padrão 8).
-- `collie device wait --text "Settings"` espera o texto aparecer. `--gone` espera sumir. `--stable` espera dois dumps iguais. Isso troca `sleep` seguido de outro `ui`.
+- `collie device wait --text "Settings"` espera o texto aparecer. `--gone` espera sumir. `--stable` espera a tela se acalmar. Isso troca `sleep` seguido de outro `ui`. Com o helper (abaixo), `--stable` acompanha os eventos da própria tela: ela está estável quando nenhum evento chega por `--quiet` ms (padrão 300). Sem o helper, ele compara dois dumps iguais.
+- `tap --text` e `find` entendem `+`, `x`, `☰`, `<` e `>`, e o id de um botão sem rótulo (`configuration_fab` é lido como "configuration fab"). Quando nada casa, o `find` lista os ids clicáveis sem rótulo.
+
+### Um leitor residente no Android
+
+A parte lenta era o `uiautomator`, não o adb. Então, na `main`, um pequeno serviço de acessibilidade no aparelho, o `collie-helper.apk`, lê a tela no lugar dele.
+
+```tabs
+tabs:
+  - label: Android
+    lang: sh
+    code: |
+      collie device helper status
+      collie device helper install
+  - label: Simulador iOS
+    body: "Sem helper: ele é um serviço de acessibilidade do Android. A tela é lida pelo AXe, como antes. `collie device helper` não se aplica."
+```
+
+Um emulador recebe o helper sozinho, no primeiro comando de dispositivo do painel. Um celular físico só o recebe depois de `collie device helper install`, porque o serviço lê a tela inteira. `collie device helper status` diz com o que os comandos estão lendo a tela (`helper` ou `uiautomator`) e por quê. Se o helper falha, os comandos voltam para o `uiautomator` e o Collie tenta de novo mais tarde. Eles nunca falham por causa do helper.
+
+Numa prova de conceito em um emulador Android, a leitura da tela caiu de cerca de 2.050 ms para 4 a 120 ms, já aquecida, com os mesmos 55 nós. A primeira leitura levou de 523 a 650 ms, e uma leitura logo depois de trocar de tela levou 1,58 s. É um aparelho e uma tela, não um benchmark.
+
+```stats
+from: ~2.050 ms
+to: 4 a 120 ms
+label: Leitura da tela num emulador Android
+note: Prova de conceito, um aparelho, uma tela. Leituras aquecidas; a primeira leva 523 a 650 ms.
+```
+
+### OCR quando a árvore não ajuda
+
+Algumas telas não dão nada à árvore de acessibilidade: um canvas, um jogo, uma imagem. Na `main`, o `collie device screen` então lê o screenshot, no Android e no iOS. Esses itens aparecem como `(ocr)`, com refs `o1`…. `--ocr` força, `--no-ocr` desliga e `--region x1,y1,x2,y2` limita a área. `find` e `tap --text` que não casam nada na árvore tentam o OCR e tocam no centro da caixa do texto. Não há confirmação do toque, então siga com `--then screen`.
+
+No nosso corpus Android (16 telas, um emulador), o gatilho disparou nas 8 telas sem texto acessível e em nenhuma das 5 boas. No fixture do Simulador iOS, o OCR achou todos os textos esperados. Os dois corpora são pequenos e sintéticos, então leia como "funciona nos nossos fixtures".
 
 ### Coisas menores
 
 - `--timing` em `ui` e `screen` devolve o tempo de cada etapa (adb, parse, agrupamento), para medir sem cronômetro.
 - `collie device launch` abre a primeira activity LAUNCHER do app, em vez de usar o monkey.
-- O painel de dispositivo agora desenha uma moldura conforme o tipo de aparelho (celular, dobrável, tablet, iPhone, iPad).
 
 A orientação embutida do agente foi atualizada para ensinar esse ciclo: olhar com `device screen`, agir com `--then`, tirar screenshot só se nada mais mostra o elemento.
 
@@ -86,14 +135,24 @@ A orientação embutida do agente foi atualizada para ensinar esse ciclo: olhar 
 
 Sem esconder as pontas:
 
-- **Velocidade.** O dump ainda leva de 2,7 a 3 s no Android, porque o tempo é do próprio `uiautomator`. Testamos fazer o dump por `/dev/tty` em vez de arquivo. Ganhou uns 5 a 10%, com muito ruído. Uma sessão persistente (um auxiliar residente no Android, algo em lote no iOS) está em avaliação. Nada decidido.
-- **iOS.** A árvore compacta e o agrupamento da tela passam pelo código do iOS. O dump mais rápido e o conserto do launch são só Android. Não medimos os comandos novos no Simulador como fizemos no emulador.
-- **Prova.** Ainda não publicamos números da tarefa com o modelo mais barato depois dessas mudanças. Até lá, leia como "construído", não como "resolvido".
+- **Velocidade no iOS.** O helper é só Android. No Simulador a tela continua sendo lida como antes, e não publicamos números dos comandos novos por lá.
+- **Velocidade em celulares Android reais.** Os números acima vêm de um emulador. Um celular físico precisa de `collie device helper install`, e não publicamos tempos de um.
+- **OCR.** Nossos corpora são pequenos e quase todos sintéticos. Apps reais com árvore vazia (Flutter, jogos, WebViews opacas) são o que ainda falta testar. Texto claro sobre papel de parede foi o caso fraco.
+
+```callout
+kind: warning
+title: Prova
+body: Ainda não publicamos números da tarefa com o modelo mais barato depois dessas mudanças. Até lá, leia como "construído", não como "resolvido".
+```
 - **Limites que continuam valendo.** Sem áudio. `device text` digita só ASCII. No iOS, só Simulador, não iPhone físico.
 
 ## Para onde achamos que isso vai
 
-Tudo daqui para baixo é uma visão, não um roadmap. Sem datas, sem promessas.
+```callout
+kind: vision
+title: Uma visão, não um roadmap
+body: Tudo daqui para baixo é opinião. Sem datas, sem promessas.
+```
 
 ### O ciclo chega mais perto do código
 
@@ -119,14 +178,25 @@ E confiança. Um agente tocando no seu app só vale tanto quanto sua noção do 
 
 ## Experimente
 
-Com o build do Collie vindo da `main`, ligue o emulador leve e deixe um agente dirigir:
+Com o build do Collie vindo da `main`, ligue o emulador leve e deixe um agente dirigir.
 
-```sh
-collie panel open device --serial avd:collie-lite
-collie device screen
-collie device tap --text "Sign in" --then screen
+```steps
+items:
+  - title: Abra o emulador leve
+    command: collie panel open device --serial avd:collie-lite
+    result: O emulador liga e recebe o helper no primeiro comando de dispositivo.
+  - title: Veja com o que a tela está sendo lida
+    command: collie device helper status
+    result: "`helper` quando está pronto, `uiautomator` com o motivo quando não está."
+  - title: Leia a tela
+    command: collie device screen
+  - title: Toque pelo rótulo e olhe de novo
+    command: collie device tap --text "Sign in" --then screen
+  - title: Leia os pixels quando a árvore está vazia
+    command: collie device screen --ocr
+    result: Os itens achados pelo OCR aparecem como `(ocr)`.
 ```
 
-Se você está num build lançado, a primeira linha e o `collie device ui` já funcionam. O resto chega na próxima versão.
+Se você está num build lançado, o primeiro passo e o `collie device ui` já funcionam. O resto chega na próxima versão.
 
 Relacionados: [Dispositivos](/pt/features/devices), [Emulador](/pt/features/emulator).
