@@ -5,11 +5,11 @@ import path from "node:path";
 import {
   assertSlug,
   blogPostPath,
-  renderMarkdown,
   serializePost,
   type BlogLocale,
   type BlogMeta,
 } from "@/lib/blog";
+import { toSegments, type Segment } from "@/lib/blocks";
 
 export type SaveInput = {
   locale: BlogLocale;
@@ -55,6 +55,6 @@ export async function savePost(input: SaveInput): Promise<SaveResult> {
 }
 
 /** Live preview. blog.ts imports node:fs, so the client can't call renderMarkdown directly. */
-export async function previewMarkdown(body: string): Promise<string> {
-  return renderMarkdown(body);
+export async function previewMarkdown(body: string): Promise<Segment[]> {
+  return toSegments(body, { strict: false });
 }

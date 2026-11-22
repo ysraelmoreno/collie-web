@@ -11,14 +11,10 @@ import {
   pageMetadata,
   type Locale,
 } from "@/i18n";
-import {
-  getBlogPost,
-  listPosts,
-  readingMinutes,
-  renderMarkdown,
-} from "@/lib/blog";
+import { getBlogPost, listPosts, readingMinutes } from "@/lib/blog";
+import { toSegments } from "@/lib/blocks";
 import { formatDate } from "./date";
-import { Prose } from "./Prose";
+import { PostBody } from "./PostBody";
 
 const availableIn = (slug: string): Locale[] =>
   locales.filter((l) => getBlogPost(l, slug));
@@ -103,7 +99,12 @@ export function BlogPost({ locale, slug }: { locale: Locale; slug: string }) {
             {back}
           </aside>
           <article className="min-w-0">
-            <Prose html={renderMarkdown(post.body)} />
+            <PostBody
+              segments={toSegments(post.body, {
+                strict: true,
+                file: `content/blog/${locale}/${slug}.md`,
+              })}
+            />
             <div className="mt-12 flex flex-col items-start gap-3 border-t border-border pt-8 lg:mt-16 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
               {back}
               {older && (

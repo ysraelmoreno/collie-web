@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState, useTransition } from "react";
 import { previewMarkdown, savePost } from "@/app/(en)/admin/actions";
-import { Prose } from "@/components/blog/Prose";
+import { PostBody } from "@/components/blog/PostBody";
+import type { Segment } from "@/lib/blocks";
 import type { BlogLocale } from "@/lib/blog";
 
 type Fields = {
@@ -42,17 +43,17 @@ export function Editor({
   locale,
   originalSlug,
   initial,
-  initialHtml,
+  initialSegments,
 }: {
   locale: BlogLocale;
   originalSlug?: string;
   initial: Fields;
-  initialHtml: string;
+  initialSegments: Segment[];
 }) {
   const [f, setF] = useState(initial);
   const [saved, setSaved] = useState(initial);
   const [orig, setOrig] = useState(originalSlug);
-  const [html, setHtml] = useState(initialHtml);
+  const [segments, setSegments] = useState(initialSegments);
   const [error, setError] = useState("");
   const [pending, start] = useTransition();
   const dirty = JSON.stringify(f) !== JSON.stringify(saved);
@@ -67,16 +68,16 @@ export function Editor({
   }, [dirty]);
 
   useEffect(() => {
-    if (f.body === saved.body && html === initialHtml) return;
+    if (f.body === saved.body && segments === initialSegments) return;
     let live = true;
     const t = setTimeout(() => {
-      previewMarkdown(f.body).then((h) => live && setHtml(h));
+      previewMarkdown(f.body).then((s) => live && setSegments(s));
     }, 250);
     return () => {
       live = false;
       clearTimeout(t);
     };
-    // html/saved only gate the first run; re-render on body change.
+    // segments/saved only gate the first run; re-render on body change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [f.body]);
 
@@ -250,7 +251,7 @@ export function Editor({
                 {f.summary}
               </p>
               <div className="mt-5">
-                <Prose html={html} />
+                <PostBody segments={segments} />
               </div>
             </div>
           </section>

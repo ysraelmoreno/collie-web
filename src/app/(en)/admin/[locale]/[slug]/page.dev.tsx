@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { Editor } from "@/components/admin/Editor";
-import { getBlogPost, renderMarkdown } from "@/lib/blog";
+import { getBlogPost } from "@/lib/blog";
+import { toSegments } from "@/lib/blocks";
 
 export default async function Page({
   params,
@@ -29,7 +30,7 @@ export default async function Page({
           draft: post?.draft ?? true,
           body: post?.body ?? "",
         }}
-        initialHtml={renderMarkdown(post?.body ?? "")}
+        initialSegments={toSegments(post?.body ?? "", { strict: false })}
       />
     </>
   );
