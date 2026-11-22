@@ -7,6 +7,7 @@ import {
   assertSlug,
   listPosts,
   parsePost,
+  renderMarkdown,
   serializePost,
   type BlogMeta,
 } from "./blog.ts";
@@ -68,4 +69,13 @@ test("rejects bad slugs", () => {
     assert.throws(() => assertSlug(bad), bad);
   }
   assert.doesNotThrow(() => assertSlug("why-markdown"));
+});
+
+test("code block header: filename wins over language, escapes html", () => {
+  const md = "```md content/blog/en/a.md\n<b>&\n```\n";
+  const html = renderMarkdown(md);
+  assert.match(html, /data-code-label>content\/blog\/en\/a\.md</);
+  assert.match(html, /&lt;b&gt;&amp;/);
+  assert.match(renderMarkdown("```ts\nx\n```"), /data-code-label>ts</);
+  assert.doesNotMatch(renderMarkdown("```\nx\n```"), /data-code-label/);
 });

@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { marked } from "marked";
+import { Marked } from "marked";
 
 export type BlogLocale = "en" | "pt";
 export type BlogMeta = {
@@ -21,7 +21,8 @@ const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const defaultRoot = () => path.join(process.cwd(), "content/blog");
 
 export function assertSlug(slug: string): void {
-  if (!SLUG.test(slug)) throw new Error(`Invalid slug: ${JSON.stringify(slug)}`);
+  if (!SLUG.test(slug))
+    throw new Error(`Invalid slug: ${JSON.stringify(slug)}`);
 }
 
 export function blogPostPath(root: string, locale: BlogLocale, slug: string) {
@@ -39,8 +40,13 @@ export function parsePost(source: string): { meta: BlogMeta; body: string } {
     if (i < 0) continue;
     const key = line.slice(0, i).trim();
     const v = line.slice(i + 1).trim();
-    raw[key] =
-      v.startsWith('"') ? JSON.parse(v) : v === "true" ? true : v === "false" ? false : v;
+    raw[key] = v.startsWith('"')
+      ? JSON.parse(v)
+      : v === "true"
+        ? true
+        : v === "false"
+          ? false
+          : v;
   }
   const meta: BlogMeta = {
     title: String(raw.title ?? ""),
@@ -71,7 +77,9 @@ export function listPosts(locale: BlogLocale, opts: Opts = {}): BlogPost[] {
     .filter((f) => f.endsWith(".md"))
     .map((f) => {
       const slug = f.slice(0, -3);
-      const { meta, body } = parsePost(fs.readFileSync(path.join(dir, f), "utf8"));
+      const { meta, body } = parsePost(
+        fs.readFileSync(path.join(dir, f), "utf8"),
+      );
       return { ...meta, slug, locale, body };
     })
     .filter((p) => opts.drafts || !p.draft)
@@ -82,8 +90,23 @@ export function getBlogPost(locale: BlogLocale, slug: string, opts: Opts = {}) {
   return listPosts(locale, opts).find((p) => p.slug === slug);
 }
 
+const esc = (t: string) =>
+  t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+// Fenced code gets the design's header: ```lang file/name.ext → label is the file name, else the language.
+const md = new Marked({
+  renderer: {
+    code({ text, lang }) {
+      const [language, ...file] = (lang ?? "").trim().split(/\s+/);
+      const label = file.join(" ") || language;
+      const head = label ? `<div data-code-label>${esc(label)}</div>` : "";
+      return `<figure data-code>${head}<pre><code>${esc(text)}</code></pre></figure>`;
+    },
+  },
+});
+
 export function renderMarkdown(body: string): string {
-  return marked.parse(body, { async: false });
+  return md.parse(body, { async: false });
 }
 
 export function readingMinutes(body: string): number {

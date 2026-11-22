@@ -24,7 +24,7 @@ export function BlogIndex({ locale }: { locale: Locale }) {
     <>
       <Nav locale={locale} current="blog" switchPaths={blogPath} />
       <main>
-        <Container className="flex flex-col gap-4 pt-10 pb-8 lg:pt-[72px] lg:pb-12">
+        <Container className="flex flex-col gap-4 pt-10 pb-8 lg:gap-5 lg:pt-[72px] lg:pb-16">
           <Mono>{t.eyebrow}</Mono>
           <h1 className="text-[40px] leading-[44px] font-extrabold tracking-[-0.03em] lg:text-[56px] lg:leading-[60px]">
             {t.title}
@@ -35,7 +35,7 @@ export function BlogIndex({ locale }: { locale: Locale }) {
         </Container>
         <Container className="pb-16 lg:pb-24">
           {posts.length === 0 ? (
-            <div className="flex max-w-[720px] flex-col gap-3 rounded-md border border-border bg-surface p-6 lg:p-8">
+            <div className="flex max-w-[760px] flex-col gap-3 rounded-md border border-border bg-surface p-6 lg:p-12">
               <Mono className="text-text-secondary">{t.empty.eyebrow}</Mono>
               <h2 className="text-[22px] leading-[30px] font-bold">
                 {t.empty.title}

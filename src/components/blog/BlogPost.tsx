@@ -82,19 +82,21 @@ export function BlogPost({ locale, slug }: { locale: Locale; slug: string }) {
             <span className="max-lg:hidden">{date}</span>
           </p>
           <h1 className="text-[40px] leading-[44px] font-extrabold tracking-[-0.03em] lg:text-[56px] lg:leading-[60px]">
+            {/* the frame ends the post title with a period */}
             {post.title}
+            {/[.!?…]$/.test(post.title) ? "" : "."}
           </h1>
           <p className="max-w-[820px] text-[17px] leading-[26px] text-text-secondary lg:text-xl lg:leading-[30px]">
             {post.summary}
           </p>
         </Container>
         <Container className="pb-16 lg:grid lg:grid-cols-[220px_minmax(0,720px)] lg:gap-16 lg:pb-24">
-          <aside className="hidden flex-col gap-5 self-start lg:flex">
-            <div className="flex flex-col gap-1.5">
+          <aside className="hidden flex-col gap-5 self-start pt-1 lg:flex">
+            <div className="flex flex-col gap-1.5 border-l-2 border-border pl-[14px]">
               <Mono className="text-text-secondary">{t.posted}</Mono>
               <p className="text-[15px] leading-[22px]">{date}</p>
             </div>
-            <div className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-1.5 border-l-2 border-border pl-[14px]">
               <Mono className="text-text-secondary">{t.readingTime}</Mono>
               <p className="text-[15px] leading-[22px]">{minutes}</p>
             </div>
@@ -102,7 +104,7 @@ export function BlogPost({ locale, slug }: { locale: Locale; slug: string }) {
           </aside>
           <article className="min-w-0">
             <Prose html={renderMarkdown(post.body)} />
-            <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-8 lg:mt-16">
+            <div className="mt-12 flex flex-col items-start gap-3 border-t border-border pt-8 lg:mt-16 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
               {back}
               {older && (
                 <a
