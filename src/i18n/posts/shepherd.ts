@@ -6,6 +6,9 @@ export const shepherd: Post = {
     eyebrow: "00 · BASICS",
     title: "A shepherd, paddocks and herds.",
     lead: "A lead agent summons the others, leashes them to the work and checks their output. Every task gets its own paddock, and a herd saves a team to use again.",
+    mediaId: "shepherd",
+    mediaAlt:
+      "A shepherd creates a paddock, summons a designer and a tester into it, lands the work and saves the pair as a herd.",
     sections: [
       {
         id: "what",
@@ -153,6 +156,9 @@ export const shepherd: Post = {
     eyebrow: "00 · CONCEITOS",
     title: "Um pastor, cercados e rebanhos.",
     lead: "Um agente líder chama os outros, liga cada um ao trabalho e confere o que entregaram. Cada tarefa ganha o seu cercado, e um rebanho guarda uma equipe para usar de novo.",
+    mediaId: "shepherd",
+    mediaAlt:
+      "Um pastor cria um cercado, chama um designer e um tester para dentro dele, integra o trabalho e salva a dupla como um rebanho.",
     sections: [
       {
         id: "what",

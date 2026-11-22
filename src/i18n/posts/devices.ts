@@ -6,6 +6,9 @@ export const devices: Post = {
     eyebrow: "03 · DEVICES",
     title: "Live devices on the canvas.",
     lead: "An Android device or an iOS Simulator shows up as a panel next to your terminals. Agents tap, type, take screenshots and read the UI with collie device.",
+    mediaId: "devices",
+    mediaAlt:
+      "An agent reads the UI of an Android screen, taps Sign in by its reference and takes a screenshot, all from its terminal.",
     sections: [
       {
         id: "what",
@@ -143,6 +146,9 @@ export const devices: Post = {
     eyebrow: "03 · DISPOSITIVOS",
     title: "Dispositivos ao vivo no canvas.",
     lead: "Um Android ou um Simulador iOS aparece como painel ao lado dos seus terminais. Os agentes tocam, digitam, tiram screenshots e leem a UI com collie device.",
+    mediaId: "devices",
+    mediaAlt:
+      "Um agente lê a interface de uma tela Android, toca em Sign in pela referência e tira um screenshot, tudo do terminal dele.",
     sections: [
       {
         id: "what",
