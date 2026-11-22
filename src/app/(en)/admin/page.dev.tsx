@@ -22,8 +22,8 @@ export default async function Page({
   return (
     <>
       <AdminHeader />
-      <main className="mx-auto max-w-[1312px] px-6 py-16 lg:px-0">
-        <div className="flex items-start justify-between gap-6">
+      <main className="mx-auto max-w-[1312px] px-6 pt-12 pb-16 lg:px-0">
+        <div className="flex items-center justify-between gap-6">
           <div>
             <h1 className="text-[32px] leading-10 font-extrabold tracking-[-0.03em]">
               Posts
@@ -35,14 +35,14 @@ export default async function Page({
           </div>
           <Link
             href={`/admin/${locale}/new`}
-            className="rounded-md bg-accent px-5 py-3.5 font-semibold text-on-accent"
+            className="rounded-md bg-accent px-[22px] py-3 text-base leading-[26px] font-semibold text-on-accent"
           >
             New post
           </Link>
         </div>
 
         <nav
-          className="mt-10 flex gap-6 border-b border-border"
+          className="mt-8 flex gap-7 border-b border-border"
           aria-label="Language"
         >
           {tabs.map(([l, label]) => (
@@ -62,7 +62,7 @@ export default async function Page({
 
         <div className="mt-6 overflow-x-auto rounded-md border border-border bg-surface">
           <table className="w-full min-w-[720px] text-left text-[15px]">
-            <thead className="bg-surface-2 font-mono text-[12px] tracking-wider text-muted">
+            <thead className="bg-surface-2 font-mono text-[12px] tracking-wider text-muted leading-4">
               <tr>
                 <th className="px-5 py-3 font-normal">TITLE</th>
                 <th className="px-5 py-3 font-normal">SLUG</th>
@@ -74,21 +74,21 @@ export default async function Page({
             <tbody>
               {posts.map((p) => (
                 <tr key={p.slug} className="border-t border-border">
-                  <td className="px-5 py-4">{p.title}</td>
-                  <td className="px-5 py-4 font-mono text-[13px] text-muted">
+                  <td className="px-5 py-[18px]">{p.title}</td>
+                  <td className="px-5 py-[18px] font-mono text-[13px] text-muted">
                     {p.slug}.md
                   </td>
-                  <td className="px-5 py-4 font-mono text-[13px] text-muted">
+                  <td className="px-5 py-[18px] font-mono text-[13px] text-muted">
                     {p.date}
                   </td>
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-[18px]">
                     <span
                       className={`rounded-sm border px-2 py-0.5 font-mono text-[11px] tracking-wider ${p.draft ? "border-warn text-warn" : "border-success text-success"}`}
                     >
                       {p.draft ? "DRAFT" : "PUBLISHED"}
                     </span>
                   </td>
-                  <td className="px-5 py-4 text-right">
+                  <td className="px-5 py-[18px] text-right">
                     <Link
                       href={`/admin/${locale}/${p.slug}`}
                       className="text-accent"
@@ -108,7 +108,7 @@ export default async function Page({
             </tbody>
           </table>
         </div>
-        <div className="mt-5 flex justify-between font-mono text-[13px] text-muted">
+        <div className="mt-6 flex justify-between font-mono text-[13px] leading-[22px] text-muted">
           <span>
             content/blog/{locale} · {posts.length}{" "}
             {posts.length === 1 ? "file" : "files"} · {drafts}{" "}

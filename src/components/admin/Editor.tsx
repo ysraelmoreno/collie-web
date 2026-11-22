@@ -17,7 +17,7 @@ type Fields = {
 };
 
 const input =
-  "w-full rounded-md border border-border bg-surface px-4 py-3 text-[15px] text-fg outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent";
+  "w-full rounded-md border border-border bg-surface px-4 py-3 text-[15px] leading-[22px] text-fg outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent";
 
 function Field({
   label,
@@ -30,7 +30,7 @@ function Field({
 }) {
   return (
     <label
-      className={`flex flex-col gap-2 text-[14px] text-muted ${className ?? ""}`}
+      className={`flex flex-col gap-2 text-[15px] leading-[22px] text-muted ${className ?? ""}`}
     >
       {label}
       {children}
@@ -113,12 +113,12 @@ export function Editor({
           <div>
             <Link
               href={`/admin?locale=${locale}`}
-              className="text-[15px] text-accent"
+              className="block text-[15px] leading-[22px] text-accent"
             >
               ← Posts
             </Link>
-            <div className="mt-2 flex items-center gap-3">
-              <h1 className="text-[24px] leading-8 font-extrabold tracking-[-0.02em]">
+            <div className="mt-1.5 flex items-center gap-3">
+              <h1 className="text-[22px] leading-[30px] font-extrabold tracking-[-0.02em]">
                 {f.title || "New post"}
               </h1>
               {f.draft && (
@@ -140,13 +140,13 @@ export function Editor({
                 Unsaved changes
               </span>
             )}
-            <label className="flex cursor-pointer items-center gap-3 text-[15px]">
+            <label className="flex cursor-pointer items-center gap-2.5 text-[15px] leading-[22px]">
               <input
                 type="checkbox"
                 role="switch"
                 checked={f.draft}
                 onChange={(e) => set("draft", e.target.checked)}
-                className="relative h-6 w-11 cursor-pointer appearance-none rounded-full bg-surface-2 transition-colors before:absolute before:top-1 before:left-1 before:size-4 before:rounded-full before:bg-fg before:transition-transform checked:bg-accent checked:before:translate-x-5 checked:before:bg-on-accent"
+                className="relative h-[22px] w-10 cursor-pointer appearance-none rounded-full bg-surface-2 transition-colors before:absolute before:top-[3px] before:left-[3px] before:size-4 before:rounded-full before:bg-fg before:transition-transform checked:bg-accent checked:before:translate-x-[18px] checked:before:bg-on-accent"
               />
               Draft
             </label>
@@ -154,7 +154,7 @@ export function Editor({
               type="button"
               onClick={save}
               disabled={pending}
-              className="rounded-md bg-accent px-7 py-3.5 font-semibold text-on-accent disabled:opacity-60"
+              className="rounded-md bg-accent px-[22px] py-3 text-base leading-[26px] font-semibold text-on-accent disabled:opacity-60"
             >
               {pending ? "Saving…" : "Save"}
             </button>
@@ -162,7 +162,7 @@ export function Editor({
         </div>
       </div>
 
-      <main className="mx-auto grid max-w-[1312px] gap-4 px-6 py-8 lg:px-0">
+      <main className="mx-auto grid max-w-[1312px] gap-4 px-6 pt-6 pb-16 lg:px-0">
         <div className="grid gap-4 md:grid-cols-[1fr_300px_180px_220px]">
           <Field label="Title">
             <input
@@ -211,16 +211,16 @@ export function Editor({
           </Field>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          <section className="flex min-h-[680px] flex-col overflow-hidden rounded-md border border-border bg-surface">
+        <div className="mt-2 grid gap-4 md:grid-cols-2">
+          <section className="flex h-[680px] flex-col overflow-hidden rounded-md border border-border bg-surface">
             <div className="flex justify-between bg-surface-2 px-4 py-3 font-mono text-[12px] tracking-wider text-muted">
               <span>MARKDOWN</span>
               <span>{f.slug || "new"}.md</span>
             </div>
-            <div className="flex flex-1 font-mono text-[14px] leading-[22px]">
+            <div className="flex flex-1 overflow-auto font-mono text-[13px] leading-[22px]">
               <div
                 aria-hidden
-                className="select-none px-4 py-4 text-right text-muted"
+                className="select-none py-5 pr-4 pl-3 text-right text-muted"
               >
                 {Array.from({ length: lines }, (_, i) => (
                   <div key={i}>{i + 1}</div>
@@ -229,13 +229,15 @@ export function Editor({
               <textarea
                 aria-label="Markdown"
                 spellCheck={false}
+                wrap="off"
+                style={{ height: lines * 22 + 56 }}
                 value={f.body}
                 onChange={(e) => set("body", e.target.value)}
-                className="min-h-full flex-1 resize-none bg-transparent py-4 pr-4 text-fg outline-none"
+                className="min-w-0 flex-1 resize-none overflow-x-auto overflow-y-hidden bg-transparent py-5 pr-5 text-fg outline-none"
               />
             </div>
           </section>
-          <section className="flex min-h-[680px] flex-col overflow-hidden rounded-md border border-border bg-bg">
+          <section className="flex h-[680px] flex-col overflow-hidden rounded-md border border-border bg-bg">
             <div className="flex justify-between bg-surface-2 px-4 py-3 font-mono text-[12px] tracking-wider text-muted">
               <span>PREVIEW</span>
               <span>same styles as /blog</span>
@@ -244,8 +246,10 @@ export function Editor({
               <h2 className="text-[32px] leading-10 font-extrabold tracking-[-0.03em]">
                 {f.title}
               </h2>
-              <p className="mt-3 text-[18px] text-muted">{f.summary}</p>
-              <div className="mt-8">
+              <p className="mt-5 text-[18px] leading-7 text-muted">
+                {f.summary}
+              </p>
+              <div className="mt-5">
                 <Prose html={html} />
               </div>
             </div>

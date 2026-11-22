@@ -5,7 +5,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 export function AdminHeader() {
   return (
     <header className="border-b border-border">
-      <div className="mx-auto flex h-[73px] max-w-[1312px] items-center justify-between px-6 lg:px-0">
+      <div className="mx-auto flex h-[72px] max-w-[1312px] items-center justify-between px-6 lg:px-0">
         <div className="flex items-center gap-4">
           <Link href="/admin" aria-label="Admin home">
             <Wordmark />
