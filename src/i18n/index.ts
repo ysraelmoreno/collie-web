@@ -31,6 +31,20 @@ export const featuresPath: Record<Locale, string> = {
   pt: "/pt/features",
 };
 
+export const blogPath: Record<Locale, string> = {
+  en: "/blog",
+  pt: "/pt/blog",
+};
+
+/** A locale without this post falls back to its blog index. */
+export const blogPostPaths = (
+  slug: string,
+  available: Locale[],
+): Record<Locale, string> => ({
+  en: available.includes("en") ? `${blogPath.en}/${slug}` : blogPath.en,
+  pt: available.includes("pt") ? `${blogPath.pt}/${slug}` : blogPath.pt,
+});
+
 export const postPaths = (slug: string): Record<Locale, string> => ({
   en: `${featuresPath.en}/${slug}`,
   pt: `${featuresPath.pt}/${slug}`,

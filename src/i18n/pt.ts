@@ -25,6 +25,7 @@ export const pt: Dictionary = {
       devices: "Dispositivos",
       features: "Recursos",
       changelog: "Changelog",
+      blog: "Blog",
     },
     download: "Baixar",
     github: "GitHub",
@@ -179,6 +180,29 @@ export const pt: Dictionary = {
   cta: {
     title: "Dê um só canvas aos seus agentes.",
     body: "Código aberto sob licença MIT. Clone, compile e coloque seus agentes na mesma página.",
+  },
+  blog: {
+    meta: {
+      title: "Blog — Collie",
+      description:
+        "Histórias mais longas sobre as versões do Collie, decisões e como este site é feito.",
+    },
+    eyebrow: "BLOG",
+    title: "Notas de quem constrói o Collie.",
+    lead: "Histórias mais longas sobre versões, decisões e como este site é feito.",
+    read: "Ler →",
+    empty: {
+      eyebrow: "AINDA SEM POSTS",
+      title: "O primeiro post está a caminho.",
+      body: "Enquanto isso, o changelog lista o que saiu em cada versão.",
+      changelog: "Ler o changelog →",
+      features: "Ver recursos →",
+    },
+    posted: "PUBLICADO EM",
+    readingTime: "TEMPO DE LEITURA",
+    minutes: (n: number) => `${n} min`,
+    allPosts: "← Todos os posts",
+    next: (title: string) => `Próximo: ${title} →`,
   },
   footer: {
     changelog: "Changelog",

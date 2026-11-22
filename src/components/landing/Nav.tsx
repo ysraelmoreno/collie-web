@@ -2,6 +2,7 @@ import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { Wordmark } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
+  blogPath,
   changelogPath,
   featuresPath,
   getDictionary,
@@ -18,7 +19,7 @@ export function Nav({
   switchPaths,
 }: {
   locale: Locale;
-  current?: "changelog" | "features";
+  current?: "changelog" | "features" | "blog";
   /** Where the EN|PT switch points; defaults to the changelog (or home). */
   switchPaths?: Record<Locale, string>;
 }) {
@@ -34,6 +35,7 @@ export function Nav({
   const pages = [
     ["features", t.links.features, featuresPath[locale]],
     ["changelog", t.links.changelog, changelogPath[locale]],
+    ["blog", t.links.blog, blogPath[locale]],
   ] as const;
 
   return (

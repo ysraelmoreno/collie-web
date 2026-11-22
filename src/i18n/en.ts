@@ -36,6 +36,7 @@ export const en = {
       devices: "Devices",
       features: "Features",
       changelog: "Changelog",
+      blog: "Blog",
     },
     download: "Download",
     github: "GitHub",
@@ -198,6 +199,29 @@ export const en = {
   cta: {
     title: "Give your agents one canvas.",
     body: "Open source under the MIT license. Clone it, build it, and put your agents on the same page.",
+  },
+  blog: {
+    meta: {
+      title: "Blog — Collie",
+      description:
+        "Longer stories behind Collie releases, decisions and how this site gets made.",
+    },
+    eyebrow: "BLOG",
+    title: "Notes from building Collie.",
+    lead: "Longer stories behind releases, decisions and how this site gets made.",
+    read: "Read →",
+    empty: {
+      eyebrow: "NO POSTS YET",
+      title: "The first post is on its way.",
+      body: "Meanwhile, the changelog lists what shipped in each release.",
+      changelog: "Read the changelog →",
+      features: "Browse features →",
+    },
+    posted: "POSTED",
+    readingTime: "READING TIME",
+    minutes: (n: number) => `${n} min`,
+    allPosts: "← All posts",
+    next: (title: string) => `Next: ${title} →`,
   },
   footer: {
     changelog: "Changelog",
