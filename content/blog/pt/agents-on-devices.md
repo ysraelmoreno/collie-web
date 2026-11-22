@@ -24,7 +24,7 @@ Funciona. O problema é o custo.
 
 ## O que medimos
 
-Testamos um modelo de agente mais barato numa tarefa simples: da primeira tela, tocar em *Continue to App →*, depois em **+**, depois em *Open Deals*.
+Testamos um modelo de agente mais barato numa tarefa simples: navegar entre algumas telas de um app, da primeira até uma terceira, passando por um botão e um menu.
 
 Ele não conseguiu fazer do jeito que queríamos. Acabou escrevendo scripts em Python para "ler" o PNG do `collie device screenshot`.
 
@@ -35,7 +35,7 @@ Num emulador Android, cronometramos um passo:
 | `collie device ui` | 2,2 a 3,3 s (4 amostras) |
 | `collie device tap --ref` | 0,1 s |
 
-Quase todo o tempo de um passo ver → agir era o dump da UI. E a árvore tinha de 49 a 67 linhas, a maioria containers de layout só com id. O botão **+** aparecia como `Button id=configuration_fab`, sem texto. Quem busca "+" por texto não acha nada.
+Quase todo o tempo de um passo ver → agir era o dump da UI. E a árvore tinha de 49 a 67 linhas, a maioria containers de layout só com id. Um botão só com ícone aparecia como `Button` com apenas um resource id, sem texto. Quem busca por texto não acha nada.
 
 Nossa hipótese, ainda não confirmada: esse modelo nem recebe imagem de volta das ferramentas. Então o screenshot não servia, e a árvore era barulhenta demais.
 
@@ -60,7 +60,7 @@ collie device tap --ref e3 --then ui
 Não precisa mais de um ref antes. `tap --text` acha o nó pelo rótulo (ou `--id` pelo resource id), num dump novo:
 
 ```sh
-collie device tap --text "Open Deals" --then ui
+collie device tap --text "Settings" --then ui
 ```
 
 Se mais de um nó casa, você recebe uma lista e escolhe com `--nth N`.
@@ -72,7 +72,7 @@ Se mais de um nó casa, você recebe uma lista e escolhe com `--nth N`.
 ### Achar e esperar
 
 - `collie device find "X"` localiza um elemento na tela. Com `--scroll`, ele desliza e procura de novo até achar, até a árvore parar de mudar (fim da lista) ou até `--max` (padrão 8).
-- `collie device wait --text "Combos"` espera o texto aparecer. `--gone` espera sumir. `--stable` espera dois dumps iguais. Isso troca `sleep` seguido de outro `ui`.
+- `collie device wait --text "Settings"` espera o texto aparecer. `--gone` espera sumir. `--stable` espera dois dumps iguais. Isso troca `sleep` seguido de outro `ui`.
 
 ### Coisas menores
 
@@ -105,7 +105,7 @@ Para isso o dispositivo precisa ser uma ferramenta normal do agente, como o comp
 
 Um agente barato não deveria planejar cada rolagem. Quanto menos o modelo faz por tela, mais barato fica o ciclo. Nossa inclinação é pôr as partes repetitivas (rolar até achar, esperar estabilizar, agrupar a árvore) na ferramenta, e deixar ao agente decisões de uma linha.
 
-> "Vá para a aba Combos e ache o produto X." Isso deveria ser uma frase, não um script.
+> "Vá para a tela de configurações e ache a opção de notificações." Isso deveria ser uma frase, não um script.
 
 ### Emulador é o caso comum
 

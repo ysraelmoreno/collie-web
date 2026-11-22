@@ -24,7 +24,7 @@ It works. The problem is cost.
 
 ## What we measured
 
-We tried a cheaper agent model on a simple task: from the first screen, tap *Continue to App →*, then **+**, then *Open Deals*.
+We tried a cheaper agent model on a simple task: navigate between a few screens of an app, from the first screen to a third one, through a button and a menu.
 
 It failed to finish the task the way we wanted. It ended up writing Python scripts to "read" the PNG from `collie device screenshot`.
 
@@ -35,7 +35,7 @@ On an Android emulator we timed one step:
 | `collie device ui` | 2.2 to 3.3 s (4 samples) |
 | `collie device tap --ref` | 0.1 s |
 
-Almost all of a see → act step was the UI dump. And the tree had 49 to 67 lines, most of them layout containers with only an id. The **+** button showed up as `Button id=configuration_fab`, with no text. Search for "+" by text and you find nothing.
+Almost all of a see → act step was the UI dump. And the tree had 49 to 67 lines, most of them layout containers with only an id. An icon-only button showed up as a `Button` with just a resource id, no text. Search for it by text and you find nothing.
 
 Our hypothesis, not yet confirmed: that model does not get images back from tools at all. So the screenshot was useless to it, and the tree was too noisy.
 
@@ -60,7 +60,7 @@ collie device tap --ref e3 --then ui
 You no longer need a ref first. `tap --text` finds the node by its label (or `--id` by resource id), on a fresh dump:
 
 ```sh
-collie device tap --text "Open Deals" --then ui
+collie device tap --text "Settings" --then ui
 ```
 
 If several nodes match, you get a list and pick one with `--nth N`.
@@ -72,7 +72,7 @@ If several nodes match, you get a list and pick one with `--nth N`.
 ### Find and wait
 
 - `collie device find "X"` locates an element on screen. Add `--scroll` and it swipes and looks again until it finds it, until the tree stops changing (end of the list), or until `--max` (default 8).
-- `collie device wait --text "Combos"` waits for text to appear. `--gone` waits for it to vanish. `--stable` waits for two identical dumps. This replaces `sleep` followed by another `ui`.
+- `collie device wait --text "Settings"` waits for text to appear. `--gone` waits for it to vanish. `--stable` waits for two identical dumps. This replaces `sleep` followed by another `ui`.
 
 ### Smaller things
 
@@ -105,7 +105,7 @@ That needs the device to be a normal tool for the agent, like the compiler or th
 
 A cheap agent should not plan every scroll. The less work the model does per screen, the cheaper the loop gets. We lean toward putting repetitive pieces (scroll until found, wait until settled, group the tree) into the tool and leaving the agent one-line decisions.
 
-> "Go to the Combos tab and find product X." That should be a sentence, not a script.
+> "Go to the settings screen and find the notifications option." That should be a sentence, not a script.
 
 ### Emulators are the common case
 
