@@ -150,6 +150,29 @@ const en: ChangelogCopy = {
         items: [
           {
             area: "agents",
+            title: "Look and act in one call",
+            body: "`collie device screen` shows the screen in groups (title, tabs with the selected one, buttons) instead of the whole tree; `device ui` is compact and `ui --all` brings everything. `tap`, `swipe`, `text`, `key` and `launch` take `--then screen` or `--then ui` and return the screen after the action. `tap` takes `--text`, `--id` and `--nth`; `launch` opens the app's first LAUNCHER activity.",
+            cmd: {
+              prompt: "Tap Combos and show the screen",
+              command: "collie device tap --text Combos --then screen",
+            },
+          },
+          {
+            area: "agents",
+            title: "Find and wait",
+            body: "`collie device find <text>` finds an element, and `--role tab|button|field` filters the kind. With `--scroll` it scrolls the list until it finds it, or says it reached the end. `device wait --text` and `--gone` wait for a text to appear or disappear. `--timing` shows how long each read took.",
+            cmd: {
+              prompt: "Find this product in the list",
+              command: 'collie device find "Combos" --scroll',
+            },
+          },
+          {
+            area: "agents",
+            title: "Device frames",
+            body: "The Device panel draws the screen inside a frame for the kind of device (phone, foldable, tablet, modern iPhone, iPhone with a home button, iPad), picked automatically. Small panels and physical devices show no frame.",
+          },
+          {
+            area: "agents",
             title: "Fast screen reads on Android",
             body: "A small accessibility service on the device (`collie-helper.apk`) reads the screen in tens of milliseconds, instead of `uiautomator`. Emulators get it on their own; a physical phone only after `collie device helper install`, because the service reads the whole screen. If it fails, Collie falls back to `uiautomator` and tries again.",
             cmd: {
@@ -696,6 +719,29 @@ const pt: ChangelogCopy = {
         name: "Na main",
         desc: "Pronto e testado; entra na próxima versão.",
         items: [
+          {
+            area: "agents",
+            title: "Ver e agir numa chamada só",
+            body: "`collie device screen` mostra a tela em grupos (título, abas com a selecionada, botões), no lugar da árvore inteira; `device ui` fica compacto e `ui --all` traz tudo. `tap`, `swipe`, `text`, `key` e `launch` aceitam `--then screen` ou `--then ui` e devolvem a tela depois da ação. `tap` aceita `--text`, `--id` e `--nth`; `launch` abre a primeira activity LAUNCHER do app.",
+            cmd: {
+              prompt: "Toque em Combos e mostre a tela",
+              command: "collie device tap --text Combos --then screen",
+            },
+          },
+          {
+            area: "agents",
+            title: "Achar e esperar",
+            body: "`collie device find <texto>` acha um elemento, e `--role tab|button|field` filtra o tipo. Com `--scroll` ele rola a lista até achar, ou diz que chegou ao fim. `device wait --text` e `--gone` esperam um texto aparecer ou sumir. `--timing` mostra quanto cada leitura levou.",
+            cmd: {
+              prompt: "Ache este produto na lista",
+              command: 'collie device find "Combos" --scroll',
+            },
+          },
+          {
+            area: "agents",
+            title: "Moldura por tipo de aparelho",
+            body: "O painel Device desenha a tela dentro de uma moldura do aparelho (celular, dobrável, tablet, iPhone moderno, iPhone com botão Início, iPad), escolhida sozinha. Painéis pequenos e aparelhos físicos ficam sem moldura.",
+          },
           {
             area: "agents",
             title: "Leitura rápida da tela no Android",
