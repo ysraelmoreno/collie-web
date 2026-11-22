@@ -2,7 +2,7 @@
 title: "Agents that can see the phone"
 date: 2026-11-22
 summary: "What we are changing in how Collie agents talk to Android and iOS devices, and where we think mobile development is going."
-draft: true
+draft: false
 ---
 
 A phone on the canvas is only useful if the agent can use it. Today it can. But it is slow, and cheaper models get lost. This post is about what we are changing, and where we think mobile work is heading.

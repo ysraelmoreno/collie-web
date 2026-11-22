@@ -2,7 +2,7 @@
 title: "Agentes que enxergam o celular"
 date: 2026-11-22
 summary: "O que estamos mudando na conversa entre agentes do Collie e dispositivos Android e iOS, e para onde achamos que o desenvolvimento mobile vai."
-draft: true
+draft: false
 ---
 
 Um celular no canvas só serve se o agente consegue usá-lo. Hoje consegue. Mas é lento, e modelos mais baratos se perdem. Este post fala do que estamos mudando e de para onde achamos que o trabalho mobile caminha.
