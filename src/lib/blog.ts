@@ -93,6 +93,8 @@ export function getBlogPost(locale: BlogLocale, slug: string, opts: Opts = {}) {
 const esc = (t: string) =>
   t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+const plain = new Marked();
+
 // Fenced code gets the design's header: ```lang file/name.ext → label is the file name, else the language.
 export const md = new Marked({
   renderer: {
@@ -101,6 +103,26 @@ export const md = new Marked({
       const label = file.join(" ") || language;
       const head = label ? `<div data-code-label>${esc(label)}</div>` : "";
       return `<figure data-code>${head}<pre><code>${esc(text)}</code></pre></figure>`;
+    },
+    // A paragraph that is only an image becomes a figure (a <figure> inside <p> is invalid); title = caption.
+    paragraph({ tokens }) {
+      const [img] = tokens;
+      if (tokens.length !== 1 || img.type !== "image") return false;
+      const cap = img.title ? `<figcaption>${esc(img.title)}</figcaption>` : "";
+      return `<figure data-image><img src="${esc(img.href)}" alt="${esc(img.text)}">${cap}</figure>\n`;
+    },
+    // A last paragraph starting with "— " is the attribution.
+    blockquote({ tokens }) {
+      const last = tokens[tokens.length - 1];
+      const m =
+        last?.type === "paragraph" ? /^—\s+([\s\S]+)$/.exec(last.text) : null;
+      if (!m || !last || last.type !== "paragraph") return false;
+      const quote = this.parser.parse(tokens.slice(0, -1));
+      return `<blockquote>\n${quote}<cite>${plain.parseInline(m[1], { async: false })}</cite>\n</blockquote>\n`;
+    },
+    // Wrapper lets the table scroll sideways on narrow screens.
+    table(token) {
+      return `<div data-table>${plain.parser([token])}</div>\n`;
     },
   },
 });
