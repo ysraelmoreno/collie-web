@@ -17,7 +17,7 @@ Released since 0.1.0:
 - The same `collie device` commands for both: `ui`, `screenshot`, `tap`, `swipe`, `text`, `key`.
 - `collie-lite`, a light Android emulator Collie creates for small Macs. Powered-off emulators show up in `collie device list` as `avd:<name>`, and opening their panel boots them.
 - Android SDK setup from **Preferências → Android**, no Android Studio needed.
-- A screen drawn inside a frame for the kind of device (phone, foldable, tablet, modern iPhone, iPhone with a home button, iPad), picked automatically (0.1.8). Small panels and physical devices show no frame.
+- A screen drawn inside a frame for the kind of device (phone, foldable, tablet, modern iPhone, iPhone with a home button, iPad), picked automatically. This one is on `main`, not in a release yet. Small panels and physical devices show no frame.
 
 The flow is the one from the [Devices post](/features/devices): the agent reads the UI tree, taps by ref, takes a screenshot. You watch it in the panel.
 

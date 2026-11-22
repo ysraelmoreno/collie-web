@@ -17,7 +17,7 @@ Lançado desde a 0.1.0:
 - Os mesmos comandos `collie device` para os dois: `ui`, `screenshot`, `tap`, `swipe`, `text`, `key`.
 - O `collie-lite`, um emulador Android leve que o Collie cria para Macs pequenos. Emuladores desligados aparecem em `collie device list` como `avd:<nome>`, e abrir o painel de um deles o liga.
 - Configuração do Android SDK em **Preferências → Android**, sem precisar do Android Studio.
-- A tela desenhada dentro de uma moldura conforme o tipo de aparelho (celular, dobrável, tablet, iPhone moderno, iPhone com botão home, iPad), escolhida automaticamente (0.1.8). Painéis pequenos e aparelhos físicos não mostram moldura.
+- A tela desenhada dentro de uma moldura conforme o tipo de aparelho (celular, dobrável, tablet, iPhone moderno, iPhone com botão home, iPad), escolhida automaticamente. Esta está na `main`, ainda não lançada. Painéis pequenos e aparelhos físicos não mostram moldura.
 
 O fluxo é o do [post de Dispositivos](/pt/features/devices): o agente lê a árvore de UI, toca pelo ref, tira um screenshot. Você assiste no painel.
 
