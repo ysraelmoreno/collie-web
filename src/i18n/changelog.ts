@@ -279,15 +279,6 @@ const en: ChangelogCopy = {
             command: "collie work config",
           },
         },
-        {
-          area: "apps",
-          title: "Quadro, a local board",
-          body: "An example app: a kanban board on your machine. Adopt it and agents create, move and comment on cards while you watch the board in a panel.",
-          cmd: {
-            prompt: "Adopt the board as a paddock app",
-            command: "collie app adopt quadro",
-          },
-        },
       ],
       items: [
         {
@@ -304,11 +295,6 @@ const en: ChangelogCopy = {
           k: "new",
           area: "agents",
           t: "The large-context advice reads the Shepherd's real context size, and at the end of a loop the daemon writes a handoff for the next turn (`collie work handoff`).",
-        },
-        {
-          k: "new",
-          area: "apps",
-          t: "Quadro example app: a local kanban board with types, priorities and filters (`collie app adopt quadro`).",
         },
         {
           k: "new",
@@ -964,15 +950,6 @@ const pt: ChangelogCopy = {
             command: "collie work config",
           },
         },
-        {
-          area: "apps",
-          title: "Quadro, um quadro local",
-          body: "Um app de exemplo: um kanban na sua máquina. Adote e os agentes criam, movem e comentam cartões enquanto você acompanha o quadro num painel.",
-          cmd: {
-            prompt: "Adote o quadro como app do cercado",
-            command: "collie app adopt quadro",
-          },
-        },
       ],
       items: [
         {
@@ -989,11 +966,6 @@ const pt: ChangelogCopy = {
           k: "new",
           area: "agents",
           t: "O aviso de contexto grande lê o tamanho real do contexto do Pastor, e no fim de um laço o daemon grava uma passagem para o próximo turno (`collie work handoff`).",
-        },
-        {
-          k: "new",
-          area: "apps",
-          t: "App de exemplo Quadro: um kanban local com tipos, prioridades e filtros (`collie app adopt quadro`).",
         },
         {
           k: "new",
