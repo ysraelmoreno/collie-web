@@ -149,6 +149,42 @@ const en: ChangelogCopy = {
         desc: "Built and tested; ships in the next version.",
         items: [
           {
+            area: "loop",
+            title: "Persona review in the loop",
+            body: "`collie work run --review` adds a review to each attempt, by another agent with a clean context, playing personas (correctness, tests, security, simplicity, concurrency) kept as Markdown files in the project. It is an opinion, not an approval: only a confirmed `blocker` or `major` finding, with file and line, fails the attempt. A reviewer that says nothing counts as no review.",
+            cmd: {
+              prompt: "Run the tasks with a review of each attempt",
+              command: "collie work run --review",
+            },
+          },
+          {
+            area: "loop",
+            title: "Factory profile and doctor",
+            body: "A `factory` key in `collie-work.json` declares the factory layer by layer (static checks, verification, review, guardrails); an unknown field is an error. `collie factory doctor` reads only files and scores each layer from 0 to 3, with the evidence and the next step, and exits 1 when it does not pass, for CI. A gate with no test runner scores low.",
+            cmd: {
+              prompt: "Check how strong this project's factory is",
+              command: "collie factory doctor",
+            },
+          },
+          {
+            area: "loop",
+            title: "Generic ratchet",
+            body: "`collie factory ratchet check|update|raise <name>`: a number that can only go down, for any linter or for the list of skipped tests. `check` fails when it got worse, `update` lowers the baseline when it got better, and `raise` needs a reason, kept in the file.",
+            cmd: {
+              prompt: "Make sure the TODO count did not go up",
+              command: "collie factory ratchet check todo",
+            },
+          },
+          {
+            area: "loop",
+            title: "Factory init and baits",
+            body: "The `factory-init` skill detects the stack (models for Swift, Node and Python), asks a few questions, writes the profile, checks and CI without overwriting anything, runs the doctor and ends with a pilot task. A catalog of 5 baits plants known defects in a disposable copy, never the real repository; `collie factory bait report` shows which layer caught each one.",
+            cmd: {
+              prompt: "Show which layer caught each bait",
+              command: "collie factory bait report",
+            },
+          },
+          {
             area: "agents",
             title: "Look and act in one call",
             body: "`collie device screen` shows the screen in groups (title, tabs with the selected one, buttons) instead of the whole tree; `device ui` is compact and `ui --all` brings everything. `tap`, `swipe`, `text`, `key` and `launch` take `--then screen` or `--then ui` and return the screen after the action. `tap` takes `--text`, `--id` and `--nth`; `launch` opens the app's first LAUNCHER activity.",
@@ -201,7 +237,7 @@ const en: ChangelogCopy = {
           {
             area: "agents",
             title: "Tap by symbol or id",
-            body: "`tap --text` and `find` understand `+`, `x`, `☰`, `<` and `>`, and the id of a button with no label (`configuration_fab` = \"configuration fab\"). When nothing matches, `find` lists the clickable ids with no label. Icon names like `chevron` drop out of the screen read.",
+            body: '`tap --text` and `find` understand `+`, `x`, `☰`, `<` and `>`, and the id of a button with no label (`configuration_fab` = "configuration fab"). When nothing matches, `find` lists the clickable ids with no label. Icon names like `chevron` drop out of the screen read.',
             cmd: {
               prompt: "Tap the plus button",
               command: 'collie device tap --text "+"',
@@ -216,8 +252,8 @@ const en: ChangelogCopy = {
         items: [
           {
             area: "loop",
-            title: "Reviewer and acceptance in the loop",
-            body: "After `check` and `gate`, another agent judges the diff and the evidence against the spec. Each task gets an executable acceptance check: a scenario on the device, in the browser or in the app, beyond the test. Push and release stay manual.",
+            title: "Acceptance and automatic land",
+            body: "Each task gets an acceptance command (`--accept`) that runs after the review and that the agent cannot change: a scenario on the device, in the browser or in the app, beyond the test. In a paddock the owner marks as a factory, the loop lands on its own when gate, review and acceptance are green. It never pushes; push and release stay manual.",
           },
           {
             area: "app",
@@ -229,6 +265,83 @@ const en: ChangelogCopy = {
     ],
   },
   releases: [
+    {
+      v: "0.1.9",
+      date: "2026-11-21",
+      headline: "A loop config per project, and faster checks.",
+      highlights: [
+        {
+          area: "loop",
+          title: "Loop config in the project",
+          body: "A `collie-work.json` at the project root declares the loop's gate, a fast precheck, named areas and a smoke command. The loop reads the committed version, never the working tree, and fails an attempt that edits the file.",
+          cmd: {
+            prompt: "Show what the project's loop config resolves to",
+            command: "collie work config",
+          },
+        },
+        {
+          area: "apps",
+          title: "Quadro, a local board",
+          body: "An example app: a kanban board on your machine. Adopt it and agents create, move and comment on cards while you watch the board in a panel.",
+          cmd: {
+            prompt: "Adopt the board as a paddock app",
+            command: "collie app adopt quadro",
+          },
+        },
+      ],
+      items: [
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie-work.json`: gate, `precheck`, `areas`, `smoke` and a `full` gate per project; `collie work config` shows what it resolves to and runs nothing.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie work run --precheck <cmd>` runs a fast check in the agent's own session, so a compile error costs a nudge instead of an attempt.",
+        },
+        {
+          k: "new",
+          area: "agents",
+          t: "The large-context advice reads the Shepherd's real context size, and at the end of a loop the daemon writes a handoff for the next turn (`collie work handoff`).",
+        },
+        {
+          k: "new",
+          area: "apps",
+          t: "Quadro example app: a local kanban board with types, priorities and filters (`collie app adopt quadro`).",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "The immutable summary keeps each attempt's token counts; `collie work usage` also reads closed works.",
+        },
+        {
+          k: "imp",
+          area: "loop",
+          t: "Attempts reuse one build folder per loop instead of compiling cold each time.",
+        },
+        {
+          k: "imp",
+          area: "memory",
+          t: "Near-duplicate memories no longer enter the same injection; only the best of each group does.",
+        },
+        {
+          k: "fix",
+          area: "apps",
+          t: "An app panel opened while the service was still starting stayed blank; now it says it is starting and loads on its own.",
+        },
+        {
+          k: "fix",
+          area: "app",
+          t: "The terminal title bar buttons (full screen included) did nothing on the canvas at zoom other than 100%.",
+        },
+        {
+          k: "fix",
+          area: "sandbox",
+          t: "Parallel loop lanes no longer raise sandbox access cards that restarted the lane's agent.",
+        },
+      ],
+    },
     {
       v: "0.1.8",
       date: "2026-11-21",
@@ -720,6 +833,42 @@ const pt: ChangelogCopy = {
         desc: "Pronto e testado; entra na próxima versão.",
         items: [
           {
+            area: "loop",
+            title: "Revisão por personas no laço",
+            body: "`collie work run --review` acrescenta uma revisão a cada tentativa, feita por outro agente com contexto limpo, no papel de personas (correção, testes, segurança, simplicidade, concorrência) guardadas como arquivos Markdown no projeto. É um parecer, não uma aprovação: só um achado `blocker` ou `major` confirmado, com arquivo e linha, falha a tentativa. Revisor que não diz nada conta como sem revisão.",
+            cmd: {
+              prompt: "Rode as tarefas com revisão de cada tentativa",
+              command: "collie work run --review",
+            },
+          },
+          {
+            area: "loop",
+            title: "Perfil e doutor da fábrica",
+            body: "Uma chave `factory` no `collie-work.json` declara a fábrica camada por camada (checks estáticos, verificação, revisão, guardrails); campo desconhecido é erro. `collie factory doctor` só lê arquivos e dá uma nota de 0 a 3 por camada, com a evidência e o próximo passo, e sai com 1 quando não passa, para o CI. Um gate sem test runner fica com nota baixa.",
+            cmd: {
+              prompt: "Veja quão forte é a fábrica deste projeto",
+              command: "collie factory doctor",
+            },
+          },
+          {
+            area: "loop",
+            title: "Catraca genérica",
+            body: "`collie factory ratchet check|update|raise <name>`: um número que só pode diminuir, para qualquer linter ou para a lista de testes pulados. `check` falha quando piorou, `update` baixa o baseline quando melhorou, e `raise` exige um motivo, que fica no arquivo.",
+            cmd: {
+              prompt: "Confira se a contagem de TODO não subiu",
+              command: "collie factory ratchet check todo",
+            },
+          },
+          {
+            area: "loop",
+            title: "Init da fábrica e iscas",
+            body: "A skill `factory-init` descobre a stack (modelos para Swift, Node e Python), faz algumas perguntas, grava o perfil, os checks e o CI sem sobrescrever nada, roda o doutor e termina com uma tarefa piloto. Um catálogo de 5 iscas planta defeitos conhecidos numa cópia descartável, nunca no repositório real; `collie factory bait report` mostra qual camada pegou cada uma.",
+            cmd: {
+              prompt: "Mostre qual camada pegou cada isca",
+              command: "collie factory bait report",
+            },
+          },
+          {
             area: "agents",
             title: "Ver e agir numa chamada só",
             body: "`collie device screen` mostra a tela em grupos (título, abas com a selecionada, botões), no lugar da árvore inteira; `device ui` fica compacto e `ui --all` traz tudo. `tap`, `swipe`, `text`, `key` e `launch` aceitam `--then screen` ou `--then ui` e devolvem a tela depois da ação. `tap` aceita `--text`, `--id` e `--nth`; `launch` abre a primeira activity LAUNCHER do app.",
@@ -772,7 +921,7 @@ const pt: ChangelogCopy = {
           {
             area: "agents",
             title: "Tocar por símbolo ou id",
-            body: "`tap --text` e `find` entendem `+`, `x`, `☰`, `<` e `>`, e o id de um botão sem rótulo (`configuration_fab` = \"configuration fab\"). Quando não acham, `find` lista os ids clicáveis sem rótulo. Nomes de ícone como `chevron` saem da leitura da tela.",
+            body: '`tap --text` e `find` entendem `+`, `x`, `☰`, `<` e `>`, e o id de um botão sem rótulo (`configuration_fab` = "configuration fab"). Quando não acham, `find` lista os ids clicáveis sem rótulo. Nomes de ícone como `chevron` saem da leitura da tela.',
             cmd: {
               prompt: "Toque no botão de mais",
               command: 'collie device tap --text "+"',
@@ -787,8 +936,8 @@ const pt: ChangelogCopy = {
         items: [
           {
             area: "loop",
-            title: "Revisor e aceite no laço",
-            body: "Depois do `check` e do `gate`, outro agente julga o diff e a evidência contra o spec. Cada tarefa ganha um critério de aceite executável: um cenário no aparelho, no navegador ou no app, além do teste. O push e o release continuam manuais.",
+            title: "Aceite e land automático",
+            body: "Cada tarefa ganha um comando de aceite (`--accept`) que roda depois da revisão e que o agente não consegue mudar: um cenário no aparelho, no navegador ou no app, além do teste. Num cercado que o dono marca como fábrica, o laço faz o land sozinho quando gate, revisão e aceite estão verdes. Nunca faz push; o push e o release continuam manuais.",
           },
           {
             area: "app",
@@ -800,6 +949,84 @@ const pt: ChangelogCopy = {
     ],
   },
   releases: [
+    {
+      v: "0.1.9",
+      date: "2026-11-21",
+      headline: "Configuração do laço por projeto, e checks mais rápidos.",
+      highlights: [
+        {
+          area: "loop",
+          title: "Configuração do laço no projeto",
+          body: "Um `collie-work.json` na raiz do projeto declara o gate do laço, um precheck rápido, áreas com nome e um comando de smoke. O laço lê a versão commitada, nunca a árvore de trabalho, e falha a tentativa que edita o arquivo.",
+          cmd: {
+            prompt:
+              "Mostre no que a configuração do laço deste projeto se resolve",
+            command: "collie work config",
+          },
+        },
+        {
+          area: "apps",
+          title: "Quadro, um quadro local",
+          body: "Um app de exemplo: um kanban na sua máquina. Adote e os agentes criam, movem e comentam cartões enquanto você acompanha o quadro num painel.",
+          cmd: {
+            prompt: "Adote o quadro como app do cercado",
+            command: "collie app adopt quadro",
+          },
+        },
+      ],
+      items: [
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie-work.json`: gate, `precheck`, `areas`, `smoke` e um gate `full` por projeto; `collie work config` mostra no que se resolve, sem rodar nada.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie work run --precheck <cmd>` roda um check rápido na sessão do próprio agente, e um erro de compilação custa um toque em vez de uma tentativa.",
+        },
+        {
+          k: "new",
+          area: "agents",
+          t: "O aviso de contexto grande lê o tamanho real do contexto do Pastor, e no fim de um laço o daemon grava uma passagem para o próximo turno (`collie work handoff`).",
+        },
+        {
+          k: "new",
+          area: "apps",
+          t: "App de exemplo Quadro: um kanban local com tipos, prioridades e filtros (`collie app adopt quadro`).",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "O resumo imutável guarda os tokens de cada tentativa; `collie work usage` também lê trabalhos fechados.",
+        },
+        {
+          k: "imp",
+          area: "loop",
+          t: "As tentativas reaproveitam uma pasta de build por laço em vez de compilar do zero a cada vez.",
+        },
+        {
+          k: "imp",
+          area: "memory",
+          t: "Memórias quase duplicadas não entram mais juntas na mesma injeção; só a melhor de cada grupo.",
+        },
+        {
+          k: "fix",
+          area: "apps",
+          t: "Um painel de app aberto com o serviço ainda subindo ficava em branco; agora diz que está iniciando e carrega sozinho.",
+        },
+        {
+          k: "fix",
+          area: "app",
+          t: "Os botões da barra de título do terminal (tela cheia incluída) não faziam nada no canvas fora do zoom de 100%.",
+        },
+        {
+          k: "fix",
+          area: "sandbox",
+          t: "As raias do laço paralelo não pedem mais cartões de acesso do sandbox, que reiniciavam o agente da raia.",
+        },
+      ],
+    },
     {
       v: "0.1.8",
       date: "2026-11-21",

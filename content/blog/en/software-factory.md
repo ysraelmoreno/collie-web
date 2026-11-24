@@ -96,7 +96,7 @@ Plug-ins can join in too. With agent hooks (`edit`, `stop`), the sample **Vizinh
 ```callout
 kind: status
 title: On main, not released
-body: "Merged on `main`. The latest tag is v0.1.9, and this is not in a release yet."
+body: "Everything in this section is merged on `main`. The latest tag is v0.1.9, and none of it is in a release yet."
 ```
 
 ### Review by personas
@@ -107,6 +107,28 @@ The review is an **opinion, not an approval**. It can't pass a task on its own. 
 
 We tested it with a **bait task**: a spec that asked for a known bug (a divisor of `len(xs) + 1`). The check passed it. The `correcao` reviewer vetoed it with a `[major]` finding pointing to the file and line, and the second attempt fixed it. That is one test of one bug. It shows the mechanism works, and it doesn't measure how good the reviewer is.
 
+### A factory profile and a doctor
+
+A `factory` key in `collie-work.json` declares the factory layer by layer: static checks, runtime verification, review, guardrails, and pitfalls still written as prose. An unknown field is an error.
+
+`collie factory doctor` reads only files and scores each layer from 0 to 3, with the evidence and the next step. It doesn't use an LLM to score, and it exits 1 when the factory does not pass, so it can run in CI. A gate with no test runner gets a low score.
+
+```sh
+collie factory doctor
+```
+
+### A generic ratchet
+
+`collie factory ratchet check|update|raise <name>` keeps a number that can only go down, for any linter or for the list of skipped tests. `check` fails when it got worse, `update` lowers the baseline when it got better, and `raise` needs a reason, kept in the file.
+
+### Init and baits
+
+The `factory-init` skill detects the stack (there are models for Swift, Node and Python), asks a few questions, writes the profile, the check scripts and the CI without overwriting anything, runs the doctor and ends with a small pilot task to show the full cycle.
+
+Baits measure whether the factory works, not only whether it is configured. A catalog of 5 baits plants known defects in a disposable copy of the repository, never the real one. The normal cycle runs, and `collie factory bait report` shows which layer caught each one. A bait that gets through lowers that layer's score in the doctor.
+
+The idea behind these: a weak factory looks like a strong one until it breaks. The doctor and the baits show how strong yours is before that happens.
+
 ## What is designed, not built
 
 ```callout
@@ -115,18 +137,11 @@ title: Designed, not built
 body: Everything in this section is a written design. Names and commands may change before anything ships.
 ```
 
-What's left takes the owner out of the remaining steps, and makes it easy to set up the same thing in a project that isn't Collie.
+What's left takes the owner out of the remaining steps.
 
 - **Result check.** An acceptance command per task (`--accept`), which runs after the review. The agent can't change it. It could be a scenario on a device, in the browser or in an app. It closes the gap between "the spec passed" and "it works".
 - **Automatic land, only in factory paddocks.** Only you can mark a paddock as a factory, and an agent can't. Inside one, when gate, review and acceptance are all green, the loop lands and starts the next work. It **never pushes**: the end notice says "ready to push".
 - **Plans from anywhere.** Jira, Linear, a GitHub issue or a file: the source doesn't matter. Collie takes the plan as text and drafts the tasks with their checks. You approve it once.
-- **A factory profile.** One versioned file per project, layer by layer: static checks, runtime verification, review, guardrails, and pitfalls still written as prose.
-- **`/collie:factory init`.** It detects the stack (`package.json`, `Package.swift`, `pyproject.toml`, `Cargo.toml`, `go.mod`…), asks a few questions, writes the profile and the check scripts, and runs a small pilot task to show the full cycle.
-- **`collie factory doctor`.** A read-only score per layer, from 0 to 3, with the evidence and the next step. It doesn't use an LLM to score. A gate that only compiles is marked weak.
-- **`collie factory bait`.** It plants a known defect in a throwaway copy of the repository, never the real one, runs the normal cycle and records which layer caught it. A bait that gets through lowers that layer's score.
-- **A generic ratchet.** "This number can only go down", for any linter or for the list of skipped tests, with a reason required to raise it.
-
-The idea behind the last three: a weak factory looks like a strong one until it breaks. The doctor and the bait show how strong yours is before that happens.
 
 ## Where we think this goes
 
@@ -158,7 +173,7 @@ And push. We keep it manual. A push on `main` publishes a release, and we think 
 
 ## Try it
 
-With a release build, the loop, the gate and the parallel lanes already work. With a build from `main`, add the review.
+With a release build, the loop, the gate and the parallel lanes already work. With a build from `main`, add the review and the doctor.
 
 ```steps
 items:
@@ -175,6 +190,9 @@ items:
   - title: Add the persona review (main)
     command: collie work run --review
     result: Only a confirmed blocker or major finding fails an attempt.
+  - title: Score the factory (main)
+    command: collie factory doctor
+    result: A score from 0 to 3 per layer, with the next step.
 ```
 
 Related: [Loop](/features/loop), [Memory](/features/memory).

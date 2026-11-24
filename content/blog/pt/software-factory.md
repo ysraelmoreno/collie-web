@@ -96,7 +96,7 @@ Plug-ins também entram nisso. Com os ganchos de agente (`edit`, `stop`), o plug
 ```callout
 kind: status
 title: Na main, fora de versão
-body: "Já está na `main`. A última tag é a v0.1.9, e isto ainda não está numa versão."
+body: "Tudo nesta seção já está na `main`. A última tag é a v0.1.9, e nada disto está numa versão ainda."
 ```
 
 ### Revisão por personas
@@ -107,6 +107,28 @@ A revisão é um **parecer, não uma aprovação**. Ela não aprova uma tarefa s
 
 Testamos com uma **tarefa-isca**: um spec que pedia um bug conhecido (um divisor `len(xs) + 1`). O check deixou passar. O revisor `correcao` vetou com um achado `[major]` apontando arquivo e linha, e a segunda tentativa corrigiu. É um teste de um bug. Mostra que o mecanismo funciona, mas não mede o quanto o revisor é bom.
 
+### Um perfil de fábrica e um doutor
+
+Uma chave `factory` no `collie-work.json` declara a fábrica camada por camada: checks estáticos, verificação em runtime, revisão, guardrails e armadilhas que ainda estão em prosa. Campo desconhecido é erro.
+
+`collie factory doctor` só lê arquivos e dá uma nota de 0 a 3 por camada, com a evidência e o próximo passo. Não usa LLM para dar a nota, e sai com 1 quando a fábrica não passa, para rodar no CI. Um gate sem test runner fica com nota baixa.
+
+```sh
+collie factory doctor
+```
+
+### Uma catraca genérica
+
+`collie factory ratchet check|update|raise <name>` guarda um número que só pode diminuir, para qualquer linter ou para a lista de testes pulados. `check` falha quando piorou, `update` baixa o baseline quando melhorou, e `raise` exige um motivo, que fica no arquivo.
+
+### Init e iscas
+
+A skill `factory-init` descobre a stack (há modelos para Swift, Node e Python), faz algumas perguntas, grava o perfil, os scripts de check e o CI sem sobrescrever nada, roda o doutor e termina com uma pequena tarefa piloto para mostrar o ciclo inteiro.
+
+As iscas medem se a fábrica funciona, e não só se está configurada. Um catálogo de 5 iscas planta defeitos conhecidos numa cópia descartável do repositório, nunca no real. O ciclo normal roda, e `collie factory bait report` mostra qual camada pegou cada uma. Uma isca que passa baixa a nota daquela camada no doutor.
+
+A ideia por trás disso: uma fábrica fraca parece forte até quebrar. O doutor e as iscas mostram quão forte é a sua antes disso.
+
 ## O que está desenhado, não construído
 
 ```callout
@@ -115,18 +137,11 @@ title: Desenhado, não construído
 body: Tudo nesta seção é um desenho escrito. Nomes e comandos podem mudar antes de qualquer coisa entrar numa versão.
 ```
 
-O que falta tira o dono dos passos que sobraram, e facilita montar a mesma coisa num projeto que não é o Collie.
+O que falta tira o dono dos passos que sobraram.
 
 - **Verificação do resultado.** Um comando de aceite por tarefa (`--accept`), que roda depois da revisão. O agente não consegue mudá-lo. Pode ser um cenário num aparelho, no navegador ou num app. Fecha a distância entre "o spec passou" e "funciona".
 - **Land automático, só em cercados fábrica.** Só você marca um cercado como fábrica, e um agente não consegue. Dentro dele, quando gate, revisão e aceite estão verdes, o laço faz o land e começa o próximo trabalho. Ele **nunca faz push**: o aviso de fim diz "pronto para push".
 - **Planos de qualquer lugar.** Jira, Linear, uma issue do GitHub ou um arquivo: a origem não importa. O Collie recebe o plano como texto e rascunha as tarefas com os checks. Você aprova uma vez.
-- **Um perfil de fábrica.** Um arquivo versionado por projeto, camada por camada: checks estáticos, verificação em runtime, revisão, guardrails e armadilhas que ainda estão em prosa.
-- **`/collie:factory init`.** Descobre a stack (`package.json`, `Package.swift`, `pyproject.toml`, `Cargo.toml`, `go.mod`…), faz algumas perguntas, grava o perfil e os scripts de check, e roda uma pequena tarefa piloto para mostrar o ciclo inteiro.
-- **`collie factory doctor`.** Uma nota por camada, de 0 a 3, só lendo, com a evidência e o próximo passo. Não usa LLM para dar a nota. Um gate que só compila é marcado como fraco.
-- **`collie factory bait`.** Planta um defeito conhecido numa cópia descartável do repositório, nunca no real, roda o ciclo normal e registra qual camada pegou. Uma isca que passa baixa a nota daquela camada.
-- **Uma catraca genérica.** "Este número só pode diminuir", para qualquer linter ou para a lista de testes pulados, com motivo obrigatório para subir.
-
-A ideia por trás dos três últimos: uma fábrica fraca parece forte até quebrar. O doctor e a isca mostram quão forte é a sua antes disso.
 
 ## Para onde achamos que isso vai
 
@@ -158,7 +173,7 @@ E o push. Continuamos fazendo à mão. Um push na `main` publica uma versão, e 
 
 ## Experimente
 
-Numa versão publicada, o laço, o gate e as raias paralelas já funcionam. Com um build da `main`, acrescente a revisão.
+Numa versão publicada, o laço, o gate e as raias paralelas já funcionam. Com um build da `main`, acrescente a revisão e o doutor.
 
 ```steps
 items:
@@ -175,6 +190,9 @@ items:
   - title: Acrescente a revisão por personas (main)
     command: collie work run --review
     result: Só um achado blocker ou major confirmado falha uma tentativa.
+  - title: Dê nota à fábrica (main)
+    command: collie factory doctor
+    result: Uma nota de 0 a 3 por camada, com o próximo passo.
 ```
 
 Relacionados: [Laço](/pt/features/loop), [Memória](/pt/features/memory).
