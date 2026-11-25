@@ -144,116 +144,14 @@ const en: ChangelogCopy = {
     lead: "What is planned for Collie. No dates: it ships when it is ready.",
     groups: [
       {
-        id: "main",
-        name: "On main",
-        desc: "Built and tested; ships in the next version.",
-        items: [
-          {
-            area: "loop",
-            title: "Persona review in the loop",
-            body: "`collie work run --review` adds a review to each attempt, by another agent with a clean context, playing personas (correctness, tests, security, simplicity, concurrency) kept as Markdown files in the project. It is an opinion, not an approval: only a confirmed `blocker` or `major` finding, with file and line, fails the attempt. A reviewer that says nothing counts as no review.",
-            cmd: {
-              prompt: "Run the tasks with a review of each attempt",
-              command: "collie work run --review",
-            },
-          },
-          {
-            area: "loop",
-            title: "Factory profile and doctor",
-            body: "A `factory` key in `collie-work.json` declares the factory layer by layer (static checks, verification, review, guardrails); an unknown field is an error. `collie factory doctor` reads only files and scores each layer from 0 to 3, with the evidence and the next step, and exits 1 when it does not pass, for CI. A gate with no test runner scores low.",
-            cmd: {
-              prompt: "Check how strong this project's factory is",
-              command: "collie factory doctor",
-            },
-          },
-          {
-            area: "loop",
-            title: "Generic ratchet",
-            body: "`collie factory ratchet check|update|raise <name>`: a number that can only go down, for any linter or for the list of skipped tests. `check` fails when it got worse, `update` lowers the baseline when it got better, and `raise` needs a reason, kept in the file.",
-            cmd: {
-              prompt: "Make sure the TODO count did not go up",
-              command: "collie factory ratchet check todo",
-            },
-          },
-          {
-            area: "loop",
-            title: "Factory init and baits",
-            body: "The `factory-init` skill detects the stack (models for Swift, Node and Python), asks a few questions, writes the profile, checks and CI without overwriting anything, runs the doctor and ends with a pilot task. A catalog of 5 baits plants known defects in a disposable copy, never the real repository; `collie factory bait report` shows which layer caught each one.",
-            cmd: {
-              prompt: "Show which layer caught each bait",
-              command: "collie factory bait report",
-            },
-          },
-          {
-            area: "agents",
-            title: "Look and act in one call",
-            body: "`collie device screen` shows the screen in groups (title, tabs with the selected one, buttons) instead of the whole tree; `device ui` is compact and `ui --all` brings everything. `tap`, `swipe`, `text`, `key` and `launch` take `--then screen` or `--then ui` and return the screen after the action. `tap` takes `--text`, `--id` and `--nth`; `launch` opens the app's first LAUNCHER activity.",
-            cmd: {
-              prompt: "Tap Combos and show the screen",
-              command: "collie device tap --text Combos --then screen",
-            },
-          },
-          {
-            area: "agents",
-            title: "Find and wait",
-            body: "`collie device find <text>` finds an element, and `--role tab|button|field` filters the kind. With `--scroll` it scrolls the list until it finds it, or says it reached the end. `device wait --text` and `--gone` wait for a text to appear or disappear. `--timing` shows how long each read took.",
-            cmd: {
-              prompt: "Find this product in the list",
-              command: 'collie device find "Combos" --scroll',
-            },
-          },
-          {
-            area: "agents",
-            title: "Device frames",
-            body: "The Device panel draws the screen inside a frame for the kind of device (phone, foldable, tablet, modern iPhone, iPhone with a home button, iPad), picked automatically. Small panels and physical devices show no frame.",
-          },
-          {
-            area: "agents",
-            title: "Fast screen reads on Android",
-            body: "A small accessibility service on the device (`collie-helper.apk`) reads the screen in tens of milliseconds, instead of `uiautomator`. Emulators get it on their own; a physical phone only after `collie device helper install`, because the service reads the whole screen. If it fails, Collie falls back to `uiautomator` and tries again.",
-            cmd: {
-              prompt: "Check how the device screen is being read",
-              command: "collie device helper status",
-            },
-          },
-          {
-            area: "agents",
-            title: "OCR when the tree does not help",
-            body: "When the accessibility tree is poor, `collie device screen` reads the screenshot, on Android and iOS; items show as `(ocr)`, with refs `o1`…. `--ocr` forces it, `--no-ocr` turns it off, `--region x1,y1,x2,y2` limits the area. `find` and `tap --text` with no match in the tree try OCR and tap the center of the box.",
-            cmd: {
-              prompt: "Read this screen, text included",
-              command: "collie device screen --ocr",
-            },
-          },
-          {
-            area: "agents",
-            title: "Wait for the screen to settle",
-            body: "`collie device wait --stable` follows the screen's own events: it is stable once no event arrives for `--quiet` ms (default 300). Without the helper, it goes back to comparing two equal reads.",
-            cmd: {
-              prompt: "Wait until the screen stops changing",
-              command: "collie device wait --stable",
-            },
-          },
-          {
-            area: "agents",
-            title: "Tap by symbol or id",
-            body: '`tap --text` and `find` understand `+`, `x`, `☰`, `<` and `>`, and the id of a button with no label (`configuration_fab` = "configuration fab"). When nothing matches, `find` lists the clickable ids with no label. Icon names like `chevron` drop out of the screen read.',
-            cmd: {
-              prompt: "Tap the plus button",
-              command: 'collie device tap --text "+"',
-            },
-          },
-        ],
-      },
-      {
         id: "planned",
         name: "Planned",
         desc: "Designed, not built yet. May change.",
         items: [
           {
-            area: "loop",
-            title: "Acceptance and automatic land",
-            body: "Each task gets an acceptance command (`--accept`) that runs after the review and that the agent cannot change: a scenario on the device, in the browser or in the app, beyond the test. In a paddock the owner marks as a factory, the loop lands on its own when gate, review and acceptance are green. It never pushes; push and release stay manual.",
+            area: "plugins",
+            title: "Plug-in marketplace",
+            body: "Find, install, update and withdraw plug-ins from a signed catalog, without picking a folder. Only you install or remove them. Later, third-party plug-ins reviewed by the owner.",
           },
           {
             area: "app",
@@ -265,6 +163,143 @@ const en: ChangelogCopy = {
     ],
   },
   releases: [
+    {
+      v: "0.2.0",
+      date: "2026-11-25",
+      headline:
+        "The software factory, in preview: review, acceptance and automatic land.",
+      highlights: [
+        {
+          area: "loop",
+          title: "Factory paddock and automatic land (preview)",
+          body: "Mark a paddock as a factory (only you can) and `collie work run --auto-land` integrates the work locally once the gate, the review, the acceptance and the local CI pass. It never pushes or opens a PR. Each failure stops with its own reason and calls you. Preview: not yet validated end to end on a real repository.",
+          cmd: {
+            prompt: "Run the approved work and land it if everything passes",
+            command: "collie work run --auto-land",
+          },
+        },
+        {
+          area: "loop",
+          title: "Review by personas",
+          body: "Each attempt gets an opinion from fresh reviewer terminals playing personas (correctness, tests, security, simplicity, concurrency). A confirmed `blocker` or `major` finding vetoes; the review never approves on its own.",
+          cmd: {
+            prompt: "Run the tasks with a review of each attempt",
+            command: "collie work run --review",
+          },
+        },
+        {
+          area: "agents",
+          title: "Agents that see the phone",
+          body: "`collie device screen` describes the screen in groups, `tap --text … --then screen` acts and looks in one call, `find --scroll` and `wait --stable` replace scripts and sleeps. On Android a small helper reads the screen in milliseconds, and OCR covers screens with an empty tree.",
+          cmd: {
+            prompt: "Tap Settings and show the screen",
+            command: 'collie device tap --text "Settings" --then screen',
+          },
+        },
+      ],
+      items: [
+        {
+          k: "new",
+          area: "loop",
+          t: "Factory paddock: `collie paddock create --factory` or `paddock factory <name> on|off`, a switch in the app and a badge in the Rail; never set by an agent.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`--auto-land` (preview): lands locally after gate, review, acceptance, local CI, a clean tree and an unmoved base; each failure has its own `stopReason`; never a push.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`--queue`, `--auto-land-max` and a daily cap of lands; the factory doctor must still pass before each next work.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "Runtime acceptance: `collie work task add --accept <cmd>` judges the running result after the check and the gate.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "PRD entry: `collie work prd add`, `work plan lint` (refuses tasks with no runnable check) and `work plan apply --approve <sha256>`.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie work run --review` with personas, `--personas`, `--reviewer-model`; a mute reviewer records its cause and is retried once.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`factory` block in `collie-work.json`, applied from the base commit; `work status` says where each value came from.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie factory doctor` (a score from 0 to 3 per layer), `factory ratchet` and `factory bait`; the `factory-init` skill with Swift, Node and Python models.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "Every `--auto-land` run leaves an immutable summary: who approved, who vetoed, base before and after, and what was not done.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`--escalate agent:model,…` picks the attempt's agent and model by its number; `work stop --now` drops the attempt in course.",
+        },
+        {
+          k: "new",
+          area: "agents",
+          t: 'A Shepherd can summon a sub-Shepherd (`summon --shepherd`); the agent tree nests it with the "Pastor" seal and "Encerrar ramo…" (Close branch).',
+        },
+        {
+          k: "new",
+          area: "agents",
+          t: "`collie ask --check <cmd> --tries N`: the ask only ends when the check passes; a check that already passes before the task is refused.",
+        },
+        {
+          k: "new",
+          area: "agents",
+          t: "Device: `screen`, `find --scroll`, `wait --stable`, `--then ui|screen`, `tap --text`, OCR on Android and iOS, and a device frame in the panel.",
+        },
+        {
+          k: "new",
+          area: "agents",
+          t: "Android accessibility helper (`collie device helper`): screen reads in milliseconds, with a fallback to `uiautomator`.",
+        },
+        {
+          k: "new",
+          area: "plugins",
+          t: "Cursor tool events reach the plug-in contract, so Vizinho and its fences also work in Cursor terminals.",
+        },
+        {
+          k: "imp",
+          area: "agents",
+          t: "Cursor: `summon --model` and `--trust`; a custom command that runs `cursor-agent` is treated as Cursor everywhere.",
+        },
+        {
+          k: "imp",
+          area: "agents",
+          t: "No reply notice after the asker already read the answer with `ask result`; Cursor ask and wait through MCP no longer time out at 60 s.",
+        },
+        {
+          k: "imp",
+          area: "loop",
+          t: "Review text, notes and notices are scrubbed of secrets before they reach you.",
+        },
+        {
+          k: "fix",
+          area: "agents",
+          t: "A Cursor prompt is confirmed as sent, and an unsent prompt is no longer read as idle.",
+        },
+        {
+          k: "fix",
+          area: "memory",
+          t: "The curator no longer promotes pitfalls taken from scratch files to the project memory.",
+        },
+      ],
+    },
     {
       v: "0.1.9",
       date: "2026-11-21",
@@ -814,116 +849,14 @@ const pt: ChangelogCopy = {
     lead: "O que está planejado para o Collie. Sem datas: entra quando estiver pronto.",
     groups: [
       {
-        id: "main",
-        name: "Na main",
-        desc: "Pronto e testado; entra na próxima versão.",
-        items: [
-          {
-            area: "loop",
-            title: "Revisão por personas no laço",
-            body: "`collie work run --review` acrescenta uma revisão a cada tentativa, feita por outro agente com contexto limpo, no papel de personas (correção, testes, segurança, simplicidade, concorrência) guardadas como arquivos Markdown no projeto. É um parecer, não uma aprovação: só um achado `blocker` ou `major` confirmado, com arquivo e linha, falha a tentativa. Revisor que não diz nada conta como sem revisão.",
-            cmd: {
-              prompt: "Rode as tarefas com revisão de cada tentativa",
-              command: "collie work run --review",
-            },
-          },
-          {
-            area: "loop",
-            title: "Perfil e doutor da fábrica",
-            body: "Uma chave `factory` no `collie-work.json` declara a fábrica camada por camada (checks estáticos, verificação, revisão, guardrails); campo desconhecido é erro. `collie factory doctor` só lê arquivos e dá uma nota de 0 a 3 por camada, com a evidência e o próximo passo, e sai com 1 quando não passa, para o CI. Um gate sem test runner fica com nota baixa.",
-            cmd: {
-              prompt: "Veja quão forte é a fábrica deste projeto",
-              command: "collie factory doctor",
-            },
-          },
-          {
-            area: "loop",
-            title: "Catraca genérica",
-            body: "`collie factory ratchet check|update|raise <name>`: um número que só pode diminuir, para qualquer linter ou para a lista de testes pulados. `check` falha quando piorou, `update` baixa o baseline quando melhorou, e `raise` exige um motivo, que fica no arquivo.",
-            cmd: {
-              prompt: "Confira se a contagem de TODO não subiu",
-              command: "collie factory ratchet check todo",
-            },
-          },
-          {
-            area: "loop",
-            title: "Init da fábrica e iscas",
-            body: "A skill `factory-init` descobre a stack (modelos para Swift, Node e Python), faz algumas perguntas, grava o perfil, os checks e o CI sem sobrescrever nada, roda o doutor e termina com uma tarefa piloto. Um catálogo de 5 iscas planta defeitos conhecidos numa cópia descartável, nunca no repositório real; `collie factory bait report` mostra qual camada pegou cada uma.",
-            cmd: {
-              prompt: "Mostre qual camada pegou cada isca",
-              command: "collie factory bait report",
-            },
-          },
-          {
-            area: "agents",
-            title: "Ver e agir numa chamada só",
-            body: "`collie device screen` mostra a tela em grupos (título, abas com a selecionada, botões), no lugar da árvore inteira; `device ui` fica compacto e `ui --all` traz tudo. `tap`, `swipe`, `text`, `key` e `launch` aceitam `--then screen` ou `--then ui` e devolvem a tela depois da ação. `tap` aceita `--text`, `--id` e `--nth`; `launch` abre a primeira activity LAUNCHER do app.",
-            cmd: {
-              prompt: "Toque em Combos e mostre a tela",
-              command: "collie device tap --text Combos --then screen",
-            },
-          },
-          {
-            area: "agents",
-            title: "Achar e esperar",
-            body: "`collie device find <texto>` acha um elemento, e `--role tab|button|field` filtra o tipo. Com `--scroll` ele rola a lista até achar, ou diz que chegou ao fim. `device wait --text` e `--gone` esperam um texto aparecer ou sumir. `--timing` mostra quanto cada leitura levou.",
-            cmd: {
-              prompt: "Ache este produto na lista",
-              command: 'collie device find "Combos" --scroll',
-            },
-          },
-          {
-            area: "agents",
-            title: "Moldura por tipo de aparelho",
-            body: "O painel Device desenha a tela dentro de uma moldura do aparelho (celular, dobrável, tablet, iPhone moderno, iPhone com botão Início, iPad), escolhida sozinha. Painéis pequenos e aparelhos físicos ficam sem moldura.",
-          },
-          {
-            area: "agents",
-            title: "Leitura rápida da tela no Android",
-            body: "Um serviço de acessibilidade pequeno no aparelho (`collie-helper.apk`) lê a tela em dezenas de milissegundos, no lugar do `uiautomator`. O emulador ganha sozinho; o aparelho físico só depois de `collie device helper install`, porque o serviço lê a tela inteira. Se falhar, o Collie volta ao `uiautomator` e tenta de novo.",
-            cmd: {
-              prompt: "Veja como a tela do aparelho está sendo lida",
-              command: "collie device helper status",
-            },
-          },
-          {
-            area: "agents",
-            title: "OCR quando a árvore não ajuda",
-            body: "Quando a árvore de acessibilidade é pobre, `collie device screen` lê o screenshot, no Android e no iOS; os itens aparecem como `(ocr)`, com refs `o1`…. `--ocr` força, `--no-ocr` desliga, `--region x1,y1,x2,y2` limita a área. `find` e `tap --text` sem casamento na árvore tentam o OCR e tocam no centro da caixa.",
-            cmd: {
-              prompt: "Leia esta tela, texto incluído",
-              command: "collie device screen --ocr",
-            },
-          },
-          {
-            area: "agents",
-            title: "Esperar a tela estabilizar",
-            body: "`collie device wait --stable` acompanha os eventos da própria tela: ela está estável quando nenhum evento chega por `--quiet` ms (padrão 300). Sem o helper, volta a comparar duas leituras iguais.",
-            cmd: {
-              prompt: "Espere a tela parar de mudar",
-              command: "collie device wait --stable",
-            },
-          },
-          {
-            area: "agents",
-            title: "Tocar por símbolo ou id",
-            body: '`tap --text` e `find` entendem `+`, `x`, `☰`, `<` e `>`, e o id de um botão sem rótulo (`configuration_fab` = "configuration fab"). Quando não acham, `find` lista os ids clicáveis sem rótulo. Nomes de ícone como `chevron` saem da leitura da tela.',
-            cmd: {
-              prompt: "Toque no botão de mais",
-              command: 'collie device tap --text "+"',
-            },
-          },
-        ],
-      },
-      {
         id: "planned",
         name: "Planejado",
         desc: "Desenhado, ainda não construído. Pode mudar.",
         items: [
           {
-            area: "loop",
-            title: "Aceite e land automático",
-            body: "Cada tarefa ganha um comando de aceite (`--accept`) que roda depois da revisão e que o agente não consegue mudar: um cenário no aparelho, no navegador ou no app, além do teste. Num cercado que o dono marca como fábrica, o laço faz o land sozinho quando gate, revisão e aceite estão verdes. Nunca faz push; o push e o release continuam manuais.",
+            area: "plugins",
+            title: "Marketplace de plug-ins",
+            body: "Achar, instalar, atualizar e recolher plug-ins por um catálogo assinado, sem escolher pasta. Só você instala ou remove. Depois, plug-ins de terceiros revisados pelo dono.",
           },
           {
             area: "app",
@@ -935,6 +868,143 @@ const pt: ChangelogCopy = {
     ],
   },
   releases: [
+    {
+      v: "0.2.0",
+      date: "2026-11-25",
+      headline:
+        "A fábrica de software, em prévia: revisão, aceite e land automático.",
+      highlights: [
+        {
+          area: "loop",
+          title: "Cercado fábrica e land automático (prévia)",
+          body: "Marque um cercado como fábrica (só você consegue) e `collie work run --auto-land` integra o trabalho localmente quando gate, revisão, aceite e CI local passam. Nunca faz push nem abre PR. Cada falha para com o próprio motivo e chama você. Prévia: ainda não validado de ponta a ponta num repositório real.",
+          cmd: {
+            prompt: "Rode o trabalho aprovado e faça o land se tudo passar",
+            command: "collie work run --auto-land",
+          },
+        },
+        {
+          area: "loop",
+          title: "Revisão por personas",
+          body: "Cada tentativa recebe um parecer de terminais revisores novos, no papel de personas (correção, testes, segurança, simplicidade, concorrência). Um achado `blocker` ou `major` confirmado veta; a revisão nunca aprova sozinha.",
+          cmd: {
+            prompt: "Rode as tarefas com revisão de cada tentativa",
+            command: "collie work run --review",
+          },
+        },
+        {
+          area: "agents",
+          title: "Agentes que enxergam o celular",
+          body: "`collie device screen` descreve a tela em grupos, `tap --text … --then screen` age e olha numa chamada só, `find --scroll` e `wait --stable` substituem scripts e sleeps. No Android, um pequeno helper lê a tela em milissegundos, e o OCR cobre telas com a árvore vazia.",
+          cmd: {
+            prompt: "Toque em Configurações e mostre a tela",
+            command: 'collie device tap --text "Configurações" --then screen',
+          },
+        },
+      ],
+      items: [
+        {
+          k: "new",
+          area: "loop",
+          t: "Cercado fábrica: `collie paddock create --factory` ou `paddock factory <name> on|off`, um interruptor no app e um selo no Trilho; nunca ligado por um agente.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`--auto-land` (prévia): land local depois de gate, revisão, aceite, CI local, árvore limpa e base parada; cada falha tem seu `stopReason`; nunca faz push.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`--queue`, `--auto-land-max` e um limite diário de lands; o doutor da fábrica precisa continuar passando antes de cada próximo trabalho.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "Aceite em runtime: `collie work task add --accept <cmd>` julga o resultado rodando, depois do check e do gate.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "Entrada por PRD: `collie work prd add`, `work plan lint` (recusa tarefa sem check executável) e `work plan apply --approve <sha256>`.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie work run --review` com personas, `--personas`, `--reviewer-model`; um revisor mudo registra a causa e tenta de novo uma vez.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "Bloco `factory` no `collie-work.json`, aplicado a partir do commit base; `work status` diz de onde veio cada valor.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`collie factory doctor` (nota de 0 a 3 por camada), `factory ratchet` e `factory bait`; a skill `factory-init` com modelos para Swift, Node e Python.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "Toda execução com `--auto-land` deixa um resumo imutável: quem aprovou, quem vetou, base antes e depois, e o que não foi feito.",
+        },
+        {
+          k: "new",
+          area: "loop",
+          t: "`--escalate agent:model,…` escolhe o agente e o modelo da tentativa pelo número dela; `work stop --now` descarta a tentativa em curso.",
+        },
+        {
+          k: "new",
+          area: "agents",
+          t: 'Um Pastor pode convocar um sub-Pastor (`summon --shepherd`); a árvore de agentes o aninha com o selo "Pastor" e "Encerrar ramo…".',
+        },
+        {
+          k: "new",
+          area: "agents",
+          t: "`collie ask --check <cmd> --tries N`: o ask só termina quando o check passa; um check que já passa antes da tarefa é recusado.",
+        },
+        {
+          k: "new",
+          area: "agents",
+          t: "Dispositivo: `screen`, `find --scroll`, `wait --stable`, `--then ui|screen`, `tap --text`, OCR no Android e no iOS, e moldura de aparelho no painel.",
+        },
+        {
+          k: "new",
+          area: "agents",
+          t: "Helper de acessibilidade no Android (`collie device helper`): leitura da tela em milissegundos, com volta ao `uiautomator`.",
+        },
+        {
+          k: "new",
+          area: "plugins",
+          t: "Os eventos de ferramenta do Cursor chegam ao contrato de plug-in, e o Vizinho e as cercas também valem em terminais Cursor.",
+        },
+        {
+          k: "imp",
+          area: "agents",
+          t: "Cursor: `summon --model` e `--trust`; um comando custom que roda `cursor-agent` é tratado como Cursor em todo lugar.",
+        },
+        {
+          k: "imp",
+          area: "agents",
+          t: "Sem aviso de resposta depois de o asker já ter lido com `ask result`; ask e wait do Cursor pelo MCP não estouram mais os 60 s.",
+        },
+        {
+          k: "imp",
+          area: "loop",
+          t: "Textos de revisão, notas e avisos passam por limpeza de segredos antes de chegar a você.",
+        },
+        {
+          k: "fix",
+          area: "agents",
+          t: "O prompt no Cursor é confirmado como enviado, e um prompt não enviado não é mais lido como ocioso.",
+        },
+        {
+          k: "fix",
+          area: "memory",
+          t: "O curador não promove mais para a memória do projeto armadilhas tiradas de arquivos descartáveis.",
+        },
+      ],
+    },
     {
       v: "0.1.9",
       date: "2026-11-21",
