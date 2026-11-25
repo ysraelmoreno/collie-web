@@ -172,7 +172,7 @@ const en: ChangelogCopy = {
         {
           area: "loop",
           title: "Factory paddock and automatic land (preview)",
-          body: "Mark a paddock as a factory (only you can) and `collie work run --auto-land` integrates the work locally once the gate, the review, the acceptance and the local CI pass. It never pushes or opens a PR. Each failure stops with its own reason and calls you. Preview: not yet validated end to end on a real repository.",
+          body: "Mark a paddock as a factory (only you can) and `collie work run --auto-land` integrates the work locally once the gate, the review, the acceptance and the local CI pass. It never pushes or opens a PR. Each failure stops with its own reason and calls you. Preview: validated end to end in a throwaway repository, across 10 scenarios (green land, red gate, red acceptance, a queue, the daily cap, a moved base, a stop during the land).",
           cmd: {
             prompt: "Run the approved work and land it if everything passes",
             command: "collie work run --auto-land",
@@ -297,6 +297,16 @@ const en: ChangelogCopy = {
           k: "fix",
           area: "memory",
           t: "The curator no longer promotes pitfalls taken from scratch files to the project memory.",
+        },
+        {
+          k: "fix",
+          area: "loop",
+          t: "An auto-land that stops without integrating saves the attempt's commits as a patch and reopens their tasks, so they never ride into another work's land.",
+        },
+        {
+          k: "fix",
+          area: "loop",
+          t: "A spent daily cap is refused at `work run`, before any agent or review is paid for.",
         },
       ],
     },
@@ -877,7 +887,7 @@ const pt: ChangelogCopy = {
         {
           area: "loop",
           title: "Cercado fábrica e land automático (prévia)",
-          body: "Marque um cercado como fábrica (só você consegue) e `collie work run --auto-land` integra o trabalho localmente quando gate, revisão, aceite e CI local passam. Nunca faz push nem abre PR. Cada falha para com o próprio motivo e chama você. Prévia: ainda não validado de ponta a ponta num repositório real.",
+          body: "Marque um cercado como fábrica (só você consegue) e `collie work run --auto-land` integra o trabalho localmente quando gate, revisão, aceite e CI local passam. Nunca faz push nem abre PR. Cada falha para com o próprio motivo e chama você. Prévia: validado de ponta a ponta num repositório descartável, em 10 cenários (land verde, gate vermelho, aceite vermelho, fila, limite diário, base que andou, parada durante o land).",
           cmd: {
             prompt: "Rode o trabalho aprovado e faça o land se tudo passar",
             command: "collie work run --auto-land",
@@ -1002,6 +1012,16 @@ const pt: ChangelogCopy = {
           k: "fix",
           area: "memory",
           t: "O curador não promove mais para a memória do projeto armadilhas tiradas de arquivos descartáveis.",
+        },
+        {
+          k: "fix",
+          area: "loop",
+          t: "Um auto-land que para sem integrar guarda os commits da tentativa num patch e reabre as tarefas, para eles nunca entrarem no land de outro trabalho.",
+        },
+        {
+          k: "fix",
+          area: "loop",
+          t: "Um limite diário esgotado é recusado já no `work run`, antes de pagar qualquer agente ou revisão.",
         },
       ],
     },
