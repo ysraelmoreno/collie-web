@@ -164,6 +164,61 @@ const en: ChangelogCopy = {
   },
   releases: [
     {
+      v: "0.2.3",
+      date: "2026-11-25",
+      headline: "Updates install in place, with no dmg to download.",
+      highlights: [
+        {
+          area: "updates",
+          title: "Updates through Sparkle",
+          body: 'The app checks for a new release, downloads it, verifies its signature and the Apple team, installs it and relaunches. No dmg to download by hand. While an agent is working, the relaunch waits for you ("Atualizar mesmo assim" or "Depois").',
+        },
+      ],
+      items: [
+        {
+          k: "imp",
+          area: "updates",
+          t: 'Preferências › Atualizações shows "Procurar agora" and the automatic-check switch. macOS asks for the admin password when `/Applications` needs it.',
+        },
+        {
+          k: "imp",
+          area: "updates",
+          t: "Local builds, not signed by the team, never update themselves. 0.2.x installs reach the first Sparkle version the old way, once.",
+        },
+        {
+          k: "fix",
+          area: "memory",
+          t: "Memory curator with Cursor: every call failed with `getaddrinfo ENOTFOUND api2.cursor.sh`, because the call's sandbox did not open the system name resolver. It does now.",
+        },
+      ],
+    },
+    {
+      v: "0.2.2",
+      date: "2026-11-25",
+      headline: "The memory curator works with Cursor.",
+      highlights: [],
+      items: [
+        {
+          k: "fix",
+          area: "memory",
+          t: "Memory curator with Cursor: every call failed with `Workspace directory does not exist`. The sandbox allowed the real path of the temp folder but not the `/var` link, so the CLI could not see its own workspace. It now gets the real path.",
+        },
+      ],
+    },
+    {
+      v: "0.2.1",
+      date: "2026-11-25",
+      headline: "The global memory works on a fresh install.",
+      highlights: [],
+      items: [
+        {
+          k: "fix",
+          area: "memory",
+          t: '"Memória" panel on a fresh install: the global scope showed `repo … does not exist`, because its folder is only created by the first write. It is now accepted before the folder exists.',
+        },
+      ],
+    },
+    {
       v: "0.2.0",
       date: "2026-11-25",
       headline:
@@ -878,6 +933,61 @@ const pt: ChangelogCopy = {
     ],
   },
   releases: [
+    {
+      v: "0.2.3",
+      date: "2026-11-25",
+      headline: "Atualizações instaladas no lugar, sem baixar dmg.",
+      highlights: [
+        {
+          area: "updates",
+          title: "Atualizações pelo Sparkle",
+          body: 'O app procura uma versão nova, baixa, confere a assinatura e o time da Apple, instala e reabre. Sem baixar dmg à mão. Com um agente trabalhando, a reabertura espera você ("Atualizar mesmo assim" ou "Depois").',
+        },
+      ],
+      items: [
+        {
+          k: "imp",
+          area: "updates",
+          t: 'Preferências › Atualizações mostra "Procurar agora" e a chave de busca automática. O macOS pede a senha de administrador quando `/Applications` exige.',
+        },
+        {
+          k: "imp",
+          area: "updates",
+          t: "Builds locais, sem a assinatura do time, nunca se atualizam. Instalações 0.2.x chegam à primeira versão com Sparkle do jeito antigo, uma vez.",
+        },
+        {
+          k: "fix",
+          area: "memory",
+          t: "Curador de memória com Cursor: toda chamada falhava com `getaddrinfo ENOTFOUND api2.cursor.sh`, porque o sandbox da chamada não abria o resolvedor de nomes do sistema. Agora abre.",
+        },
+      ],
+    },
+    {
+      v: "0.2.2",
+      date: "2026-11-25",
+      headline: "O curador de memória funciona com o Cursor.",
+      highlights: [],
+      items: [
+        {
+          k: "fix",
+          area: "memory",
+          t: "Curador de memória com Cursor: toda chamada falhava com `Workspace directory does not exist`. O sandbox permitia o caminho real da pasta temporária, mas não o link `/var`, e o CLI não enxergava a própria pasta. Agora recebe o caminho real.",
+        },
+      ],
+    },
+    {
+      v: "0.2.1",
+      date: "2026-11-25",
+      headline: "A memória global funciona numa instalação nova.",
+      highlights: [],
+      items: [
+        {
+          k: "fix",
+          area: "memory",
+          t: 'Painel "Memória" numa instalação nova: o escopo global mostrava `repo … does not exist`, porque a pasta só é criada na primeira gravação. Agora o caminho é aceito antes de a pasta existir.',
+        },
+      ],
+    },
     {
       v: "0.2.0",
       date: "2026-11-25",
