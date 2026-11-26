@@ -150,8 +150,8 @@ const en: ChangelogCopy = {
         items: [
           {
             area: "plugins",
-            title: "Plug-in marketplace",
-            body: "Find, install, update and withdraw plug-ins from a signed catalog, without picking a folder. Only you install or remove them. Later, third-party plug-ins reviewed by the owner.",
+            title: "A published plug-in catalog",
+            body: "The marketplace is in the app since 0.3.0, but no catalog is published yet. Next: the first signed catalog, and a repository where authors send plug-ins for review.",
           },
           {
             area: "app",
@@ -163,6 +163,110 @@ const en: ChangelogCopy = {
     ],
   },
   releases: [
+    {
+      v: "0.3.1",
+      date: "2026-11-26",
+      headline: "Asks to a dismissed terminal say what happened.",
+      highlights: [],
+      items: [
+        {
+          k: "fix",
+          area: "agents",
+          t: 'An ask still owed by a dismissed terminal now fails with "was dismissed before answering this ask: ask its replacement" instead of a bare "exited". `collie dismiss` returns the ids of the asks it dropped, and `collie ask result` lists your asks.',
+        },
+        {
+          k: "fix",
+          area: "agents",
+          t: '`collie reply` with no ask waiting says what to use instead: `collie notify "<text>"`.',
+        },
+        {
+          k: "fix",
+          area: "agents",
+          t: "A Cursor Shepherd hands the task over with `collie summon` and then ends its turn or runs `collie wait <name>`, instead of sleeping. A Cursor reads a message only when its turn ends, so a reply never reached a Shepherd that waited inside a command.",
+        },
+      ],
+    },
+    {
+      v: "0.3.0",
+      date: "2026-11-26",
+      headline: "Fields for agents, and a plug-in marketplace in the app.",
+      highlights: [
+        {
+          area: "agents",
+          title: "Fields, in preview",
+          body: "`collie summon <name> --field` gives the new agent its own worktree inside the paddock, with its own build. One integrator per paddock lands a field, and an `ask --check` that passes lands it too. A field that was not judged never lands, and dropping one by mistake loses nothing.",
+          cmd: {
+            prompt: "Summon an agent with its own field in this paddock",
+            command: "collie summon api --field",
+          },
+        },
+        {
+          area: "plugins",
+          title: "Plug-in marketplace, phase 1",
+          body: 'The "Descobrir" tab installs and updates plug-ins from a signed catalog, and checks each package before installing it. A plug-in from another author says so on its card and in the install confirmation. No catalog is published yet, so the tab stays empty for now.',
+        },
+      ],
+      items: [
+        {
+          k: "new",
+          area: "agents",
+          t: "`collie field list|land|drop`. `collie-work.json` sets how many fields a paddock takes (`fields.max`, 4 by default), and each field has its own sandbox.",
+        },
+        {
+          k: "new",
+          area: "plugins",
+          t: "A signed plug-in catalog (Ed25519, sequence number, stale after 30 days). A catalog signed by another key is refused, and installed plug-ins keep their source.",
+        },
+        {
+          k: "new",
+          area: "plugins",
+          t: 'A plug-in from another author shows "<author> · revisado pelo Collie", and its install confirmation names the author and, with a helper, the team that signed it.',
+        },
+        {
+          k: "new",
+          area: "plugins",
+          t: "`collie plugin validate <folder>` refuses what an install would refuse, plus the catalog's rules. It prints `ok` and the team, or one reason per line.",
+        },
+        {
+          k: "fix",
+          area: "loop",
+          t: "The gate sees a runner rewritten in an ignored folder (`node_modules/.bin`, `.venv/bin`): a gate or acceptance that runs a runner that changed since the first attempt is refused as tampered. A spec that cites `npm install` or `pip install` lets installs through.",
+        },
+        {
+          k: "fix",
+          area: "loop",
+          t: '"Cercado fábrica" says why it is disabled: off a git repository it shows "Precisa de um repositório git."',
+        },
+        {
+          k: "fix",
+          area: "agents",
+          t: 'A Cursor Shepherd asked to open a terminal did the work itself. Its plug-in now carries a rule: after `collie summon`, hand the task over with `collie ask <name> "<task>" --no-wait` and wait for the reply.',
+        },
+      ],
+    },
+    {
+      v: "0.2.4",
+      date: "2026-11-25",
+      headline: "The memory curator recovers on its own.",
+      highlights: [],
+      items: [
+        {
+          k: "fix",
+          area: "memory",
+          t: "An environment failure (sandbox, no network or DNS, workspace gone, provider unavailable) spends no attempt: the job waits for the next round instead of heading for `failed/`. A provider that never works is still paused.",
+        },
+        {
+          k: "fix",
+          area: "memory",
+          t: 'Parked curator jobs are deleted after 7 days, so the "Curador falhando" alert goes away once the curator works again.',
+        },
+        {
+          k: "fix",
+          area: "memory",
+          t: "A conversation from a folder that was moved or deleted is skipped, instead of writing its learnings to the global memory.",
+        },
+      ],
+    },
     {
       v: "0.2.3",
       date: "2026-11-25",
@@ -920,8 +1024,8 @@ const pt: ChangelogCopy = {
         items: [
           {
             area: "plugins",
-            title: "Marketplace de plug-ins",
-            body: "Achar, instalar, atualizar e recolher plug-ins por um catálogo assinado, sem escolher pasta. Só você instala ou remove. Depois, plug-ins de terceiros revisados pelo dono.",
+            title: "Um catálogo de plug-ins publicado",
+            body: "O marketplace está no app desde a 0.3.0, mas ainda não há catálogo publicado. Próximo passo: o primeiro catálogo assinado e um repositório onde autores mandam plug-ins para revisão.",
           },
           {
             area: "app",
@@ -933,6 +1037,110 @@ const pt: ChangelogCopy = {
     ],
   },
   releases: [
+    {
+      v: "0.3.1",
+      date: "2026-11-26",
+      headline: "Pedidos a um terminal dispensado dizem o que houve.",
+      highlights: [],
+      items: [
+        {
+          k: "fix",
+          area: "agents",
+          t: 'Um pedido que um terminal dispensado ainda devia agora falha com "was dismissed before answering this ask: ask its replacement", e não só "exited". `collie dismiss` devolve os ids dos pedidos que caíram, e `collie ask result` lista seus pedidos.',
+        },
+        {
+          k: "fix",
+          area: "agents",
+          t: '`collie reply` sem pedido esperando diz o que usar no lugar: `collie notify "<texto>"`.',
+        },
+        {
+          k: "fix",
+          area: "agents",
+          t: "Um Pastor no Cursor passa a tarefa com `collie summon` e depois encerra o turno ou roda `collie wait <nome>`, em vez de dormir. O Cursor só lê uma mensagem quando o turno acaba, então a resposta nunca chegava a um Pastor que esperava dentro de um comando.",
+        },
+      ],
+    },
+    {
+      v: "0.3.0",
+      date: "2026-11-26",
+      headline: "Fields para agentes e um marketplace de plug-ins no app.",
+      highlights: [
+        {
+          area: "agents",
+          title: "Fields, em prévia",
+          body: "`collie summon <nome> --field` dá ao novo agente um worktree só dele dentro do cercado, com build próprio. Um integrador por cercado faz o land de um field, e um `ask --check` que passa também faz. Um field sem julgamento nunca entra, e descartar um por engano não perde nada.",
+          cmd: {
+            prompt: "Convoque um agente com field próprio neste cercado",
+            command: "collie summon api --field",
+          },
+        },
+        {
+          area: "plugins",
+          title: "Marketplace de plug-ins, fase 1",
+          body: 'A aba "Descobrir" instala e atualiza plug-ins por um catálogo assinado e confere cada pacote antes de instalar. Um plug-in de outro autor diz isso no cartão e na confirmação de instalação. Ainda não há catálogo publicado, então a aba fica vazia por enquanto.',
+        },
+      ],
+      items: [
+        {
+          k: "new",
+          area: "agents",
+          t: "`collie field list|land|drop`. O `collie-work.json` define quantos fields um cercado aceita (`fields.max`, 4 por padrão), e cada field tem o próprio sandbox.",
+        },
+        {
+          k: "new",
+          area: "plugins",
+          t: "Um catálogo de plug-ins assinado (Ed25519, número de sequência, vencido depois de 30 dias). Catálogo assinado por outra chave é recusado, e plug-ins instalados guardam a origem.",
+        },
+        {
+          k: "new",
+          area: "plugins",
+          t: 'Um plug-in de outro autor mostra "<autor> · revisado pelo Collie", e a confirmação de instalação diz o autor e, com helper, o time que assinou.',
+        },
+        {
+          k: "new",
+          area: "plugins",
+          t: "`collie plugin validate <pasta>` recusa o que uma instalação recusaria, mais as regras do catálogo. Imprime `ok` e o time, ou um motivo por linha.",
+        },
+        {
+          k: "fix",
+          area: "loop",
+          t: "O gate enxerga um runner reescrito numa pasta ignorada (`node_modules/.bin`, `.venv/bin`): gate ou aceite que roda um runner que mudou desde a primeira tentativa é recusado como adulterado. Um spec que cita `npm install` ou `pip install` libera instalações.",
+        },
+        {
+          k: "fix",
+          area: "loop",
+          t: '"Cercado fábrica" diz por que está desligado: fora de um repositório git mostra "Precisa de um repositório git."',
+        },
+        {
+          k: "fix",
+          area: "agents",
+          t: 'Um Pastor no Cursor que pedia para abrir um terminal fazia o trabalho sozinho. O plug-in dele agora traz uma regra: depois de `collie summon`, passar a tarefa com `collie ask <nome> "<tarefa>" --no-wait` e esperar a resposta.',
+        },
+      ],
+    },
+    {
+      v: "0.2.4",
+      date: "2026-11-25",
+      headline: "O curador de memória se recupera sozinho.",
+      highlights: [],
+      items: [
+        {
+          k: "fix",
+          area: "memory",
+          t: "Falha de ambiente (sandbox, sem rede ou DNS, pasta de trabalho sumida, provedor indisponível) não gasta tentativa: o job espera a próxima rodada em vez de ir para `failed/`. Um provedor que nunca funciona continua sendo pausado.",
+        },
+        {
+          k: "fix",
+          area: "memory",
+          t: 'Jobs parados do curador são apagados depois de 7 dias, então o aviso "Curador falhando" some quando o curador volta a funcionar.',
+        },
+        {
+          k: "fix",
+          area: "memory",
+          t: "Uma conversa de uma pasta movida ou apagada é pulada, em vez de gravar o que aprendeu na memória global.",
+        },
+      ],
+    },
     {
       v: "0.2.3",
       date: "2026-11-25",
