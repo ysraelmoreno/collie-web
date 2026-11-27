@@ -7,6 +7,7 @@ import { diagram } from "./diagram";
 import { emulator } from "./emulator";
 import { factory } from "./factory";
 import { fields } from "./fields";
+import { harness } from "./harness";
 import { loop } from "./loop";
 import { memory } from "./memory";
 import { network } from "./network";
@@ -17,7 +18,7 @@ import type { Lang, PostCopy } from "./types";
 
 export type { PostBlock, PostCopy, PostSection } from "./types";
 
-// Index order (docs/prd/09-feature-posts.md): the basics first, then 01–14.
+// Index order (docs/prd/09-feature-posts.md): the basics first, then 01–15.
 const all = [
   shepherd,
   design,
@@ -34,6 +35,7 @@ const all = [
   factory,
   plugins,
   fields,
+  harness,
 ];
 
 export const postSlugs = all.map((p) => p.en.slug);

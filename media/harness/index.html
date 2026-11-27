@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=800" />
+    <title>Collie — harness clip</title>
+    <!-- /features/harness (in development, my-orchestrator-memory feat/trust-roadmap). Rule names, modes and the
+         "rode `collie harness check gate` antes" refusal from HarnessMatcher.swift / WorkConfigCommands.swift; the
+         collie-work.json is the shape of docs/referencia.md "Harness fora de laço". Rules: docs/prd/00-overview.md -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&display=block" />
+    <script src="../_theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Regular.ttf"); font-weight: 400; }
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Medium.ttf"); font-weight: 500; }
+      :root {
+        --bg: #15171c; --surface: #1f232b; --surface-2: #262a33; --border: #2e323b;
+        --fg: #f4f2ed; --text2: #8c95b8; --accent: #6e9bff; --accent-soft: #93a4ff;
+        --success: #6ee7b7; --warn: #ffb86b;
+        --ui: "Manrope", system-ui, sans-serif; --mono: "DM Mono", ui-monospace, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1280px; height: 800px; overflow: hidden; font-family: var(--ui); color: var(--fg);
+        background-color: var(--bg); background-image: radial-gradient(circle, var(--dot, #262a33) 1.5px, transparent 1.6px); background-size: 32px 32px; }
+      #stage { position: absolute; inset: 0 0 96px 0; }
+
+      .card { position: absolute; display: flex; flex-direction: column; background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; opacity: 0; }
+      .card header { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; background: var(--surface-2); border-bottom: 1.5px solid var(--border); font-family: var(--mono); font-size: 22px; white-space: nowrap; }
+      .card header b { font-weight: 500; }
+      .card header i { font-style: normal; color: var(--text2); }
+      .card .body { position: relative; flex: 1; padding: 14px; font-family: var(--mono); font-size: 22px; line-height: 32px; }
+      .ln { opacity: 0; white-space: pre; }
+      .ln.prompt { color: var(--fg); } .ln.call { color: var(--accent); } .ln.out { color: var(--text2); }
+      .ok { color: var(--success); } .bad { color: var(--warn); } .mut { color: var(--text2); }
+      .gap { margin-top: 12px; }
+
+      /* collie-work.json */
+      .js { white-space: pre; color: var(--text2); }
+      .js .k { color: var(--fg); } .js .s { color: var(--accent-soft); }
+      .rule { margin: 0 -14px; padding: 0 14px; border-left: 3px solid transparent; }
+      .ev { position: absolute; left: 14px; bottom: 14px; height: 40px; padding: 0 14px; line-height: 37px; border: 1.5px solid currentColor; border-radius: 20px; color: var(--success); opacity: 0; white-space: nowrap; }
+
+      .cap { position: absolute; left: 32px; right: 32px; bottom: 20px; height: 60px; display: flex; align-items: center; gap: 16px; padding: 0 22px;
+        background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; font-size: 26px; font-weight: 500; opacity: 0; white-space: nowrap; }
+      .cap b { font-family: var(--mono); font-weight: 500; color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="11.5" data-width="1280" data-height="800">
+      <div id="app" class="clip" data-start="0" data-duration="11.5" data-track-index="0">
+        <div id="stage">
+          <!-- Agent terminal -->
+          <div class="card" id="agent" style="left: 32px; top: 24px; width: 640px; height: 640px">
+            <header><b>backend</b><i>· claude</i></header>
+            <div class="body">
+              <p class="ln prompt" id="a1">› ship the fix</p>
+              <p class="ln call" id="a2">↳ git push --force origin main</p>
+              <p class="ln bad" id="a3">✗ block · guardrails.deny</p>
+              <p class="ln out" id="a4">  push forçado é do dono</p>
+              <p class="ln call gap" id="a5">↳ git push origin main</p>
+              <p class="ln bad" id="a6">✗ block · guardrails.requireBefore</p>
+              <p class="ln out" id="a7">  rode `collie harness check gate` antes</p>
+              <p class="ln call gap" id="a8">↳ collie harness check gate</p>
+              <p class="ln out" id="a9">$ scripts/ci/lint.sh   <span class="ok">✓ passed</span></p>
+              <p class="ln call gap" id="a10">↳ git push origin main</p>
+              <p class="ln ok" id="a11">✓ allow · main → origin/main</p>
+            </div>
+          </div>
+
+          <!-- The committed harness -->
+          <div class="card" id="cfg" style="left: 704px; top: 24px; width: 544px; height: 640px">
+            <header><b>collie-work.json</b><i>· HEAD a41c09e</i></header>
+            <div class="body js"><p><span class="k">"harness"</span>: {</p><p>  <span class="k">"commit"</span>: { <span class="k">"run"</span>: <span class="s">"gate"</span>,</p><p>              <span class="k">"mode"</span>: <span class="s">"block"</span> },</p><p>  <span class="k">"guardrails"</span>: {</p><div class="rule" id="rDeny"><p>    <span class="k">"deny"</span>: [{</p><p>      <span class="k">"match"</span>: <span class="s">"git push --force*"</span>,</p><p>      <span class="k">"mode"</span>: <span class="s">"block"</span> }],</p></div><div class="rule" id="rReq"><p>    <span class="k">"requireBefore"</span>: [{</p><p>      <span class="k">"match"</span>: <span class="s">"git push*"</span>,</p><p>      <span class="k">"check"</span>: <span class="s">"gate"</span> }],</p></div><p>    <span class="k">"protect"</span>: [<span class="s">"scripts/ci/**"</span>]</p><p>  }</p><p>}</p>
+              <span class="ev" id="ev">gate ✓ · tree 7c1e04b</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cap" id="c1"><b>1</b>Rules you commit, every agent follows.</div>
+        <div class="cap" id="c2"><b>2</b>Refused before it runs.</div>
+        <div class="cap" id="c3"><b>3</b>Check first, then it goes through.</div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const show = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, t);
+      const hide = (sel, t) => tl.to(sel, { opacity: 0, duration: 0.2 }, t);
+      const cap = (id, prev, t) => { if (prev) hide(prev, t); show(id, t); };
+      const hit = (sel, color, t) => tl.to(sel, { borderLeftColor: color, backgroundColor: css("--tint"), duration: 0.25 }, t);
+      const unhit = (sel, t) => tl.to(sel, { borderLeftColor: "rgba(0,0,0,0)", backgroundColor: "rgba(0,0,0,0)", duration: 0.25 }, t);
+
+      // 1 — the committed harness, the agent starts
+      cap("#c1", null, 0.3);
+      show("#agent", 0.3); show("#cfg", 0.3);
+      show("#a1", 0.9);
+
+      // 2 — a force push hits deny; a plain push hits requireBefore
+      cap("#c2", "#c1", 2.0);
+      show("#a2", 2.2);
+      hit("#rDeny", css("--accent"), 2.7); show("#a3", 2.7); show("#a4", 2.9);
+      unhit("#rDeny", 3.9);
+      show("#a5", 4.0);
+      hit("#rReq", css("--accent"), 4.5); show("#a6", 4.5); show("#a7", 4.7);
+
+      // 3 — the check passes on this tree; the push goes through
+      cap("#c3", "#c2", 5.9);
+      show("#a8", 6.1); show("#a9", 6.7);
+      show("#ev", 7.0);
+      show("#a10", 7.6); show("#a11", 8.1);
+      unhit("#rReq", 8.1);
+      // hold; short fade so the loop restarts from the empty state
+      tl.to(["#stage", ".cap"], { opacity: 0, duration: 0.3 }, 11.2);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
