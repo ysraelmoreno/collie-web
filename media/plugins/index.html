@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=800" />
+    <title>Collie — plugins clip</title>
+    <!-- docs/briefs/feature-clips-v03.md (0.1.x + 0.3.0: Descobrir, third-party authors, Vizinho fences).
+         App labels in pt-BR, as in the app (PluginsPreferences.swift, VizinhoKit). Rules: docs/prd/00-overview.md -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&display=block" />
+    <script src="../_theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Regular.ttf"); font-weight: 400; }
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Medium.ttf"); font-weight: 500; }
+      :root {
+        --bg: #15171c; --surface: #1f232b; --surface-2: #262a33; --border: #2e323b;
+        --fg: #f4f2ed; --text2: #8c95b8; --accent: #6e9bff; --accent-soft: #93a4ff;
+        --success: #6ee7b7; --warn: #ffb86b;
+        --ui: "Manrope", system-ui, sans-serif; --mono: "DM Mono", ui-monospace, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1280px; height: 800px; overflow: hidden; font-family: var(--ui); color: var(--fg);
+        background-color: var(--bg); background-image: radial-gradient(circle, var(--dot, #262a33) 1.5px, transparent 1.6px); background-size: 32px 32px; }
+      #stage { position: absolute; inset: 0 0 96px 0; }
+
+      .card { position: absolute; display: flex; flex-direction: column; background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; opacity: 0; }
+      .card header { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; background: var(--surface-2); border-bottom: 1.5px solid var(--border); font-family: var(--mono); font-size: 22px; white-space: nowrap; }
+      .card header b { font-weight: 500; }
+      .card header i { font-style: normal; color: var(--text2); }
+      .card .body { position: relative; flex: 1; padding: 14px; font-family: var(--mono); font-size: 22px; line-height: 32px; }
+      .ln { opacity: 0; white-space: nowrap; }
+      .ln.prompt { color: var(--fg); } .ln.call { color: var(--accent); } .ln.out { color: var(--text2); }
+      .ok { color: var(--success); } .bad { color: var(--warn); } .mut { color: var(--text2); }
+
+      /* Preferências › Plug-ins */
+      .bar { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; font-family: var(--ui); font-size: 22px; font-weight: 500; }
+      .seg { display: flex; padding: 3px; background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 9px; }
+      .seg span { padding: 2px 14px; border-radius: 6px; color: var(--text2); }
+      .seg span.on { background: var(--surface); color: var(--fg); font-weight: 800; box-shadow: 0 1px 3px var(--shadow, rgba(0,0,0,.45)); }
+      .pc { position: relative; height: 138px; margin-bottom: 12px; padding: 12px 14px 0 70px; background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 10px; opacity: 0; }
+      .pc .av { position: absolute; left: 14px; top: 14px; width: 42px; height: 42px; border-radius: 10px; background: var(--surface); color: var(--accent); font-family: var(--ui); font-size: 24px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+      .pc .nm { font-family: var(--ui); font-size: 24px; font-weight: 800; line-height: 30px; }
+      .pc .kind { display: inline-block; margin-left: 8px; padding: 0 10px; height: 26px; line-height: 23px; vertical-align: 3px; border: 1.5px solid var(--text2); border-radius: 13px; font-family: var(--mono); font-size: 22px; font-weight: 400; color: var(--text2); }
+      .pc .by { font-family: var(--mono); font-size: 22px; line-height: 30px; color: var(--text2); }
+      .pc .by.third { color: var(--accent-soft); }
+      .pc .sm { font-family: var(--ui); font-size: 22px; font-weight: 500; line-height: 30px; }
+      .pc .pm { font-family: var(--mono); font-size: 22px; line-height: 30px; color: var(--warn); }
+      .pc .side { position: absolute; right: 14px; top: 14px; text-align: right; font-family: var(--mono); font-size: 22px; color: var(--text2); }
+      .pc .act { position: absolute; right: 14px; top: 56px; height: 40px; }
+      .pbtn { position: absolute; right: 0; top: 0; padding: 4px 18px; border-radius: 8px; background: var(--accent); color: var(--on-accent, #15171c); font-family: var(--ui); font-size: 22px; font-weight: 800; white-space: nowrap; }
+      .inst { position: absolute; right: 0; top: 4px; font-family: var(--ui); font-size: 22px; font-weight: 800; color: var(--accent); white-space: nowrap; }
+
+      /* Install confirmation (sheet) */
+      .sheet { position: absolute; left: 128px; top: 112px; width: 640px; padding: 22px 24px; background: var(--surface); border: 1.5px solid var(--accent); border-radius: 12px; opacity: 0; box-shadow: 0 16px 40px var(--shadow, rgba(0,0,0,.45)); font-size: 22px; line-height: 30px; }
+      .sheet .t { font-size: 28px; font-weight: 800; line-height: 36px; margin-bottom: 10px; }
+      .sheet .cl { padding-left: 12px; border-left: 3px solid var(--accent); margin-bottom: 10px; font-weight: 500; }
+      .sheet .an { color: var(--warn); font-weight: 800; margin-bottom: 10px; }
+      .sheet .dt { font-family: var(--mono); color: var(--text2); }
+      .sheet .btns { display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px; }
+      .sheet .btn { padding: 6px 20px; border-radius: 8px; border: 1.5px solid var(--border); font-weight: 800; }
+      .sheet .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent, #15171c); }
+
+      /* Vizinho fences */
+      .fence { padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--surface-2); }
+      .fence.ok-b { border-color: var(--accent); }
+      #leashes { position: absolute; inset: 0; width: 1280px; height: 704px; pointer-events: none; }
+      .leash { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 6 8; opacity: 0; }
+
+      #cur { position: absolute; left: 0; top: 0; width: 30px; height: 36px; opacity: 0; z-index: 20; filter: drop-shadow(0 3px 4px rgba(0,0,0,.6)); }
+
+      .cap { position: absolute; left: 32px; right: 32px; bottom: 20px; height: 60px; display: flex; align-items: center; gap: 16px; padding: 0 22px;
+        background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; font-size: 26px; font-weight: 500; opacity: 0; white-space: nowrap; }
+      .cap b { font-family: var(--mono); font-weight: 500; color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="12" data-width="1280" data-height="800">
+      <div id="app" class="clip" data-start="0" data-duration="12" data-track-index="0">
+        <div id="stage">
+          <!-- 1–2: Preferências › Plug-ins, Descobrir -->
+          <div id="prefsWrap">
+          <div class="card" id="prefs" style="left: 160px; top: 24px; width: 960px; height: 640px">
+            <header><b>Preferências</b><i>· Plug-ins</i></header>
+            <div class="body" style="padding: 16px 18px">
+              <div class="bar">
+                <div class="seg"><span>Instalados</span><span class="on">Descobrir</span></div>
+                <div class="seg"><span class="on">Todos</span><span>Painéis</span><span>Agentes</span><span>Motores</span></div>
+              </div>
+              <div class="pc" id="pc1">
+                <span class="av">V</span>
+                <p class="nm">Vizinho<span class="kind">Painel</span></p>
+                <p class="by">Collie · revisado</p>
+                <p class="pm">⚠ Pode ler os arquivos do projeto</p>
+                <span class="side">0.1.0 · 0,4 MB</span>
+                <div class="act"><span class="inst">Instalado ✓</span></div>
+              </div>
+              <div class="pc" id="pc2">
+                <span class="av">L</span>
+                <p class="nm">Lint Lens<span class="kind">Agente</span></p>
+                <p class="by third">Ada Tools · revisado pelo Collie</p>
+                <p class="sm">Revisa o diff antes do commit.</p>
+                <span class="side">1.2.0 · 0,3 MB</span>
+                <div class="act"><span class="pbtn" id="b2">Instalar</span><span class="inst" id="i2" style="opacity: 0">Instalado ✓</span></div>
+              </div>
+              <div class="pc" id="pc3">
+                <span class="av">R</span>
+                <p class="nm">Release Notes<span class="kind">Painel</span></p>
+                <p class="by">Collie · revisado</p>
+                <p class="pm mut" style="color: var(--text2)">Sem rede e sem acesso ao projeto</p>
+                <span class="side">0.2.1 · 0,2 MB</span>
+                <div class="act"><span class="pbtn">Instalar</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sheet" id="sheet" style="left: 320px; top: 120px">
+            <p class="t">Instalar Lint Lens 1.2.0?</p>
+            <p class="cl">Do catálogo, publicado por Ada Tools · revisado pelo Collie</p>
+            <p class="an">O autor é Ada Tools, não o Collie.<br />O Collie revisou esta versão.</p>
+            <p class="dt">Autor: Ada Tools</p>
+            <p class="dt">0,3 MB</p>
+            <div class="btns"><span class="btn">Cancelar</span><span class="btn primary" id="ok">Instalar</span></div>
+          </div>
+          </div>
+
+          <!-- 3: Vizinho proposes a fence, the owner approves it, an agent follows it -->
+          <div class="card" id="viz" style="left: 32px; top: 24px; width: 512px; height: 640px">
+            <header><b>Vizinho</b><i>· cercas</i></header>
+            <div class="body">
+              <div id="f1">
+                <p class="mut">propostas.json</p>
+                <div class="fence">
+                  <p>require-test</p>
+                  <p class="mut">Sources/App · *Panel.swift</p>
+                  <p class="mut">9 de 9 têm teste par</p>
+                </div>
+              </div>
+              <div id="f2" style="margin-top: 52px">
+                <p class="mut">cercas.json <span class="ok">· aprovada pelo dono</span></p>
+                <div class="fence ok-b">
+                  <p>require-test</p>
+                  <p class="mut">Sources/App · *Panel.swift</p>
+                  <p class="mut">9 de 9 têm teste par</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <svg id="leashes" viewBox="0 0 1280 704"><path id="l1" class="leash" d="M288 234 L288 278" /></svg>
+          <div class="card" id="ag" style="left: 576px; top: 24px; width: 672px; height: 640px">
+            <header><b>ui-agent</b><i>· claude</i></header>
+            <div class="body">
+              <p class="ln prompt" id="g1">› add a log panel</p>
+              <p class="ln out" id="g2">editing Sources/App/LogPanel.swift</p>
+              <div class="ln" id="g3" style="margin-top: 10px; white-space: normal">
+                <p class="bad">Cerca quebrada (aprovada pelo dono</p>
+                <p class="bad">do projeto):</p>
+                <p>- LogPanel.swift não tem teste par;</p>
+                <p class="mut">  9 de 9 arquivos *Panel.swift</p>
+                <p class="mut">  desta pasta têm.</p>
+              </div>
+              <p class="ln out" id="g4" style="margin-top: 10px">editing Tests/AppTests/LogPanelTests.swift</p>
+              <p class="ln ok" id="g5">✓ fence holds · turn ends</p>
+            </div>
+          </div>
+        </div>
+
+        <svg id="cur" viewBox="0 0 30 36"><path d="M3 2 L3 29 L10 23 L15 34 L20 32 L15 21 L24 21 Z" fill="#f4f2ed" stroke="#15171c" stroke-width="2" stroke-linejoin="round"/></svg>
+
+        <div class="cap" id="c1"><b>1</b>Plug-ins from a signed catalog.</div>
+        <div class="cap" id="c2"><b>2</b>Every author, named before install.</div>
+        <div class="cap" id="c3"><b>3</b>Rules your agents follow.</div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const show = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, t);
+      const hide = (sel, t) => tl.to(sel, { opacity: 0, duration: 0.2 }, t);
+      const cap = (id, prev, t) => { if (prev) hide(prev, t); show(id, t); };
+      const click = (sel, t) => { tl.to(sel, { scale: 0.93, duration: 0.1, transformOrigin: "50% 50%" }, t); tl.to(sel, { scale: 1, duration: 0.15 }, t + 0.1); };
+
+      // 1 — the signed catalog, in Descobrir
+      cap("#c1", null, 0.3);
+      show("#prefs", 0.3);
+      show("#pc1", 0.7); show("#pc2", 1.0); show("#pc3", 1.3);
+
+      // 2 — install a third-party plug-in: the author is named first
+      cap("#c2", "#c1", 3.2);
+      tl.set("#cur", { x: 1120, y: 560 }, 3.2);
+      tl.to("#cur", { opacity: 1, duration: 0.2 }, 3.3);
+      tl.to("#cur", { x: 1025, y: 352, duration: 0.6, ease: "power2.inOut" }, 3.4);
+      click("#b2", 4.05);
+      show("#sheet", 4.3);
+      tl.to("#cur", { x: 868, y: 418, duration: 0.6, ease: "power2.inOut" }, 5.6);
+      click("#ok", 6.3);
+      hide("#sheet", 6.55);
+      hide("#b2", 6.7); show("#i2", 6.75);
+      tl.to("#cur", { x: 1180, y: 640, opacity: 0, duration: 0.4 }, 6.9);
+
+      // 3 — Vizinho: a proposed fence, approved by the owner, followed by the agent
+      cap("#c3", "#c2", 7.5);
+      hide("#prefsWrap", 7.5);
+      show("#viz", 7.6);
+      tl.fromTo("#f1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 7.8);
+      tl.set("#f2", { opacity: 0 }, 0);
+      show("#l1", 8.3);
+      show("#f2", 8.5);
+      show("#ag", 8.9); show("#g1", 9.1); show("#g2", 9.4); show("#g3", 9.8);
+      show("#g4", 10.6); show("#g5", 11.0);
+      // hold; short fade so the loop restarts from the empty state
+      tl.to(["#stage", ".cap"], { opacity: 0, duration: 0.3 }, 11.7);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=800" />
+    <title>Collie — fields clip</title>
+    <!-- docs/briefs/feature-clips-v03.md (0.3.0 preview: summon --field, ask --check lands, field list).
+         Field states and paths from Workspace.swift / FieldCommands.swift at v0.3.1. Rules: docs/prd/00-overview.md -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&display=block" />
+    <script src="../_theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Regular.ttf"); font-weight: 400; }
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Medium.ttf"); font-weight: 500; }
+      :root {
+        --bg: #15171c; --surface: #1f232b; --surface-2: #262a33; --border: #2e323b;
+        --fg: #f4f2ed; --text2: #8c95b8; --accent: #6e9bff; --accent-soft: #93a4ff;
+        --success: #6ee7b7; --warn: #ffb86b;
+        --ui: "Manrope", system-ui, sans-serif; --mono: "DM Mono", ui-monospace, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1280px; height: 800px; overflow: hidden; font-family: var(--ui); color: var(--fg);
+        background-color: var(--bg); background-image: radial-gradient(circle, var(--dot, #262a33) 1.5px, transparent 1.6px); background-size: 32px 32px; }
+      #stage { position: absolute; inset: 0 0 96px 0; }
+
+      .card { position: absolute; display: flex; flex-direction: column; background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; opacity: 0; }
+      .card header { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; background: var(--surface-2); border-bottom: 1.5px solid var(--border); font-family: var(--mono); font-size: 22px; white-space: nowrap; }
+      .card header b { font-weight: 500; }
+      .card header i { font-style: normal; color: var(--text2); }
+      .card .body { position: relative; flex: 1; padding: 14px; font-family: var(--mono); font-size: 22px; line-height: 32px; }
+      .ln { opacity: 0; white-space: pre; }
+      .ln.prompt { color: var(--fg); } .ln.call { color: var(--accent); } .ln.out { color: var(--text2); }
+      .ok { color: var(--success); } .bad { color: var(--warn); } .mut { color: var(--text2); }
+      .gap { margin-top: 12px; }
+
+      /* Paddock */
+      .abs { position: absolute; left: 16px; white-space: nowrap; }
+      .field { position: absolute; left: 16px; right: 16px; padding: 10px 14px; border: 1.5px dashed var(--accent); border-radius: 10px; background: var(--surface-2); opacity: 0; }
+      .field .nm { font-weight: 500; }
+      .chip { position: absolute; right: 12px; top: 10px; height: 32px; padding: 0 12px; line-height: 29px; border: 1.5px solid currentColor; border-radius: 16px; opacity: 0; }
+      .chip.working { color: var(--text2); } .chip.ready { color: var(--accent); } .chip.landing { color: var(--accent-soft); } .chip.landed { color: var(--success); }
+      .integ { position: absolute; left: 16px; top: 128px; height: 40px; padding: 0 14px; line-height: 37px; border: 1.5px solid var(--border); border-radius: 10px; color: var(--text2); }
+
+      .cap { position: absolute; left: 32px; right: 32px; bottom: 20px; height: 60px; display: flex; align-items: center; gap: 16px; padding: 0 22px;
+        background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; font-size: 26px; font-weight: 500; opacity: 0; white-space: nowrap; }
+      .cap b { font-family: var(--mono); font-weight: 500; color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="11.5" data-width="1280" data-height="800">
+      <div id="app" class="clip" data-start="0" data-duration="11.5" data-track-index="0">
+        <div id="stage">
+          <!-- Shepherd -->
+          <div class="card" id="shep" style="left: 32px; top: 24px; width: 600px; height: 640px">
+            <header><b>shepherd</b><i>· claude</i></header>
+            <div class="body">
+              <p class="ln prompt" id="s1">› split the API work off</p>
+              <p class="ln call" id="s2">↳ collie summon api --field</p>
+              <p class="ln out" id="s3">field-api · collie/field/api</p>
+              <p class="ln call gap" id="s4">↳ collie ask api "…" --check "npm test"</p>
+              <p class="ln out" id="s5">$ npm test   <span class="ok">✓ 12 passing</span></p>
+              <p class="ln ok" id="s6">field api landed · 3f9c2a1e</p>
+              <p class="ln call gap" id="s7">↳ collie field list</p>
+              <p class="ln out" id="s8">name  branch            commits  state</p>
+              <p class="ln" id="s9">api   collie/field/api  2        <span class="ok">landed</span></p>
+              <p class="ln" id="s10">web   collie/field/web  1        <span class="mut">working</span></p>
+            </div>
+          </div>
+
+          <!-- Paddock with its fields -->
+          <div class="card" id="pad" style="left: 664px; top: 24px; width: 584px; height: 640px">
+            <header><b>collie-web</b><i>· paddock</i></header>
+            <div class="body" style="padding: 0">
+              <p class="abs mut" style="top: 14px">collie/collie-web</p>
+              <p class="abs ok" id="cNew" style="top: 46px; opacity: 0">● 3f9c2a1e add /health</p>
+              <p class="abs" id="cBase" style="top: 46px">● a41c09e2 <span class="mut">base</span></p>
+              <div class="integ" id="integ">↑ integrator</div>
+
+              <div class="field" id="fApi" style="top: 196px; height: 196px">
+                <p class="nm">field-api</p>
+                <p class="mut">collie/field/api</p>
+                <span class="chip working" id="aW">working</span>
+                <span class="chip ready" id="aR">ready</span>
+                <span class="chip landing" id="aL">landing</span>
+                <span class="chip landed" id="aD">landed</span>
+                <p class="ln out" id="w1" style="margin-top: 8px">editing src/api/health.ts</p>
+                <p class="ln out" id="w2">git commit -m "add /health"</p>
+              </div>
+
+              <div class="field" id="fWeb" style="top: 412px; height: 164px">
+                <p class="nm">field-web</p>
+                <p class="mut">collie/field/web</p>
+                <span class="chip working" style="opacity: 1">working</span>
+                <p class="out mut" style="margin-top: 8px">editing src/web/nav.tsx</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cap" id="c1"><b>1</b>Each agent, its own worktree.</div>
+        <div class="cap" id="c2"><b>2</b>A passing check lands it.</div>
+        <div class="cap" id="c3"><b>3</b>One integrator per paddock.</div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const show = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, t);
+      const hide = (sel, t) => tl.to(sel, { opacity: 0, duration: 0.2 }, t);
+      const cap = (id, prev, t) => { if (prev) hide(prev, t); show(id, t); };
+      const swap = (from, to, t) => { hide(from, t); show(to, t + 0.05); };
+
+      // 1 — summon with --field: its own worktree inside the paddock
+      cap("#c1", null, 0.3);
+      show("#shep", 0.3); show("#pad", 0.3); show("#fWeb", 0.5);
+      show("#s1", 0.7); show("#s2", 1.1);
+      show("#fApi", 1.5); show("#aW", 1.5); show("#s3", 1.7);
+      show("#w1", 2.3); show("#w2", 2.8);
+
+      // 2 — the check passes, the integrator lands the field
+      cap("#c2", "#c1", 3.7);
+      show("#s4", 3.9);
+      swap("#aW", "#aR", 4.5);
+      show("#s5", 4.7);
+      swap("#aR", "#aL", 5.1);
+      tl.to("#integ", { borderColor: css("--accent"), color: css("--accent"), duration: 0.2 }, 5.1);
+      tl.to("#cBase", { y: 32, duration: 0.3, ease: "power2.out" }, 5.6);
+      show("#cNew", 5.7);
+      swap("#aL", "#aD", 5.7);
+      show("#s6", 6.0);
+
+      // 3 — field list: one integrator, one land at a time
+      cap("#c3", "#c2", 7.0);
+      show("#s7", 7.2); show("#s8", 7.6); show("#s9", 7.8); show("#s10", 8.0);
+      // hold; short fade so the loop restarts from the empty state
+      tl.to(["#stage", ".cap"], { opacity: 0, duration: 0.3 }, 11.2);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

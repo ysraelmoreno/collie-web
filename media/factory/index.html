@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=800" />
+    <title>Collie — factory clip</title>
+    <!-- docs/briefs/feature-clips-v03.md (0.2.0 preview: work run --review --auto-land). Rules: docs/prd/00-overview.md -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;800&display=block" />
+    <script src="../_theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Regular.ttf"); font-weight: 400; }
+      @font-face { font-family: "DM Mono"; src: url("fonts/DMMono-Medium.ttf"); font-weight: 500; }
+      :root {
+        --bg: #15171c; --surface: #1f232b; --surface-2: #262a33; --border: #2e323b;
+        --fg: #f4f2ed; --text2: #8c95b8; --accent: #6e9bff; --accent-soft: #93a4ff;
+        --success: #6ee7b7; --warn: #ffb86b;
+        --ui: "Manrope", system-ui, sans-serif; --mono: "DM Mono", ui-monospace, monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1280px; height: 800px; overflow: hidden; font-family: var(--ui); color: var(--fg);
+        background-color: var(--bg); background-image: radial-gradient(circle, var(--dot, #262a33) 1.5px, transparent 1.6px); background-size: 32px 32px; }
+      #stage { position: absolute; inset: 0 0 96px 0; }
+
+      .card { position: absolute; display: flex; flex-direction: column; background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; opacity: 0; }
+      .card header { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; background: var(--surface-2); border-bottom: 1.5px solid var(--border); font-family: var(--mono); font-size: 22px; white-space: nowrap; }
+      .card header b { font-weight: 500; }
+      .card header i { font-style: normal; color: var(--text2); }
+      .card .body { position: relative; flex: 1; padding: 14px; font-family: var(--mono); font-size: 22px; line-height: 32px; }
+      .ln { opacity: 0; white-space: nowrap; }
+      .ln.prompt { color: var(--fg); } .ln.call { color: var(--accent); } .ln.out { color: var(--text2); }
+      .ok { color: var(--success); } .bad { color: var(--warn); } .mut { color: var(--text2); }
+      .slot { position: relative; height: 32px; }
+      .slot .ln { position: absolute; left: 0; top: 0; }
+      .hd { position: absolute; left: 14px; top: 0; height: 40px; line-height: 40px; opacity: 0; }
+
+      /* Land conditions */
+      .row { position: absolute; left: 16px; right: 16px; height: 52px; padding: 0 14px 0 58px; display: flex; align-items: center; justify-content: space-between;
+        background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 10px; opacity: 0; }
+      .row .tt { font-family: var(--ui); font-size: 24px; font-weight: 800; }
+      .row .ck { font-family: var(--mono); font-size: 22px; color: var(--text2); }
+      .row .ic { position: absolute; left: 14px; top: 9px; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 22px; font-weight: 500; line-height: 1; }
+      .ic.pend { border: 2px solid var(--text2); }
+      .ic.pass { background: var(--success); color: var(--on-accent, #15171c); opacity: 0; }
+
+      .done-box { position: absolute; left: 16px; right: 16px; top: 466px; padding: 14px 16px; border: 1.5px solid var(--success); border-radius: 10px; font-family: var(--mono); font-size: 22px; line-height: 32px; opacity: 0; }
+
+      .cap { position: absolute; left: 32px; right: 32px; bottom: 20px; height: 60px; display: flex; align-items: center; gap: 16px; padding: 0 22px;
+        background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; font-size: 26px; font-weight: 500; opacity: 0; white-space: nowrap; }
+      .cap b { font-family: var(--mono); font-weight: 500; color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="11.5" data-width="1280" data-height="800">
+      <div id="app" class="clip" data-start="0" data-duration="11.5" data-track-index="0">
+        <div id="stage">
+          <!-- Shepherd -->
+          <div class="card" id="shep" style="left: 32px; top: 24px; width: 600px; height: 148px">
+            <header><b>shepherd</b><i>· claude</i></header>
+            <div class="body">
+              <p class="ln prompt" id="s1">› land the auth tasks</p>
+              <p class="ln call" id="s2">↳ collie work run --review --auto-land</p>
+            </div>
+          </div>
+
+          <!-- Attempt terminals, same slot -->
+          <div class="card" id="att" style="left: 32px; top: 196px; width: 600px; height: 168px">
+            <header style="position: relative"><span class="hd" id="h1"><b>loop-fix-login-1</b> <i>· claude</i></span><span class="hd" id="h2"><b>loop-fix-login-2</b> <i>· claude</i></span></header>
+            <div class="body">
+              <p class="ln prompt" id="a1">› task: fix login redirect</p>
+              <p class="ln out" id="a2">editing src/auth/redirect.ts</p>
+              <div class="slot"><p class="ln out" id="a3">git commit -m "fix redirect"</p><p class="ln out" id="b3">git commit -m "fix redirect + test"</p></div>
+            </div>
+          </div>
+
+          <!-- Review by personas -->
+          <div class="card" id="rev" style="left: 32px; top: 388px; width: 600px; height: 276px">
+            <header><b>review</b><i>· personas</i></header>
+            <div class="body">
+              <p class="ln" id="p1"><span class="ok">✓</span> correção</p>
+              <div class="slot">
+                <p class="ln" id="p2f"><span class="bad">✗</span> testes <span class="bad">[major] src/auth/redirect.ts:42</span></p>
+                <p class="ln" id="p2p"><span class="ok">✓</span> testes</p>
+              </div>
+              <p class="ln" id="p3"><span class="ok">✓</span> segurança</p>
+              <div class="slot" style="margin-top: 8px">
+                <p class="ln bad" id="v1">veto · next attempt</p>
+                <p class="ln ok" id="v2">clean review</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Auto-land conditions -->
+          <div class="card" id="land" style="left: 664px; top: 24px; width: 584px; height: 640px">
+            <header><b>auto-land</b><i>· paddock auth</i></header>
+            <div class="body" style="padding: 0">
+              <div class="row" id="r1" style="top: 16px"><span class="ic pend"></span><span class="ic pass" id="r1p">✓</span><p class="tt">gate on HEAD</p></div>
+              <div class="row" id="r2" style="top: 78px"><span class="ic pend"></span><span class="ic pass" id="r2p">✓</span><p class="tt">review</p><p class="ck">each task</p></div>
+              <div class="row" id="r3" style="top: 140px"><span class="ic pend"></span><span class="ic pass" id="r3p">✓</span><p class="tt">acceptance</p><p class="ck">--accept</p></div>
+              <div class="row" id="r4" style="top: 202px"><span class="ic pend"></span><span class="ic pass" id="r4p">✓</span><p class="tt">CI</p><p class="ck">local</p></div>
+              <div class="row" id="r5" style="top: 264px"><span class="ic pend"></span><span class="ic pass" id="r5p">✓</span><p class="tt">clean tree</p></div>
+              <div class="row" id="r6" style="top: 326px"><span class="ic pend"></span><span class="ic pass" id="r6p">✓</span><p class="tt">base unmoved</p></div>
+              <div class="row" id="r7" style="top: 388px"><span class="ic pend"></span><span class="ic pass" id="r7p">✓</span><p class="tt">landed</p><p class="ck">merge --no-ff</p></div>
+              <div class="done-box" id="done">
+                <span class="ok">stopReason: landed</span><br />
+                no push · ready for you to<br />
+                review and push
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cap" id="c1"><b>1</b>Each attempt, reviewed by personas.</div>
+        <div class="cap" id="c2"><b>2</b>Gate, review and acceptance, in order.</div>
+        <div class="cap" id="c3"><b>3</b>Landed locally. Ready to push.</div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const show = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, t);
+      const hide = (sel, t) => tl.to(sel, { opacity: 0, duration: 0.2 }, t);
+      const cap = (id, prev, t) => { if (prev) hide(prev, t); show(id, t); };
+      const pass = (r, t) => { tl.set(`${r}p`, { opacity: 1 }, t); tl.to(`${r} .pend`, { opacity: 0, duration: 0.1 }, t); };
+
+      // 1 — attempt 1 vetoed by a persona, attempt 2 clean
+      cap("#c1", null, 0.3);
+      show("#shep", 0.3); show("#s1", 0.5); show("#s2", 0.9);
+      show("#att", 1.3); show("#h1", 1.3);
+      show("#a1", 1.5); show("#a2", 1.8); show("#a3", 2.1);
+      show("#rev", 2.4); show("#p1", 2.6); show("#p2f", 2.9); show("#p3", 3.2); show("#v1", 3.5);
+      // a fresh attempt
+      hide(["#h1", "#a3", "#p2f", "#v1"], 4.1);
+      show("#h2", 4.2); show("#b3", 4.5);
+      show("#p2p", 4.8); show("#v2", 5.1);
+
+      // 2 — the land conditions, in order
+      cap("#c2", "#c1", 5.6);
+      show("#land", 5.6);
+      ["#r1", "#r2", "#r3", "#r4", "#r5", "#r6", "#r7"].forEach((r, i) => show(r, 5.8 + i * 0.08));
+      ["#r1", "#r2", "#r3", "#r4", "#r5", "#r6"].forEach((r, i) => pass(r, 6.4 + i * 0.4));
+
+      // 3 — landed locally, never pushed
+      cap("#c3", "#c2", 8.9);
+      pass("#r7", 9.0);
+      show("#done", 9.3);
+      // hold; short fade so the loop restarts from the empty state
+      tl.to(["#stage", ".cap"], { opacity: 0, duration: 0.3 }, 11.2);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

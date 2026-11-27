@@ -5,16 +5,19 @@ import { design } from "./design";
 import { devices } from "./devices";
 import { diagram } from "./diagram";
 import { emulator } from "./emulator";
+import { factory } from "./factory";
+import { fields } from "./fields";
 import { loop } from "./loop";
 import { memory } from "./memory";
 import { network } from "./network";
+import { plugins } from "./plugins";
 import { sandbox } from "./sandbox";
 import { shepherd } from "./shepherd";
 import type { Lang, PostCopy } from "./types";
 
 export type { PostBlock, PostCopy, PostSection } from "./types";
 
-// Index order (docs/prd/09-feature-posts.md): the basics first, then 01–11.
+// Index order (docs/prd/09-feature-posts.md): the basics first, then 01–14.
 const all = [
   shepherd,
   design,
@@ -28,6 +31,9 @@ const all = [
   artifacts,
   diagram,
   sandbox,
+  factory,
+  plugins,
+  fields,
 ];
 
 export const postSlugs = all.map((p) => p.en.slug);
