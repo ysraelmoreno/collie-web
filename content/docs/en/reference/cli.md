@@ -199,7 +199,7 @@ tabs:
 | Command | What it does | Who |
 |---|---|---|
 | `collie app list` / `collie app attach <id>` | Paddock apps; opens one in a panel. | Any |
-| `collie app new <id> [--name …]` / `collie app adopt <id> --url http://127.0.0.1:<port> [--start …] [--cmd name=METHOD:/path,…]` | Starts a new app or adopts a local service. | Any |
+| `collie app new <id> [--name …]` / `collie app adopt <id> --url http://127.0.0.1:<port> [--start …] [--cmd name=METHOD:/path,…]` | Starts a new app or adopts a local service ([Paddock apps](/docs/features/apps)). | Any |
 | `collie app context <id>` / `collie app snapshot <id>` / `collie app event <seq>` / `collie app logs <id> [--lines <n>]` | What the app shows, its events, its log. | Any |
 | `collie app approve <id> --paddock …` | Approves an app. | App |
 

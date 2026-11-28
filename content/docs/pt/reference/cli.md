@@ -199,7 +199,7 @@ tabs:
 | Comando | O que faz | Quem |
 |---|---|---|
 | `collie app list` / `collie app attach <id>` | Apps do cercado; abre um num painel. | Qualquer |
-| `collie app new <id> [--name …]` / `collie app adopt <id> --url http://127.0.0.1:<porta> [--start …] [--cmd nome=METODO:/caminho,…]` | Cria um app novo ou adota um serviço local. | Qualquer |
+| `collie app new <id> [--name …]` / `collie app adopt <id> --url http://127.0.0.1:<porta> [--start …] [--cmd nome=METODO:/caminho,…]` | Cria um app novo ou adota um serviço local ([Apps do cercado](/pt/docs/features/apps)). | Qualquer |
 | `collie app context <id>` / `collie app snapshot <id>` / `collie app event <seq>` / `collie app logs <id> [--lines <n>]` | O que o app mostra, os eventos, o log. | Qualquer |
 | `collie app approve <id> --paddock …` | Aprova um app. | Você |
 

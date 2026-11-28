@@ -165,3 +165,4 @@ per line.
 - Hook events and how Claude and Cursor deliver them: [Agent hooks](/docs/internals/agent-hooks).
 - A herd can open a plug-in's panel and carry its `stateKeys` ([Herds](/docs/features/herds)).
 - The helper's sandbox is stricter than a terminal's ([Sandbox](/docs/features/sandbox)).
+- Paddock apps reuse the same manifest, from the project instead of an install: [Paddock apps](/docs/features/apps).

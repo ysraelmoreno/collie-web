@@ -168,3 +168,4 @@ motivo por linha.
 - Os eventos dos ganchos e como Claude e Cursor os entregam: [Ganchos de agente](/pt/docs/internals/agent-hooks).
 - Um rebanho pode abrir o painel de um plug-in e levar os `stateKeys` dele ([Rebanhos](/pt/docs/features/herds)).
 - O sandbox do helper é mais fechado que o de um terminal ([Sandbox](/pt/docs/features/sandbox)).
+- Os apps do cercado usam o mesmo manifesto, vindo do projeto em vez de instalado: [Apps do cercado](/pt/docs/features/apps).

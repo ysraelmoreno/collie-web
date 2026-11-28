@@ -46,6 +46,7 @@ export const docsNav: DocNavGroup[] = [
       "features/devices",
       "features/design-and-artifacts",
       "features/plugins",
+      "features/apps",
     ],
   },
   {
