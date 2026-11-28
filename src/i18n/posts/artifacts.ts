@@ -30,11 +30,11 @@ export const artifacts: Post = {
         blocks: [
           {
             kind: "p",
-            text: "Feedback on a page is usually a sentence like \"the middle card, make it stand out\". Typed into a chat, the agent has to guess which card you mean.",
+            text: 'Feedback on a page is usually a sentence like "the middle card, make it stand out". Typed into a chat, the agent has to guess which card you mean.',
           },
           {
             kind: "p",
-            text: "Here you click the card and write the note. The comment is tied to that spot, and the agent sees it with your next prompt. Example: you ask for the pricing page as a prototype, pin \"Make this plan the highlighted one\" on the middle plan, and the agent edits the page and replies.",
+            text: 'Here you click the card and write the note. The comment is tied to that spot, and the agent sees it with your next prompt. Example: you ask for the pricing page as a prototype, pin "Make this plan the highlighted one" on the middle plan, and the agent edits the page and replies.',
           },
         ],
       },
@@ -54,7 +54,7 @@ export const artifacts: Post = {
           },
           {
             kind: "p",
-            text: "The agent reads your pending comments in its next prompt, once, marked as data and not as orders, one per line, cut at 1200 bytes. It answers with collie comment reply <id> \"<text>\", and the reply shows in the Preview conversation. collie comment list [--open] shows its comments with the full text.",
+            text: 'The agent reads your pending comments in its next prompt, once, marked as data and not as orders, one per line, cut at 1200 bytes. It answers with collie comment reply <id> "<text>", and the reply shows in the Preview conversation. collie comment list [--open] shows its comments with the full text.',
           },
           {
             kind: "p",
@@ -96,7 +96,8 @@ export const artifacts: Post = {
                 title: "Export a deck",
                 body: "A slides page becomes an editable .pptx or a PDF. Register the page with artifact add, then export by its id (artifact list shows it). The app must be open.",
                 ask: "Export the deck as PowerPoint",
-                command: "collie artifact export <id> --format pptx --out deck.pptx",
+                command:
+                  "collie artifact export <id> --format pptx --out deck.pptx",
               },
             ],
           },
@@ -141,14 +142,35 @@ export const artifacts: Post = {
       },
     ],
     commands: [
-      { command: "collie artifact new deck|dashboard|doc|prototype [name]", does: "Write a template page in docs/pages and open a Preview" },
-      { command: "collie preview get", does: "Page file, URL and the last 20 page errors" },
-      { command: "collie preview screenshot [--full-page] [--out <file>]", does: "Screenshot of the Preview" },
-      { command: "collie comment list [--open]", does: "The comments addressed to this terminal" },
-      { command: 'collie comment reply <id> "<text>"', does: "Answer a comment" },
-      { command: "collie artifact export <id> --format pptx|pdf [--out <file>]", does: "Export a slides page" },
+      {
+        command: "collie artifact new deck|dashboard|doc|prototype [name]",
+        does: "Write a template page in docs/pages and open a Preview",
+      },
+      {
+        command: "collie preview get",
+        does: "Page file, URL and the last 20 page errors",
+      },
+      {
+        command: "collie preview screenshot [--full-page] [--out <file>]",
+        does: "Screenshot of the Preview",
+      },
+      {
+        command: "collie comment list [--open]",
+        does: "The comments addressed to this terminal",
+      },
+      {
+        command: 'collie comment reply <id> "<text>"',
+        does: "Answer a comment",
+      },
+      {
+        command: "collie artifact export <id> --format pptx|pdf [--out <file>]",
+        does: "Export a slides page",
+      },
       { command: "collie artifact libs", does: "List the offline libraries" },
-      { command: "collie artifact import-claude <links>", does: "Import claude.ai artifacts" },
+      {
+        command: "collie artifact import-claude <links>",
+        does: "Import claude.ai artifacts",
+      },
     ],
     related: ["design", "browser", "diagram"],
   },
@@ -181,11 +203,11 @@ export const artifacts: Post = {
         blocks: [
           {
             kind: "p",
-            text: "Feedback sobre uma página costuma ser uma frase como \"o cartão do meio, faz ele se destacar\". Digitada num chat, o agente precisa adivinhar de qual cartão você fala.",
+            text: 'Feedback sobre uma página costuma ser uma frase como "o cartão do meio, faz ele se destacar". Digitada num chat, o agente precisa adivinhar de qual cartão você fala.',
           },
           {
             kind: "p",
-            text: "Aqui você clica no cartão e escreve a nota. O comentário fica preso àquele ponto, e o agente o vê no próximo prompt. Exemplo: você pede a página de preços como protótipo, fixa \"Make this plan the highlighted one\" no plano do meio, e o agente edita a página e responde.",
+            text: 'Aqui você clica no cartão e escreve a nota. O comentário fica preso àquele ponto, e o agente o vê no próximo prompt. Exemplo: você pede a página de preços como protótipo, fixa "Make this plan the highlighted one" no plano do meio, e o agente edita a página e responde.',
           },
         ],
       },
@@ -205,7 +227,7 @@ export const artifacts: Post = {
           },
           {
             kind: "p",
-            text: "O agente lê seus comentários pendentes no próximo prompt, uma vez, marcados como dados e não como ordens, um por linha, com o texto cortado em 1200 bytes. Ele responde com collie comment reply <id> \"<texto>\", e a resposta aparece na conversa da Prévia. collie comment list [--open] mostra os comentários dele com o texto completo.",
+            text: 'O agente lê seus comentários pendentes no próximo prompt, uma vez, marcados como dados e não como ordens, um por linha, com o texto cortado em 1200 bytes. Ele responde com collie comment reply <id> "<texto>", e a resposta aparece na conversa da Prévia. collie comment list [--open] mostra os comentários dele com o texto completo.',
           },
           {
             kind: "p",
@@ -247,7 +269,8 @@ export const artifacts: Post = {
                 title: "Exporte um deck",
                 body: "Uma página de slides vira um .pptx editável ou um PDF. Registre a página com artifact add e exporte pelo id (artifact list mostra). O app precisa estar aberto.",
                 ask: "Exporte o deck para PowerPoint",
-                command: "collie artifact export <id> --format pptx --out deck.pptx",
+                command:
+                  "collie artifact export <id> --format pptx --out deck.pptx",
               },
             ],
           },
@@ -292,14 +315,36 @@ export const artifacts: Post = {
       },
     ],
     commands: [
-      { command: "collie artifact new deck|dashboard|doc|prototype [nome]", does: "Grava uma página-modelo em docs/pages e abre uma Prévia" },
-      { command: "collie preview get", does: "Arquivo da página, URL e os últimos 20 erros da página" },
-      { command: "collie preview screenshot [--full-page] [--out <arquivo>]", does: "Screenshot da Prévia" },
-      { command: "collie comment list [--open]", does: "Os comentários endereçados a este terminal" },
-      { command: 'collie comment reply <id> "<texto>"', does: "Responde a um comentário" },
-      { command: "collie artifact export <id> --format pptx|pdf [--out <arquivo>]", does: "Exporta uma página de slides" },
+      {
+        command: "collie artifact new deck|dashboard|doc|prototype [nome]",
+        does: "Grava uma página-modelo em docs/pages e abre uma Prévia",
+      },
+      {
+        command: "collie preview get",
+        does: "Arquivo da página, URL e os últimos 20 erros da página",
+      },
+      {
+        command: "collie preview screenshot [--full-page] [--out <arquivo>]",
+        does: "Screenshot da Prévia",
+      },
+      {
+        command: "collie comment list [--open]",
+        does: "Os comentários endereçados a este terminal",
+      },
+      {
+        command: 'collie comment reply <id> "<texto>"',
+        does: "Responde a um comentário",
+      },
+      {
+        command:
+          "collie artifact export <id> --format pptx|pdf [--out <arquivo>]",
+        does: "Exporta uma página de slides",
+      },
       { command: "collie artifact libs", does: "Lista as bibliotecas offline" },
-      { command: "collie artifact import-claude <links>", does: "Importa artifacts do claude.ai" },
+      {
+        command: "collie artifact import-claude <links>",
+        does: "Importa artifacts do claude.ai",
+      },
     ],
     related: ["design", "browser", "diagram"],
   },

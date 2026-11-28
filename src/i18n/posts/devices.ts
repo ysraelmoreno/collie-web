@@ -49,7 +49,7 @@ export const devices: Post = {
               "Acting: tap takes coordinates or --ref e3. swipe, text and key (Back, Enter, Home… or a keycode) cover the rest. logcat, install and launch appear in the Android examples.",
               "Reach: a terminal needs a leash to the panel on the canvas. A panel in a dock is reachable by every terminal.",
               "Panel input: click or drag is touch, scroll is scroll, and the keyboard works with the panel focused. Android has **Voltar** (Back), **Início** (Home) and **Recentes** (Recents) in the bar. iOS has **Início** and **Bloquear** (Lock).",
-              "iOS coordinates are in points, not pixels. collie device list shows platform: \"ios\", the UDID as the serial, and the state (booted or shutdown).",
+              'iOS coordinates are in points, not pixels. collie device list shows platform: "ios", the UDID as the serial, and the state (booted or shutdown).',
               "Powered-off Android emulators show up in collie device list as avd:<name> with state off. Opening the panel of one boots it and waits for the boot, up to 3 minutes. Collie never turns an emulator off.",
             ],
           },
@@ -70,7 +70,8 @@ export const devices: Post = {
               {
                 title: "Android: fetch the scrcpy server (source builds)",
                 body: "If you build Collie from source, download the pinned scrcpy server (v5.0.1, checked by SHA-256) before bundling. Without it the panel shows an error.",
-                command: "scripts/fetch-scrcpy-server.sh && scripts/bundle-app.sh",
+                command:
+                  "scripts/fetch-scrcpy-server.sh && scripts/bundle-app.sh",
               },
               {
                 title: "iOS Simulator: Xcode and AXe",
@@ -127,17 +128,47 @@ export const devices: Post = {
       },
     ],
     commands: [
-      { command: "collie panel open device --serial <serial|UDID>", does: "Open a **Dispositivo** panel (the only online device without --serial)." },
-      { command: "collie device list", does: "List devices: serial, state, model, product, panels." },
-      { command: "collie device screenshot", does: "Save a PNG; returns path, width and height." },
+      {
+        command: "collie panel open device --serial <serial|UDID>",
+        does: "Open a **Dispositivo** panel (the only online device without --serial).",
+      },
+      {
+        command: "collie device list",
+        does: "List devices: serial, state, model, product, panels.",
+      },
+      {
+        command: "collie device screenshot",
+        does: "Save a PNG; returns path, width and height.",
+      },
       { command: "collie device ui", does: "UI tree with refs (e1, e2, …)." },
-      { command: "collie device tap 540 1200", does: "Tap at coordinates; or collie device tap --ref e3." },
-      { command: "collie device swipe 540 1800 540 600", does: "Swipe between two points." },
-      { command: "collie device text \"hello\"", does: "Type text (ASCII only)." },
-      { command: "collie device key Back", does: "Press a key (Enter, Home… or a keycode)." },
-      { command: "collie device logcat --lines 100 --grep MyApp", does: "Read the Android log." },
-      { command: "collie device install app.apk", does: "Install an APK on Android." },
-      { command: "collie device launch com.example.app", does: "Launch an Android app." },
+      {
+        command: "collie device tap 540 1200",
+        does: "Tap at coordinates; or collie device tap --ref e3.",
+      },
+      {
+        command: "collie device swipe 540 1800 540 600",
+        does: "Swipe between two points.",
+      },
+      {
+        command: 'collie device text "hello"',
+        does: "Type text (ASCII only).",
+      },
+      {
+        command: "collie device key Back",
+        does: "Press a key (Enter, Home… or a keycode).",
+      },
+      {
+        command: "collie device logcat --lines 100 --grep MyApp",
+        does: "Read the Android log.",
+      },
+      {
+        command: "collie device install app.apk",
+        does: "Install an APK on Android.",
+      },
+      {
+        command: "collie device launch com.example.app",
+        does: "Launch an Android app.",
+      },
     ],
     related: ["emulator", "browser", "network"],
   },
@@ -189,7 +220,7 @@ export const devices: Post = {
               "Agir: tap aceita coordenadas ou --ref e3. swipe, text e key (Back, Enter, Home… ou um keycode) cobrem o resto. logcat, install e launch aparecem nos exemplos do Android.",
               "Alcance: um terminal precisa de uma coleira até o painel no canvas. Um painel na doca vale para todos os terminais.",
               "Entrada no painel: clique ou arrastar é toque, rolagem é scroll, e o teclado funciona com o painel em foco. O Android tem Voltar, Início e Recentes na barra. O iOS tem Início e Bloquear.",
-              "No iOS as coordenadas são em pontos, não em pixels. collie device list mostra platform: \"ios\", o UDID como serial e o estado (booted ou shutdown).",
+              'No iOS as coordenadas são em pontos, não em pixels. collie device list mostra platform: "ios", o UDID como serial e o estado (booted ou shutdown).',
               "Emuladores Android desligados aparecem em collie device list como avd:<nome> com state off. Abrir o painel de um liga o emulador e espera o boot, até 3 minutos. O Collie nunca desliga um emulador.",
             ],
           },
@@ -208,9 +239,11 @@ export const devices: Post = {
                 command: "brew install --cask android-platform-tools",
               },
               {
-                title: "Android: baixe o servidor do scrcpy (build do código-fonte)",
+                title:
+                  "Android: baixe o servidor do scrcpy (build do código-fonte)",
                 body: "Se você compila o Collie do código-fonte, baixe o servidor do scrcpy fixado (v5.0.1, conferido por SHA-256) antes de gerar o app. Sem ele o painel mostra erro.",
-                command: "scripts/fetch-scrcpy-server.sh && scripts/bundle-app.sh",
+                command:
+                  "scripts/fetch-scrcpy-server.sh && scripts/bundle-app.sh",
               },
               {
                 title: "Simulador iOS: Xcode e AXe",
@@ -267,17 +300,50 @@ export const devices: Post = {
       },
     ],
     commands: [
-      { command: "collie panel open device --serial <serial|UDID>", does: "Abre um painel Dispositivo (sem --serial, o único aparelho online)." },
-      { command: "collie device list", does: "Lista os aparelhos: serial, estado, modelo, produto, painéis." },
-      { command: "collie device screenshot", does: "Grava um PNG; devolve caminho, largura e altura." },
-      { command: "collie device ui", does: "Árvore de UI com refs (e1, e2, …)." },
-      { command: "collie device tap 540 1200", does: "Toca nas coordenadas; ou collie device tap --ref e3." },
-      { command: "collie device swipe 540 1800 540 600", does: "Desliza entre dois pontos." },
-      { command: "collie device text \"ola mundo\"", does: "Digita texto (só ASCII)." },
-      { command: "collie device key Back", does: "Aperta uma tecla (Enter, Home… ou um keycode)." },
-      { command: "collie device logcat --lines 100 --grep MyApp", does: "Lê o log do Android." },
-      { command: "collie device install app.apk", does: "Instala um APK no Android." },
-      { command: "collie device launch com.example.app", does: "Abre um app Android." },
+      {
+        command: "collie panel open device --serial <serial|UDID>",
+        does: "Abre um painel Dispositivo (sem --serial, o único aparelho online).",
+      },
+      {
+        command: "collie device list",
+        does: "Lista os aparelhos: serial, estado, modelo, produto, painéis.",
+      },
+      {
+        command: "collie device screenshot",
+        does: "Grava um PNG; devolve caminho, largura e altura.",
+      },
+      {
+        command: "collie device ui",
+        does: "Árvore de UI com refs (e1, e2, …).",
+      },
+      {
+        command: "collie device tap 540 1200",
+        does: "Toca nas coordenadas; ou collie device tap --ref e3.",
+      },
+      {
+        command: "collie device swipe 540 1800 540 600",
+        does: "Desliza entre dois pontos.",
+      },
+      {
+        command: 'collie device text "ola mundo"',
+        does: "Digita texto (só ASCII).",
+      },
+      {
+        command: "collie device key Back",
+        does: "Aperta uma tecla (Enter, Home… ou um keycode).",
+      },
+      {
+        command: "collie device logcat --lines 100 --grep MyApp",
+        does: "Lê o log do Android.",
+      },
+      {
+        command: "collie device install app.apk",
+        does: "Instala um APK no Android.",
+      },
+      {
+        command: "collie device launch com.example.app",
+        does: "Abre um app Android.",
+      },
     ],
     related: ["emulator", "browser", "network"],
   },

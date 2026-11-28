@@ -78,7 +78,8 @@ export const browser: Post = {
                 title: "Open a browser panel",
                 body: "Headless by default. Add --visible to get a normal panel on the canvas, in the paddock of the terminal.",
                 ask: "Open the signup page in a browser and check the form",
-                command: "collie panel open browser --url http://localhost:3000 --visible",
+                command:
+                  "collie panel open browser --url http://localhost:3000 --visible",
               },
               {
                 title: "Read the page",
@@ -160,17 +161,41 @@ export const browser: Post = {
       },
     ],
     commands: [
-      { command: "collie panel open browser --url <url> [--visible]", does: "Open a browser panel (headless without --visible)" },
-      { command: "collie panel list", does: "List the panels your terminal reaches" },
-      { command: "collie panel close <name>", does: "Close a browser you opened" },
-      { command: "collie browser snapshot", does: "Compact page tree with element refs" },
+      {
+        command: "collie panel open browser --url <url> [--visible]",
+        does: "Open a browser panel (headless without --visible)",
+      },
+      {
+        command: "collie panel list",
+        does: "List the panels your terminal reaches",
+      },
+      {
+        command: "collie panel close <name>",
+        does: "Close a browser you opened",
+      },
+      {
+        command: "collie browser snapshot",
+        does: "Compact page tree with element refs",
+      },
       { command: "collie browser click <ref>", does: "Click an element" },
       { command: "collie browser fill <ref> <text>", does: "Fill an input" },
-      { command: "collie browser wait --text <text>", does: "Wait for text (or --selector)" },
+      {
+        command: "collie browser wait --text <text>",
+        does: "Wait for text (or --selector)",
+      },
       { command: "collie browser console", does: "Recent console lines" },
-      { command: "collie browser resize --width <px> --height <px>", does: "Set the page viewport" },
-      { command: "collie browser emulate --color-scheme dark", does: "Emulate color scheme or reduced motion" },
-      { command: "collie browser screenshot --full-page --out <file>", does: "Save a PNG of the page" },
+      {
+        command: "collie browser resize --width <px> --height <px>",
+        does: "Set the page viewport",
+      },
+      {
+        command: "collie browser emulate --color-scheme dark",
+        does: "Emulate color scheme or reduced motion",
+      },
+      {
+        command: "collie browser screenshot --full-page --out <file>",
+        does: "Save a PNG of the page",
+      },
     ],
     related: ["artifacts", "network", "devices"],
   },
@@ -251,7 +276,8 @@ export const browser: Post = {
                 title: "Abra um painel de navegador",
                 body: "Headless por padrão. Com --visible nasce um painel normal no canvas, no cercado do terminal.",
                 ask: "Abra a página de cadastro num navegador e confira o formulário",
-                command: "collie panel open browser --url http://localhost:3000 --visible",
+                command:
+                  "collie panel open browser --url http://localhost:3000 --visible",
               },
               {
                 title: "Leia a página",
@@ -333,17 +359,44 @@ export const browser: Post = {
       },
     ],
     commands: [
-      { command: "collie panel open browser --url <url> [--visible]", does: "Abre um painel de navegador (headless sem --visible)" },
-      { command: "collie panel list", does: "Lista os painéis que o seu terminal alcança" },
-      { command: "collie panel close <nome>", does: "Fecha um navegador que você abriu" },
-      { command: "collie browser snapshot", does: "Árvore compacta da página com refs de elementos" },
+      {
+        command: "collie panel open browser --url <url> [--visible]",
+        does: "Abre um painel de navegador (headless sem --visible)",
+      },
+      {
+        command: "collie panel list",
+        does: "Lista os painéis que o seu terminal alcança",
+      },
+      {
+        command: "collie panel close <nome>",
+        does: "Fecha um navegador que você abriu",
+      },
+      {
+        command: "collie browser snapshot",
+        does: "Árvore compacta da página com refs de elementos",
+      },
       { command: "collie browser click <ref>", does: "Clica num elemento" },
-      { command: "collie browser fill <ref> <texto>", does: "Preenche um campo" },
-      { command: "collie browser wait --text <texto>", does: "Espera um texto (ou --selector)" },
+      {
+        command: "collie browser fill <ref> <texto>",
+        does: "Preenche um campo",
+      },
+      {
+        command: "collie browser wait --text <texto>",
+        does: "Espera um texto (ou --selector)",
+      },
       { command: "collie browser console", does: "Últimas linhas do console" },
-      { command: "collie browser resize --width <px> --height <px>", does: "Define o viewport da página" },
-      { command: "collie browser emulate --color-scheme dark", does: "Emula esquema de cor ou movimento reduzido" },
-      { command: "collie browser screenshot --full-page --out <arquivo>", does: "Salva um PNG da página" },
+      {
+        command: "collie browser resize --width <px> --height <px>",
+        does: "Define o viewport da página",
+      },
+      {
+        command: "collie browser emulate --color-scheme dark",
+        does: "Emula esquema de cor ou movimento reduzido",
+      },
+      {
+        command: "collie browser screenshot --full-page --out <arquivo>",
+        does: "Salva um PNG da página",
+      },
     ],
     related: ["artifacts", "network", "devices"],
   },

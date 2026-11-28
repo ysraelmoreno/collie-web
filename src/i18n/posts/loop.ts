@@ -51,12 +51,12 @@ export const loop: Post = {
               "A task passes when the check exits 0, the gate (if you set one) exits 0, there is a new commit on the same branch, and no tracked file is dirty.",
               "If it fails, the reason and the tail of the check output become a work note, so the next agent reads it. What the attempt did is saved as a patch and the worktree goes back to the starting commit. After `--tries` failures the task is deferred.",
               "The check and the loop's git run under the paddock's strict sandbox. The check gets only toolchain variables (PATH, HOME, LANG…), never tokens or `SSH_AUTH_SOCK`.",
-              "When the loop ends, the Shepherd gets a `[collie] Laço de \"…\" terminou: …` notice (the app's messages are in Portuguese). To wait for it, use `collie work wait` and read `collie work status`.",
+              'When the loop ends, the Shepherd gets a `[collie] Laço de "…" terminou: …` notice (the app\'s messages are in Portuguese). To wait for it, use `collie work wait` and read `collie work status`.',
             ],
           },
           {
             kind: "p",
-            text: "The **Trabalho** (Work) panel shows a tag under the terminal like `em laço: <task> (tentativa 2/3) · 4/10 no total`. While the loop runs, the \"…\" menu has **Parar laço** (Stop loop), which is the same as `collie work stop`.",
+            text: 'The **Trabalho** (Work) panel shows a tag under the terminal like `em laço: <task> (tentativa 2/3) · 4/10 no total`. While the loop runs, the "…" menu has **Parar laço** (Stop loop), which is the same as `collie work stop`.',
           },
         ],
       },
@@ -73,9 +73,11 @@ export const loop: Post = {
                 ask: "Run the open tasks until the tests pass",
               },
               {
-                title: "Break the request into tasks, each with a spec and a check",
+                title:
+                  "Break the request into tasks, each with a spec and a check",
                 body: "The agent writes a spec file and proposes a check for each task, shows everything in the chat, and waits for your answer before it adds anything.",
-                command: 'collie work task add "Fix login redirect" --spec docs/specs/login-redirect.md --check "npm test"',
+                command:
+                  'collie work task add "Fix login redirect" --spec docs/specs/login-redirect.md --check "npm test"',
               },
               {
                 title: "Start the loop",
@@ -146,13 +148,35 @@ export const loop: Post = {
       },
     ],
     commands: [
-      { command: "/collie:loop <request>", does: "Teaches a Claude or Cursor Shepherd the loop procedure" },
-      { command: "collie work task add <title> --spec <file.md> --check \"<cmd>\"", does: "Adds a task with its spec and check" },
-      { command: "collie work run --max <n>", does: "Asks for approval, then runs the open tasks" },
-      { command: "collie work status --events", does: "Shows the loop state and its latest events" },
-      { command: "collie work wait", does: "Waits for a change or the end of the loop" },
-      { command: "collie work stop", does: "Ends after the verdict of the current attempt" },
-      { command: "collie work task reopen <task>", does: "Puts a deferred task back in the queue" },
+      {
+        command: "/collie:loop <request>",
+        does: "Teaches a Claude or Cursor Shepherd the loop procedure",
+      },
+      {
+        command:
+          'collie work task add <title> --spec <file.md> --check "<cmd>"',
+        does: "Adds a task with its spec and check",
+      },
+      {
+        command: "collie work run --max <n>",
+        does: "Asks for approval, then runs the open tasks",
+      },
+      {
+        command: "collie work status --events",
+        does: "Shows the loop state and its latest events",
+      },
+      {
+        command: "collie work wait",
+        does: "Waits for a change or the end of the loop",
+      },
+      {
+        command: "collie work stop",
+        does: "Ends after the verdict of the current attempt",
+      },
+      {
+        command: "collie work task reopen <task>",
+        does: "Puts a deferred task back in the queue",
+      },
     ],
     related: ["sandbox", "shepherd"],
   },
@@ -206,12 +230,12 @@ export const loop: Post = {
               "A tarefa passa quando o check sai com 0, o portão (se houver) sai com 0, existe um commit novo na mesma branch e nenhum arquivo rastreado está sujo.",
               "Se falha, o motivo e o fim da saída do check viram uma nota do trabalho, que o próximo agente lê. O que a tentativa fez vira um patch e a worktree volta ao commit inicial. Depois de `--tries` falhas, a tarefa é adiada.",
               "O check e o git do laço rodam sob o sandbox estrito do cercado. O check recebe só as variáveis do toolchain (PATH, HOME, LANG…), nunca tokens nem `SSH_AUTH_SOCK`.",
-              "Quando o laço termina, o Pastor recebe o aviso `[collie] Laço de \"…\" terminou: …`. Para esperar, use `collie work wait` e leia o `collie work status`.",
+              'Quando o laço termina, o Pastor recebe o aviso `[collie] Laço de "…" terminou: …`. Para esperar, use `collie work wait` e leia o `collie work status`.',
             ],
           },
           {
             kind: "p",
-            text: "O painel Trabalho mostra uma tag sob o terminal, como `em laço: <tarefa> (tentativa 2/3) · 4/10 no total`. Enquanto o laço roda, o menu \"…\" tem **Parar laço**, igual a `collie work stop`.",
+            text: 'O painel Trabalho mostra uma tag sob o terminal, como `em laço: <tarefa> (tentativa 2/3) · 4/10 no total`. Enquanto o laço roda, o menu "…" tem **Parar laço**, igual a `collie work stop`.',
           },
         ],
       },
@@ -230,7 +254,8 @@ export const loop: Post = {
               {
                 title: "Quebre o pedido em tarefas, cada uma com spec e check",
                 body: "O agente escreve um arquivo de spec e propõe um check para cada tarefa, mostra tudo no chat e espera a sua resposta antes de adicionar qualquer coisa.",
-                command: 'collie work task add "Corrigir redirect do login" --spec docs/specs/login-redirect.md --check "npm test"',
+                command:
+                  'collie work task add "Corrigir redirect do login" --spec docs/specs/login-redirect.md --check "npm test"',
               },
               {
                 title: "Inicie o laço",
@@ -272,7 +297,7 @@ export const loop: Post = {
           },
           {
             kind: "note",
-            text: "\"Sempre neste cercado\" é uma chave que só o app liga. Ligada, o `work run` desse cercado começa sem cartão e o Pastor recebe um aviso com as tarefas e os checks. Os limites, o sandbox e a regra da árvore limpa continuam valendo.",
+            text: '"Sempre neste cercado" é uma chave que só o app liga. Ligada, o `work run` desse cercado começa sem cartão e o Pastor recebe um aviso com as tarefas e os checks. Os limites, o sandbox e a regra da árvore limpa continuam valendo.',
           },
         ],
       },
@@ -301,13 +326,35 @@ export const loop: Post = {
       },
     ],
     commands: [
-      { command: "/collie:loop <pedido>", does: "Ensina o procedimento do laço a um Pastor Claude ou Cursor" },
-      { command: "collie work task add <título> --spec <arquivo.md> --check \"<cmd>\"", does: "Adiciona uma tarefa com spec e check" },
-      { command: "collie work run --max <n>", does: "Pede aprovação e roda as tarefas abertas" },
-      { command: "collie work status --events", does: "Mostra o estado do laço e os últimos eventos" },
-      { command: "collie work wait", does: "Espera uma mudança ou o fim do laço" },
-      { command: "collie work stop", does: "Termina depois do veredito da tentativa atual" },
-      { command: "collie work task reopen <tarefa>", does: "Devolve uma tarefa adiada à fila" },
+      {
+        command: "/collie:loop <pedido>",
+        does: "Ensina o procedimento do laço a um Pastor Claude ou Cursor",
+      },
+      {
+        command:
+          'collie work task add <título> --spec <arquivo.md> --check "<cmd>"',
+        does: "Adiciona uma tarefa com spec e check",
+      },
+      {
+        command: "collie work run --max <n>",
+        does: "Pede aprovação e roda as tarefas abertas",
+      },
+      {
+        command: "collie work status --events",
+        does: "Mostra o estado do laço e os últimos eventos",
+      },
+      {
+        command: "collie work wait",
+        does: "Espera uma mudança ou o fim do laço",
+      },
+      {
+        command: "collie work stop",
+        does: "Termina depois do veredito da tentativa atual",
+      },
+      {
+        command: "collie work task reopen <tarefa>",
+        does: "Devolve uma tarefa adiada à fila",
+      },
     ],
     related: ["sandbox", "shepherd"],
   },

@@ -67,13 +67,15 @@ export const diagram: Post = {
               {
                 title: "Open a diagram panel",
                 body: "Point it at a .drawio path inside the project. Without --file the app uses docs/diagrams/<panel>.drawio.",
-                command: "collie panel open diagram --file docs/diagrams/checkout.drawio",
+                command:
+                  "collie panel open diagram --file docs/diagrams/checkout.drawio",
               },
               {
                 title: "Ask for the diagram",
                 body: "The agent reads the code and draws it from Mermaid text.",
                 ask: "Draw the checkout flow from the code",
-                command: 'collie diagram mermaid "flowchart LR; Cart --> Payment --> Order"',
+                command:
+                  'collie diagram mermaid "flowchart LR; Cart --> Payment --> Order"',
               },
               {
                 title: "Adjust by hand",
@@ -88,7 +90,8 @@ export const diagram: Post = {
               {
                 title: "Export a picture",
                 body: "A PNG or SVG for a doc or a PR.",
-                command: "collie diagram export --format svg --out docs/diagrams/checkout.svg",
+                command:
+                  "collie diagram export --format svg --out docs/diagrams/checkout.svg",
               },
               {
                 title: "Commit it",
@@ -137,12 +140,28 @@ export const diagram: Post = {
       },
     ],
     commands: [
-      { command: "collie panel open diagram --file <path.drawio>", does: "Open a diagram panel on a file in the project" },
-      { command: 'collie diagram mermaid "<text>" [--page <name>]', does: "Draw from Mermaid, as editable shapes" },
+      {
+        command: "collie panel open diagram --file <path.drawio>",
+        does: "Open a diagram panel on a file in the project",
+      },
+      {
+        command: 'collie diagram mermaid "<text>" [--page <name>]',
+        does: "Draw from Mermaid, as editable shapes",
+      },
       { command: "collie diagram get", does: "Current file, XML and pages" },
-      { command: "collie diagram set --xml <xml> | --from <file>", does: "Replace the whole diagram" },
-      { command: "collie diagram export --format png|svg [--page <name>] [--out <file>]", does: "Export a PNG or SVG" },
-      { command: "collie diagram screenshot [--out <file>]", does: "Picture of the panel" },
+      {
+        command: "collie diagram set --xml <xml> | --from <file>",
+        does: "Replace the whole diagram",
+      },
+      {
+        command:
+          "collie diagram export --format png|svg [--page <name>] [--out <file>]",
+        does: "Export a PNG or SVG",
+      },
+      {
+        command: "collie diagram screenshot [--out <file>]",
+        does: "Picture of the panel",
+      },
     ],
     related: ["artifacts", "design", "shepherd"],
   },
@@ -212,13 +231,15 @@ export const diagram: Post = {
               {
                 title: "Abra um painel de diagrama",
                 body: "Aponte para um caminho .drawio dentro do projeto. Sem --file o app usa docs/diagrams/<painel>.drawio.",
-                command: "collie panel open diagram --file docs/diagrams/checkout.drawio",
+                command:
+                  "collie panel open diagram --file docs/diagrams/checkout.drawio",
               },
               {
                 title: "Peça o diagrama",
                 body: "O agente lê o código e desenha a partir de texto Mermaid.",
                 ask: "Desenhe o fluxo de checkout a partir do código",
-                command: 'collie diagram mermaid "flowchart LR; Cart --> Payment --> Order"',
+                command:
+                  'collie diagram mermaid "flowchart LR; Cart --> Payment --> Order"',
               },
               {
                 title: "Ajuste à mão",
@@ -233,7 +254,8 @@ export const diagram: Post = {
               {
                 title: "Exporte uma imagem",
                 body: "Um PNG ou SVG para um doc ou um PR.",
-                command: "collie diagram export --format svg --out docs/diagrams/checkout.svg",
+                command:
+                  "collie diagram export --format svg --out docs/diagrams/checkout.svg",
               },
               {
                 title: "Faça o commit",
@@ -282,12 +304,28 @@ export const diagram: Post = {
       },
     ],
     commands: [
-      { command: "collie panel open diagram --file <caminho.drawio>", does: "Abre um painel de diagrama num arquivo do projeto" },
-      { command: 'collie diagram mermaid "<texto>" [--page <nome>]', does: "Desenha a partir de Mermaid, em formas editáveis" },
+      {
+        command: "collie panel open diagram --file <caminho.drawio>",
+        does: "Abre um painel de diagrama num arquivo do projeto",
+      },
+      {
+        command: 'collie diagram mermaid "<texto>" [--page <nome>]',
+        does: "Desenha a partir de Mermaid, em formas editáveis",
+      },
       { command: "collie diagram get", does: "Arquivo atual, XML e páginas" },
-      { command: "collie diagram set --xml <xml> | --from <arquivo>", does: "Troca o diagrama inteiro" },
-      { command: "collie diagram export --format png|svg [--page <nome>] [--out <arquivo>]", does: "Exporta um PNG ou SVG" },
-      { command: "collie diagram screenshot [--out <arquivo>]", does: "Imagem do painel" },
+      {
+        command: "collie diagram set --xml <xml> | --from <arquivo>",
+        does: "Troca o diagrama inteiro",
+      },
+      {
+        command:
+          "collie diagram export --format png|svg [--page <nome>] [--out <arquivo>]",
+        does: "Exporta um PNG ou SVG",
+      },
+      {
+        command: "collie diagram screenshot [--out <arquivo>]",
+        does: "Imagem do painel",
+      },
     ],
     related: ["artifacts", "design", "shepherd"],
   },

@@ -46,7 +46,7 @@ export const emulator: Post = {
             kind: "list",
             items: [
               "`collie device lite create` makes the `collie-lite` AVD with `avdmanager`. It needs the Android SDK Command-line Tools and a `google_apis` arm64 system image already installed. Collie does not download anything for it and does not write the AVD by hand. It is for the app/admin only, writes only to `~/.android/avd/collie-lite*`, and running it again just re-applies the settings without erasing data.",
-              "Emulators that are installed but off show up in `collie device list` as `avd:<name>` with `state: \"off\"`.",
+              'Emulators that are installed but off show up in `collie device list` as `avd:<name>` with `state: "off"`.',
               "Opening the panel of one boots it and waits for the boot, up to 3 minutes. `collie panel open device --serial avd:collie-lite` does the same.",
               "When it starts, Collie adds `-no-audio -no-boot-anim -no-metrics`.",
               "The emulator runs in its own session, so stopping or restarting the Collie service does not take it down. Collie never shuts it down: closing the panel, or stopping the service, leaves it on.",
@@ -64,7 +64,7 @@ export const emulator: Post = {
             items: [
               {
                 title: "Install the Android SDK",
-                body: "In **Preferências → Android**, click **Instalar** (Install). Read and accept the licenses when they appear (**Recusar**, Decline, downloads nothing in the second phase). The sizes with \"~\" are estimates, and you need twice that much free disk.",
+                body: 'In **Preferências → Android**, click **Instalar** (Install). Read and accept the licenses when they appear (**Recusar**, Decline, downloads nothing in the second phase). The sizes with "~" are estimates, and you need twice that much free disk.',
               },
               {
                 title: "Create the light emulator",
@@ -128,11 +128,26 @@ export const emulator: Post = {
       },
     ],
     commands: [
-      { command: "collie device lite create", does: "Creates the collie-lite AVD (app/admin only)" },
-      { command: "collie device lite remove", does: "Deletes the collie-lite AVD" },
-      { command: "collie device list", does: "Lists devices, including off emulators as avd:<name>" },
-      { command: "collie panel open device --serial avd:collie-lite", does: "Boots the emulator into a Device panel" },
-      { command: "collie panel open device --serial <UDID>", does: "Opens an iOS Simulator in a Device panel" },
+      {
+        command: "collie device lite create",
+        does: "Creates the collie-lite AVD (app/admin only)",
+      },
+      {
+        command: "collie device lite remove",
+        does: "Deletes the collie-lite AVD",
+      },
+      {
+        command: "collie device list",
+        does: "Lists devices, including off emulators as avd:<name>",
+      },
+      {
+        command: "collie panel open device --serial avd:collie-lite",
+        does: "Boots the emulator into a Device panel",
+      },
+      {
+        command: "collie panel open device --serial <UDID>",
+        does: "Opens an iOS Simulator in a Device panel",
+      },
     ],
     related: ["devices", "network"],
   },
@@ -181,7 +196,7 @@ export const emulator: Post = {
             kind: "list",
             items: [
               "`collie device lite create` cria o AVD `collie-lite` pelo `avdmanager`. Precisa do Android SDK Command-line Tools e de uma imagem de sistema `google_apis` arm64 já instalada. O Collie não baixa nada para isso nem escreve o AVD à mão. É só do app/admin, escreve apenas em `~/.android/avd/collie-lite*`, e rodar de novo só reaplica a configuração, sem apagar os dados.",
-              "Emuladores instalados e desligados aparecem em `collie device list` como `avd:<nome>`, com `state: \"off\"`.",
+              'Emuladores instalados e desligados aparecem em `collie device list` como `avd:<nome>`, com `state: "off"`.',
               "Abrir o painel de um liga o emulador e espera o boot, por até 3 minutos. `collie panel open device --serial avd:collie-lite` faz o mesmo.",
               "Ao subir, o Collie acrescenta `-no-audio -no-boot-anim -no-metrics`.",
               "O emulador roda em sessão própria, então parar ou reiniciar o serviço do Collie não o derruba. O Collie nunca o desliga: fechar o painel ou parar o serviço o deixa ligado.",
@@ -199,7 +214,7 @@ export const emulator: Post = {
             items: [
               {
                 title: "Instale o Android SDK",
-                body: "Em Preferências → Android, clique em **Instalar**. Leia e aceite as licenças quando aparecerem (**Recusar** não baixa nada da segunda fase). Os tamanhos com \"~\" são estimativas, e você precisa do dobro disso livre em disco.",
+                body: 'Em Preferências → Android, clique em **Instalar**. Leia e aceite as licenças quando aparecerem (**Recusar** não baixa nada da segunda fase). Os tamanhos com "~" são estimativas, e você precisa do dobro disso livre em disco.',
               },
               {
                 title: "Crie o emulador leve",
@@ -263,11 +278,23 @@ export const emulator: Post = {
       },
     ],
     commands: [
-      { command: "collie device lite create", does: "Cria o AVD collie-lite (só app/admin)" },
+      {
+        command: "collie device lite create",
+        does: "Cria o AVD collie-lite (só app/admin)",
+      },
       { command: "collie device lite remove", does: "Apaga o AVD collie-lite" },
-      { command: "collie device list", does: "Lista os aparelhos, com emuladores desligados como avd:<nome>" },
-      { command: "collie panel open device --serial avd:collie-lite", does: "Liga o emulador num painel Dispositivo" },
-      { command: "collie panel open device --serial <UDID>", does: "Abre um Simulador iOS num painel Dispositivo" },
+      {
+        command: "collie device list",
+        does: "Lista os aparelhos, com emuladores desligados como avd:<nome>",
+      },
+      {
+        command: "collie panel open device --serial avd:collie-lite",
+        does: "Liga o emulador num painel Dispositivo",
+      },
+      {
+        command: "collie panel open device --serial <UDID>",
+        does: "Abre um Simulador iOS num painel Dispositivo",
+      },
     ],
     related: ["devices", "network"],
   },

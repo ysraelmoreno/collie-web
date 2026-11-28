@@ -34,7 +34,7 @@ export const network: Post = {
           },
           {
             kind: "p",
-            text: "Example: the Pay button shows \"Payment failed\". The agent lists the flows, finds `POST /v2/checkout` with status 500, opens it and reads the cause. Then it adds a rule that answers 200 and you try the screen again, without touching the backend.",
+            text: 'Example: the Pay button shows "Payment failed". The agent lists the flows, finds `POST /v2/checkout` with status 500, opens it and reads the cause. Then it adds a rule that answers 200 and you try the screen again, without touching the backend.',
           },
         ],
       },
@@ -47,7 +47,7 @@ export const network: Post = {
             items: [
               "`collie network attach` starts a proxy (mitmdump) for one emulator, installs its certificate on the device and sets the emulator's proxy. There is one proxy per emulator.",
               "Each captured request becomes a flow, kept in memory. The panel keeps the newest 2,000 flows (and up to 256 MiB) and drops the oldest.",
-              "The leash is the permission. A terminal reads the traffic only if it is tied to a Network panel. Without one, the command fails with \"No network panel reachable\" and tells you to open one. Captured traffic carries tokens and cookies, so this is on purpose.",
+              'The leash is the permission. A terminal reads the traffic only if it is tied to a Network panel. Without one, the command fails with "No network panel reachable" and tells you to open one. Captured traffic carries tokens and cookies, so this is on purpose.',
               "`collie network list` returns `{id, method, host, path, status, size, durationMs, state}` for each flow, oldest first. `get` opens one with headers and bodies, decoded when possible. `curl` returns the request as a cURL command.",
               "A map rule says what to match (method, host, path, query) and what to answer (status, headers, body, delay) or `--drop` to cut the connection. The first enabled rule that matches wins.",
               "`--from <id>` starts the rule from the response of a captured flow: its status, headers and decoded body. Your flags override it.",
@@ -145,17 +145,41 @@ export const network: Post = {
       },
     ],
     commands: [
-      { command: "collie panel open network", does: "Opens the Network panel, tied to the agent" },
-      { command: "collie network attach", does: "Starts capturing an emulator" },
+      {
+        command: "collie panel open network",
+        does: "Opens the Network panel, tied to the agent",
+      },
+      {
+        command: "collie network attach",
+        does: "Starts capturing an emulator",
+      },
       { command: "collie network list", does: "Lists captured flows" },
-      { command: "collie network get <id>", does: "Shows one flow with headers and bodies" },
-      { command: "collie network curl <id>", does: "Returns the flow's request as cURL" },
-      { command: "collie network rule-add --from <id> …", does: "Creates a rule that answers in the server's place" },
+      {
+        command: "collie network get <id>",
+        does: "Shows one flow with headers and bodies",
+      },
+      {
+        command: "collie network curl <id>",
+        does: "Returns the flow's request as cURL",
+      },
+      {
+        command: "collie network rule-add --from <id> …",
+        does: "Creates a rule that answers in the server's place",
+      },
       { command: "collie network rule-list", does: "Lists the rules in order" },
-      { command: "collie network rule-enable <id> / rule-disable <id>", does: "Turns a rule on or off" },
-      { command: "collie network rule-remove <id> / rule-clear", does: "Deletes one rule or all of them" },
+      {
+        command: "collie network rule-enable <id> / rule-disable <id>",
+        does: "Turns a rule on or off",
+      },
+      {
+        command: "collie network rule-remove <id> / rule-clear",
+        does: "Deletes one rule or all of them",
+      },
       { command: "collie network clear", does: "Forgets the captured flows" },
-      { command: "collie network detach", does: "Stops capturing and restores the emulator" },
+      {
+        command: "collie network detach",
+        does: "Stops capturing and restores the emulator",
+      },
     ],
     related: ["emulator", "devices"],
   },
@@ -192,7 +216,7 @@ export const network: Post = {
           },
           {
             kind: "p",
-            text: "Exemplo: o botão Pagar mostra \"Payment failed\". O agente lista os fluxos, acha `POST /v2/checkout` com status 500, abre e lê a causa. Depois cria uma regra que responde 200 e você testa a tela de novo, sem mexer no backend.",
+            text: 'Exemplo: o botão Pagar mostra "Payment failed". O agente lista os fluxos, acha `POST /v2/checkout` com status 500, abre e lê a causa. Depois cria uma regra que responde 200 e você testa a tela de novo, sem mexer no backend.',
           },
         ],
       },
@@ -205,12 +229,12 @@ export const network: Post = {
             items: [
               "`collie network attach` sobe um proxy (mitmdump) para um emulador, instala o certificado dele no aparelho e configura o proxy do emulador. Há um proxy por emulador.",
               "Cada requisição capturada vira um fluxo, guardado em memória. O painel guarda os 2.000 fluxos mais novos (e até 256 MiB) e descarta os mais antigos.",
-              "A guia é a permissão. Um terminal só lê o tráfego se estiver ligado a um painel Rede. Sem um, o comando falha com \"No network panel reachable\" e manda abrir um. O tráfego capturado carrega tokens e cookies, então isso é de propósito.",
+              'A guia é a permissão. Um terminal só lê o tráfego se estiver ligado a um painel Rede. Sem um, o comando falha com "No network panel reachable" e manda abrir um. O tráfego capturado carrega tokens e cookies, então isso é de propósito.',
               "`collie network list` devolve `{id, method, host, path, status, size, durationMs, state}` de cada fluxo, do mais antigo ao mais novo. `get` abre um com cabeçalhos e corpos, decodificados quando possível. `curl` devolve a requisição como comando cURL.",
               "Uma regra de mapeamento diz o que casar (método, host, caminho, query) e o que responder (status, cabeçalhos, corpo, atraso), ou `--drop` para cortar a conexão. A primeira regra ligada que casa vence.",
               "`--from <id>` parte da resposta de um fluxo capturado: o status, os cabeçalhos e o corpo decodificado. As suas flags sobrescrevem.",
               "A regra criada por um agente nasce desligada. Ela só liga quando você clica em **Permitir** num cartão. Negar ou não responder: continua desligada e a chamada falha.",
-              "Um fluxo atendido por regra fica marcado como mapeado (\"mapeado\" no painel), para ninguém depurar um mock achando que é o servidor real.",
+              'Um fluxo atendido por regra fica marcado como mapeado ("mapeado" no painel), para ninguém depurar um mock achando que é o servidor real.',
             ],
           },
         ],
@@ -290,7 +314,8 @@ export const network: Post = {
             kind: "steps",
             items: [
               {
-                title: "Dá para deixar uma requisição lenta ou fazê-la dar timeout?",
+                title:
+                  "Dá para deixar uma requisição lenta ou fazê-la dar timeout?",
                 body: "Dá. `--delay <ms>` espera antes, e `--drop` corta a conexão. Com os dois, o `--drop` vira um timeout.",
               },
               {
@@ -303,17 +328,44 @@ export const network: Post = {
       },
     ],
     commands: [
-      { command: "collie panel open network", does: "Abre o painel Rede, ligado ao agente" },
-      { command: "collie network attach", does: "Começa a capturar um emulador" },
+      {
+        command: "collie panel open network",
+        does: "Abre o painel Rede, ligado ao agente",
+      },
+      {
+        command: "collie network attach",
+        does: "Começa a capturar um emulador",
+      },
       { command: "collie network list", does: "Lista os fluxos capturados" },
-      { command: "collie network get <id>", does: "Mostra um fluxo com cabeçalhos e corpos" },
-      { command: "collie network curl <id>", does: "Devolve a requisição do fluxo como cURL" },
-      { command: "collie network rule-add --from <id> …", does: "Cria uma regra que responde no lugar do servidor" },
-      { command: "collie network rule-list", does: "Lista as regras, em ordem" },
-      { command: "collie network rule-enable <id> / rule-disable <id>", does: "Liga ou desliga uma regra" },
-      { command: "collie network rule-remove <id> / rule-clear", does: "Apaga uma regra ou todas" },
+      {
+        command: "collie network get <id>",
+        does: "Mostra um fluxo com cabeçalhos e corpos",
+      },
+      {
+        command: "collie network curl <id>",
+        does: "Devolve a requisição do fluxo como cURL",
+      },
+      {
+        command: "collie network rule-add --from <id> …",
+        does: "Cria uma regra que responde no lugar do servidor",
+      },
+      {
+        command: "collie network rule-list",
+        does: "Lista as regras, em ordem",
+      },
+      {
+        command: "collie network rule-enable <id> / rule-disable <id>",
+        does: "Liga ou desliga uma regra",
+      },
+      {
+        command: "collie network rule-remove <id> / rule-clear",
+        does: "Apaga uma regra ou todas",
+      },
       { command: "collie network clear", does: "Esquece os fluxos capturados" },
-      { command: "collie network detach", does: "Para a captura e restaura o emulador" },
+      {
+        command: "collie network detach",
+        does: "Para a captura e restaura o emulador",
+      },
     ],
     related: ["emulator", "devices"],
   },

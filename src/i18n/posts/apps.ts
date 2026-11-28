@@ -48,7 +48,7 @@ export const apps: Post = {
               "`collie app adopt <id> --url http://127.0.0.1:<port>` writes `.collie/apps/<id>/collie-plugin.json` in the paddock: a v2 manifest. The commands come from `--cmd`, from the tool's own `collie.json`, or from its OpenAPI document (up to 40 operations).",
               "The URL must be loopback: `127.0.0.1`, `[::1]` or `localhost`, with a port and no path.",
               "Adopting asks you to approve on a card. An agent can write the app; only you approve it. Collie pins the manifest's SHA-256, so a changed manifest asks again.",
-              "With `--start \"<cmd>\"` (and `--cwd`), the daemon starts the tool and supervises it. `--health <path>` sets a health path. `collie app logs <id>` shows what the service printed.",
+              'With `--start "<cmd>"` (and `--cwd`), the daemon starts the tool and supervises it. `--health <path>` sets a health path. `collie app logs <id>` shows what the service printed.',
               "After you approve, the agent runs `collie app attach <id>`. That opens the panel in the paddock, tied to the agent, and the app's commands become its tools. They are called as `collie <id> <command>`.",
               "Commands that use POST, PUT or DELETE ask you to confirm on every call. GET commands do not.",
               "Events: with `--events <path>` the daemon reads the tool's SSE stream. By default an event is recorded, not typed into the agent. The agent reads it with `collie app event <seq>`. With `--notify`, each event also arrives as a notice.",
@@ -72,7 +72,8 @@ export const apps: Post = {
                 title: "Adopt it",
                 body: "Name the actions with `--cmd name=METHOD:/path`, comma-separated. If the tool has a `collie.json` or an OpenAPI document, you can leave `--cmd` out. The `errors` command and its path below are an example; use your tool's own.",
                 ask: "Attach our metrics viewer and show the recent errors",
-                command: 'collie app adopt metrics --url http://127.0.0.1:8767 --cmd "errors=GET:/api/errors"',
+                command:
+                  'collie app adopt metrics --url http://127.0.0.1:8767 --cmd "errors=GET:/api/errors"',
               },
               {
                 title: "Approve on the card",
@@ -126,7 +127,8 @@ export const apps: Post = {
                 body: "Yes. `collie app new <id>` scaffolds a manifest and a page in `.collie/apps/<id>/` and asks you to approve it. Then the agent edits it and attaches.",
               },
               {
-                title: "Why did my agent get no notice when the tool had an event?",
+                title:
+                  "Why did my agent get no notice when the tool had an event?",
                 body: "By default, events are only recorded. Adopt with `--notify` to have each one typed in as a notice.",
               },
             ],
@@ -135,14 +137,38 @@ export const apps: Post = {
       },
     ],
     commands: [
-      { command: "collie app adopt <id> --url http://127.0.0.1:<port>", does: "Ties a local tool to the paddock and asks you to approve it" },
-      { command: "collie app attach <id>", does: "Opens the app's panel, tied to the agent; its commands become tools" },
-      { command: "collie <id> <command>", does: "Calls one of the app's actions" },
-      { command: "collie app list", does: "Lists the paddock's apps and whether you approved them" },
-      { command: "collie app logs <id>", does: "Shows the end of what the app's service printed" },
-      { command: "collie app event <seq>", does: "Reads the body of an app event" },
-      { command: "collie app context <id>", does: "Reads what you are looking at in the panel" },
-      { command: "collie app snapshot <id>", does: "Reads the page as rendered in the panel" },
+      {
+        command: "collie app adopt <id> --url http://127.0.0.1:<port>",
+        does: "Ties a local tool to the paddock and asks you to approve it",
+      },
+      {
+        command: "collie app attach <id>",
+        does: "Opens the app's panel, tied to the agent; its commands become tools",
+      },
+      {
+        command: "collie <id> <command>",
+        does: "Calls one of the app's actions",
+      },
+      {
+        command: "collie app list",
+        does: "Lists the paddock's apps and whether you approved them",
+      },
+      {
+        command: "collie app logs <id>",
+        does: "Shows the end of what the app's service printed",
+      },
+      {
+        command: "collie app event <seq>",
+        does: "Reads the body of an app event",
+      },
+      {
+        command: "collie app context <id>",
+        does: "Reads what you are looking at in the panel",
+      },
+      {
+        command: "collie app snapshot <id>",
+        does: "Reads the page as rendered in the panel",
+      },
     ],
     related: ["shepherd", "sandbox"],
   },
@@ -193,7 +219,7 @@ export const apps: Post = {
               "`collie app adopt <id> --url http://127.0.0.1:<porta>` grava `.collie/apps/<id>/collie-plugin.json` no cercado: um manifesto v2. Os comandos vêm de `--cmd`, do `collie.json` da própria ferramenta ou do documento OpenAPI dela (até 40 operações).",
               "A URL precisa ser loopback: `127.0.0.1`, `[::1]` ou `localhost`, com porta e sem caminho.",
               "Adotar pede a sua aprovação num cartão. Um agente pode escrever o app; só você aprova. O Collie fixa o SHA-256 do manifesto, então um manifesto alterado pede de novo.",
-              "Com `--start \"<cmd>\"` (e `--cwd`), o daemon sobe a ferramenta e a supervisiona. `--health <caminho>` define um caminho de saúde. `collie app logs <id>` mostra o que o serviço imprimiu.",
+              'Com `--start "<cmd>"` (e `--cwd`), o daemon sobe a ferramenta e a supervisiona. `--health <caminho>` define um caminho de saúde. `collie app logs <id>` mostra o que o serviço imprimiu.',
               "Depois que você aprova, o agente roda `collie app attach <id>`. Isso abre o painel no cercado, ligado ao agente, e os comandos do app viram ferramentas dele. Eles são chamados como `collie <id> <comando>`.",
               "Comandos com POST, PUT ou DELETE pedem a sua confirmação a cada chamada. Os GET não pedem.",
               "Eventos: com `--events <caminho>` o daemon lê o stream SSE da ferramenta. Por padrão, o evento é só gravado, não digitado no agente. O agente o lê com `collie app event <seq>`. Com `--notify`, cada evento também chega como aviso.",
@@ -217,7 +243,8 @@ export const apps: Post = {
                 title: "Adote",
                 body: "Nomeie as ações com `--cmd nome=MÉTODO:/caminho`, separadas por vírgula. Se a ferramenta tem um `collie.json` ou um documento OpenAPI, você pode omitir o `--cmd`. O comando `errors` e o caminho abaixo são um exemplo; use os da sua ferramenta.",
                 ask: "Ligue nosso visualizador de métricas e mostre os erros recentes",
-                command: 'collie app adopt metrics --url http://127.0.0.1:8767 --cmd "errors=GET:/api/errors"',
+                command:
+                  'collie app adopt metrics --url http://127.0.0.1:8767 --cmd "errors=GET:/api/errors"',
               },
               {
                 title: "Aprove no cartão",
@@ -271,7 +298,8 @@ export const apps: Post = {
                 body: "Pode. `collie app new <id>` cria um manifesto e uma página em `.collie/apps/<id>/` e pede a sua aprovação. Depois o agente edita e liga.",
               },
               {
-                title: "Por que o agente não recebeu aviso quando a ferramenta teve um evento?",
+                title:
+                  "Por que o agente não recebeu aviso quando a ferramenta teve um evento?",
                 body: "Por padrão, os eventos só são gravados. Adote com `--notify` para que cada um seja digitado como aviso.",
               },
             ],
@@ -280,14 +308,35 @@ export const apps: Post = {
       },
     ],
     commands: [
-      { command: "collie app adopt <id> --url http://127.0.0.1:<porta>", does: "Liga uma ferramenta local ao cercado e pede a sua aprovação" },
-      { command: "collie app attach <id>", does: "Abre o painel do app, ligado ao agente; os comandos viram ferramentas" },
+      {
+        command: "collie app adopt <id> --url http://127.0.0.1:<porta>",
+        does: "Liga uma ferramenta local ao cercado e pede a sua aprovação",
+      },
+      {
+        command: "collie app attach <id>",
+        does: "Abre o painel do app, ligado ao agente; os comandos viram ferramentas",
+      },
       { command: "collie <id> <comando>", does: "Chama uma ação do app" },
-      { command: "collie app list", does: "Lista os apps do cercado e se você os aprovou" },
-      { command: "collie app logs <id>", does: "Mostra o fim do que o serviço do app imprimiu" },
-      { command: "collie app event <seq>", does: "Lê o corpo de um evento do app" },
-      { command: "collie app context <id>", does: "Lê o que você está olhando no painel" },
-      { command: "collie app snapshot <id>", does: "Lê a página como renderizada no painel" },
+      {
+        command: "collie app list",
+        does: "Lista os apps do cercado e se você os aprovou",
+      },
+      {
+        command: "collie app logs <id>",
+        does: "Mostra o fim do que o serviço do app imprimiu",
+      },
+      {
+        command: "collie app event <seq>",
+        does: "Lê o corpo de um evento do app",
+      },
+      {
+        command: "collie app context <id>",
+        does: "Lê o que você está olhando no painel",
+      },
+      {
+        command: "collie app snapshot <id>",
+        does: "Lê a página como renderizada no painel",
+      },
     ],
     related: ["shepherd", "sandbox"],
   },

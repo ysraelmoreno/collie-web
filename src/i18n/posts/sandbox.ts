@@ -58,7 +58,7 @@ export const sandbox: Post = {
           },
           {
             kind: "p",
-            text: "When a strict terminal is blocked on a write that can be allowed, the agent gets the error at once and the terminal node shows a card: \"Agent X tried to write path\", with Allow this path, Allow the folder and Deny, plus a \"for the batch\" option. Nothing is allowed without your click. Allowing restarts the terminal with a wider sandbox and, in Claude, resumes the conversation. Granted paths stay saved, and Revoke restarts the terminals they reached.",
+            text: 'When a strict terminal is blocked on a write that can be allowed, the agent gets the error at once and the terminal node shows a card: "Agent X tried to write path", with Allow this path, Allow the folder and Deny, plus a "for the batch" option. Nothing is allowed without your click. Allowing restarts the terminal with a wider sandbox and, in Claude, resumes the conversation. Granted paths stay saved, and Revoke restarts the terminals they reached.',
           },
         ],
       },
@@ -85,7 +85,8 @@ export const sandbox: Post = {
                 title: "The agent asks, with a reason",
                 body: "The reason is cleaned of secrets and shown on the same card. If a card is already open for that folder, the request joins it.",
                 ask: "Update the shared config in ~/dotfiles",
-                command: 'collie access request ~/dotfiles --write --reason "shared lint config"',
+                command:
+                  'collie access request ~/dotfiles --write --reason "shared lint config"',
               },
               {
                 title: "Decide on the card",
@@ -109,7 +110,7 @@ export const sandbox: Post = {
               "It limits files, not the network. The network stays open.",
               "Open is the default, and in Open an agent, or text it reads, can read your keys and tokens and write or delete anything in your account.",
               "Whatever an agent writes and you, or a free terminal, run later runs without a sandbox: a shell rc, a LaunchAgent, a binary on your PATH, a git hook or config.",
-              "A free terminal (Terminal.app, or \"Free terminal (no sandbox)\" in the new-terminal sheet) is not protected at all.",
+              'A free terminal (Terminal.app, or "Free terminal (no sandbox)" in the new-terminal sheet) is not protected at all.',
               "Some doors stay open in strict mode on purpose: osascript and Apple Events, the Docker socket, the Keychain, and the GitHub login in ~/.config/gh. A deliberately malicious agent can run code outside the sandbox through them.",
               "One click never allows: the Collie data folder and token, secrets, .git/hooks and .git/config, any .git, ~/Library as a whole, the Collie app, and the files that are never writable. Those requests show a card with only Deny.",
               "A read request shows no card. The answer says reading is already free, or why that path never opens.",
@@ -139,8 +140,14 @@ export const sandbox: Post = {
       },
     ],
     commands: [
-      { command: "collie access request <path> --write [--reason \"...\"]", does: "Ask the owner for write access to a path (strict mode)" },
-      { command: "collie open <url|app>", does: "Open a URL or an installed app outside the sandbox" },
+      {
+        command: 'collie access request <path> --write [--reason "..."]',
+        does: "Ask the owner for write access to a path (strict mode)",
+      },
+      {
+        command: "collie open <url|app>",
+        does: "Open a URL or an installed app outside the sandbox",
+      },
     ],
     related: ["loop", "shepherd", "apps"],
   },
@@ -201,7 +208,7 @@ export const sandbox: Post = {
           },
           {
             kind: "p",
-            text: "Quando um terminal estrito é bloqueado numa escrita que pode ser liberada, o agente recebe o erro na hora e o nó do terminal mostra um cartão: \"Agente X tentou escrever caminho\", com Liberar este caminho, Liberar a pasta e Negar, e a opção \"para o lote\". Nada é liberado sem o seu clique. Liberar reinicia o terminal com um sandbox mais largo e, no Claude, retoma a conversa. Os caminhos liberados ficam salvos, e Revogar reinicia os terminais que eles alcançavam.",
+            text: 'Quando um terminal estrito é bloqueado numa escrita que pode ser liberada, o agente recebe o erro na hora e o nó do terminal mostra um cartão: "Agente X tentou escrever caminho", com Liberar este caminho, Liberar a pasta e Negar, e a opção "para o lote". Nada é liberado sem o seu clique. Liberar reinicia o terminal com um sandbox mais largo e, no Claude, retoma a conversa. Os caminhos liberados ficam salvos, e Revogar reinicia os terminais que eles alcançavam.',
           },
         ],
       },
@@ -228,7 +235,8 @@ export const sandbox: Post = {
                 title: "O agente pede, com um motivo",
                 body: "O motivo é limpo de segredos e aparece no mesmo cartão. Se já houver um cartão aberto para aquela pasta, o pedido se soma a ele.",
                 ask: "Atualize a config compartilhada em ~/dotfiles",
-                command: 'collie access request ~/dotfiles --write --reason "shared lint config"',
+                command:
+                  'collie access request ~/dotfiles --write --reason "shared lint config"',
               },
               {
                 title: "Decida no cartão",
@@ -252,7 +260,7 @@ export const sandbox: Post = {
               "Limita arquivos, não a rede. A rede continua aberta.",
               "Aberto é o padrão, e no Aberto um agente, ou um texto que ele lê, pode ler suas chaves e tokens e gravar ou apagar qualquer coisa na sua conta.",
               "O que um agente gravar e você, ou um terminal livre, executar depois roda sem sandbox: um rc do shell, um LaunchAgent, um binário no PATH, um hook ou config do git.",
-              "Um terminal livre (o Terminal.app, ou \"Terminal livre (sem sandbox)\" na folha de novo terminal) não tem proteção nenhuma.",
+              'Um terminal livre (o Terminal.app, ou "Terminal livre (sem sandbox)" na folha de novo terminal) não tem proteção nenhuma.',
               "Algumas portas ficam abertas no modo estrito de propósito: osascript e Apple Events, o socket do Docker, o Keychain e o login do GitHub em ~/.config/gh. Um agente mal-intencionado de propósito roda código fora do sandbox por elas.",
               "Um clique nunca libera: a pasta de dados e o token do Collie, segredos, .git/hooks e .git/config, qualquer .git, ~/Library inteiro, o app do Collie e o que nunca é gravável. Esses pedidos mostram um cartão só com Negar.",
               "Um pedido de leitura não mostra cartão. A resposta diz que a leitura já é livre, ou por que aquele caminho nunca abre.",
@@ -282,8 +290,14 @@ export const sandbox: Post = {
       },
     ],
     commands: [
-      { command: "collie access request <caminho> --write [--reason \"...\"]", does: "Pede ao dono escrita num caminho (modo estrito)" },
-      { command: "collie open <url|app>", does: "Abre uma URL ou um app instalado fora do sandbox" },
+      {
+        command: 'collie access request <caminho> --write [--reason "..."]',
+        does: "Pede ao dono escrita num caminho (modo estrito)",
+      },
+      {
+        command: "collie open <url|app>",
+        does: "Abre uma URL ou um app instalado fora do sandbox",
+      },
     ],
     related: ["loop", "shepherd", "apps"],
   },

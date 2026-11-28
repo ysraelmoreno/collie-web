@@ -95,7 +95,8 @@ export const design: Post = {
               {
                 title: "Create and publish a design system",
                 body: "Every change needs a reason. Use the **Design Systems** panel in the app (**Abrir painel…** → **Design Systems**) or the commands. Publishing from a terminal needs a leash to the system's Design panel.",
-                command: "collie design system create collie-web --reason \"first tokens\"",
+                command:
+                  'collie design system create collie-web --reason "first tokens"',
               },
               {
                 title: "Read the tokens and export",
@@ -140,18 +141,43 @@ export const design: Post = {
       },
     ],
     commands: [
-      { command: "collie panel open design --file <name>", does: "Open a Design panel on a file; creates it if missing." },
+      {
+        command: "collie panel open design --file <name>",
+        does: "Open a Design panel on a file; creates it if missing.",
+      },
       { command: "collie design files", does: "List design files." },
       { command: "collie design new <name>", does: "Create a design file." },
-      { command: "collie design run <command> --params '{…}'", does: "Run one editor command." },
-      { command: "collie design batch --commands '[…]'", does: "Run several commands as one undo step." },
+      {
+        command: "collie design run <command> --params '{…}'",
+        does: "Run one editor command.",
+      },
+      {
+        command: "collie design batch --commands '[…]'",
+        does: "Run several commands as one undo step.",
+      },
       { command: "collie design inspect", does: "Inspect the file." },
-      { command: "collie design screenshot", does: "Take a screenshot of the design." },
+      {
+        command: "collie design screenshot",
+        does: "Take a screenshot of the design.",
+      },
       { command: "collie design help [search]", does: "List editor commands." },
-      { command: "collie design export --format html", does: "Export as a versioned artifact (also css, react, figcraft)." },
-      { command: "collie design system tokens", does: "Read the active system's tokens." },
-      { command: "collie design system list|history|create|publish|use|undo|revert", does: "Manage design systems; each change needs --reason." },
-      { command: "collie design prefer artifact|figcraft|ask", does: "Set where the Shepherd designs first." },
+      {
+        command: "collie design export --format html",
+        does: "Export as a versioned artifact (also css, react, figcraft).",
+      },
+      {
+        command: "collie design system tokens",
+        does: "Read the active system's tokens.",
+      },
+      {
+        command:
+          "collie design system list|history|create|publish|use|undo|revert",
+        does: "Manage design systems; each change needs --reason.",
+      },
+      {
+        command: "collie design prefer artifact|figcraft|ask",
+        does: "Set where the Shepherd designs first.",
+      },
     ],
     related: ["artifacts", "diagram", "memory"],
   },
@@ -249,7 +275,8 @@ export const design: Post = {
               {
                 title: "Crie e publique um design system",
                 body: "Toda mudança exige um motivo. Use o painel Design Systems no app (Abrir painel… → Design Systems) ou os comandos. Publicar por um terminal exige uma coleira até o painel Design do sistema.",
-                command: "collie design system create collie-web --reason \"primeiros tokens\"",
+                command:
+                  'collie design system create collie-web --reason "primeiros tokens"',
               },
               {
                 title: "Leia os tokens e exporte",
@@ -294,18 +321,49 @@ export const design: Post = {
       },
     ],
     commands: [
-      { command: "collie panel open design --file <nome>", does: "Abre um painel Design num arquivo; cria se não existir." },
+      {
+        command: "collie panel open design --file <nome>",
+        does: "Abre um painel Design num arquivo; cria se não existir.",
+      },
       { command: "collie design files", does: "Lista os arquivos de design." },
-      { command: "collie design new <nome>", does: "Cria um arquivo de design." },
-      { command: "collie design run <comando> --params '{…}'", does: "Roda um comando do editor." },
-      { command: "collie design batch --commands '[…]'", does: "Roda vários comandos como um passo de desfazer." },
+      {
+        command: "collie design new <nome>",
+        does: "Cria um arquivo de design.",
+      },
+      {
+        command: "collie design run <comando> --params '{…}'",
+        does: "Roda um comando do editor.",
+      },
+      {
+        command: "collie design batch --commands '[…]'",
+        does: "Roda vários comandos como um passo de desfazer.",
+      },
       { command: "collie design inspect", does: "Inspeciona o arquivo." },
-      { command: "collie design screenshot", does: "Tira um screenshot do design." },
-      { command: "collie design help [busca]", does: "Lista os comandos do editor." },
-      { command: "collie design export --format html", does: "Exporta como artifact versionado (também css, react, figcraft)." },
-      { command: "collie design system tokens", does: "Lê os tokens do sistema ativo." },
-      { command: "collie design system list|history|create|publish|use|undo|revert", does: "Gerencia design systems; toda mudança exige --reason." },
-      { command: "collie design prefer artifact|figcraft|ask", does: "Define onde o Pastor desenha primeiro." },
+      {
+        command: "collie design screenshot",
+        does: "Tira um screenshot do design.",
+      },
+      {
+        command: "collie design help [busca]",
+        does: "Lista os comandos do editor.",
+      },
+      {
+        command: "collie design export --format html",
+        does: "Exporta como artifact versionado (também css, react, figcraft).",
+      },
+      {
+        command: "collie design system tokens",
+        does: "Lê os tokens do sistema ativo.",
+      },
+      {
+        command:
+          "collie design system list|history|create|publish|use|undo|revert",
+        does: "Gerencia design systems; toda mudança exige --reason.",
+      },
+      {
+        command: "collie design prefer artifact|figcraft|ask",
+        does: "Define onde o Pastor desenha primeiro.",
+      },
     ],
     related: ["artifacts", "diagram", "memory"],
   },

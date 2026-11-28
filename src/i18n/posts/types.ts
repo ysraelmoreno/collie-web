@@ -7,7 +7,10 @@ export type PostBlock =
   | { kind: "p"; text: string }
   | { kind: "list"; items: string[] }
   /** Numbered how-to. `ask` = what you tell the agent; `command` = what runs. */
-  | { kind: "steps"; items: { title: string; body: string; ask?: string; command?: string }[] }
+  | {
+      kind: "steps";
+      items: { title: string; body: string; ask?: string; command?: string }[];
+    }
   | { kind: "code"; lines: string[] }
   | { kind: "note"; text: string };
 

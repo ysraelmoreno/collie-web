@@ -37,7 +37,7 @@ export const harness: Post = {
           },
           {
             kind: "p",
-            text: "Example: you write `git push*` needs the `gate`. The agent asks to push, the hook refuses with \"rode `collie harness check gate` antes\" (run it first), the agent runs the check, and only a pass on that same tree lets the push through.",
+            text: 'Example: you write `git push*` needs the `gate`. The agent asks to push, the hook refuses with "rode `collie harness check gate` antes" (run it first), the agent runs the check, and only a pass on that same tree lets the push through.',
           },
         ],
       },
@@ -48,7 +48,7 @@ export const harness: Post = {
           {
             kind: "list",
             items: [
-              "**Layers.** `precheck` runs when the session starts and only adds context. `edit` runs a check on the touched files that match `paths` (default 5 s, up to 10 rules). `turnEnd` runs at the end of the turn; `\"areas\"` runs the areas of the changed files plus the `smoke` (default 120 s). `commit` runs the gate on commit.",
+              '**Layers.** `precheck` runs when the session starts and only adds context. `edit` runs a check on the touched files that match `paths` (default 5 s, up to 10 rules). `turnEnd` runs at the end of the turn; `"areas"` runs the areas of the changed files plus the `smoke` (default 120 s). `commit` runs the gate on commit.',
               "**Guardrails.** `deny` is a glob over the normalized command (`git push*`), matched in every segment (`&&`, `;`, `|`, `sh -c`, `env`, `sudo`, `$(…)`…); the most severe verdict wins. A command that cannot be parsed fails closed. `protect` lists paths the agent does not edit. `requireBefore` lets a command through only after a check (`gate`, `smoke` or an area).",
               "**Built-in rules.** Always on, outside the file: `--no-verify`, `git -c core.hooksPath`, `git config … core.hooksPath`, `GIT_CONFIG_*`, `GIT_DIR`, clearing the git environment and git aliases are `block`. `collie-work.json` and `.collie/**` are protected by default.",
               "**Claude.** Each Claude terminal gets `PreToolUse` (`Bash`, `Edit`, `Write`, `MultiEdit`) and `Stop` hooks that ask the daemon. The `Stop` can block the end of the turn at most 3 times in a row.",
@@ -75,13 +75,14 @@ export const harness: Post = {
               {
                 title: "Commit the file",
                 body: "Nothing applies until `collie-work.json` is committed. A looser rule committed later only applies once the owner adopts the new base.",
-                command: "git add collie-work.json && git commit -m \"harness\"",
+                command: 'git add collie-work.json && git commit -m "harness"',
               },
               {
                 title: "Test a command against the rules",
                 body: "Any terminal can ask. It says which rule hit, the mode, the message and the check `requireBefore` asks for, plus what each layer can block in Claude and in Cursor. It runs nothing.",
                 ask: "Would a force push be refused here?",
-                command: 'collie harness explain "git push --force origin main"',
+                command:
+                  'collie harness explain "git push --force origin main"',
               },
               {
                 title: "Run the check the rule asks for",
@@ -139,7 +140,8 @@ export const harness: Post = {
     ],
     commands: [
       {
-        command: "collie harness init [--preset minimo|estrito|semgrep] [--print]",
+        command:
+          "collie harness init [--preset minimo|estrito|semgrep] [--print]",
         does: "Writes a ready-made harness into collie-work.json",
       },
       {
@@ -194,7 +196,7 @@ export const harness: Post = {
           },
           {
             kind: "p",
-            text: "Exemplo: você escreve que `git push*` exige o `gate`. O agente pede o push, o hook recusa com \"rode `collie harness check gate` antes\", o agente roda o check, e só um check aprovado naquela mesma árvore deixa o push passar.",
+            text: 'Exemplo: você escreve que `git push*` exige o `gate`. O agente pede o push, o hook recusa com "rode `collie harness check gate` antes", o agente roda o check, e só um check aprovado naquela mesma árvore deixa o push passar.',
           },
         ],
       },
@@ -205,7 +207,7 @@ export const harness: Post = {
           {
             kind: "list",
             items: [
-              "**Camadas.** O `precheck` roda no início da sessão e só dá contexto. O `edit` roda um check nos arquivos tocados que batem com `paths` (padrão 5 s, até 10 regras). O `turnEnd` roda no fim do turno; `\"areas\"` roda as áreas dos arquivos alterados mais o `smoke` (padrão 120 s). O `commit` roda o gate no commit.",
+              '**Camadas.** O `precheck` roda no início da sessão e só dá contexto. O `edit` roda um check nos arquivos tocados que batem com `paths` (padrão 5 s, até 10 regras). O `turnEnd` roda no fim do turno; `"areas"` roda as áreas dos arquivos alterados mais o `smoke` (padrão 120 s). O `commit` roda o gate no commit.',
               "**Guardrails.** `deny` é um glob sobre o comando normalizado (`git push*`), casado em cada segmento (`&&`, `;`, `|`, `sh -c`, `env`, `sudo`, `$(…)`…); vale o veredito mais severo. Comando que não dá para analisar cai no fail-closed. `protect` lista caminhos que o agente não edita. `requireBefore` só deixa um comando passar depois de um check (`gate`, `smoke` ou uma área).",
               "**Regras embutidas.** Sempre ligadas, fora do arquivo: `--no-verify`, `git -c core.hooksPath`, `git config … core.hooksPath`, `GIT_CONFIG_*`, `GIT_DIR`, apagar o ambiente do git e aliases de git são `block`. `collie-work.json` e `.collie/**` são protegidos por padrão.",
               "**Claude.** Cada terminal Claude ganha os hooks `PreToolUse` (`Bash`, `Edit`, `Write`, `MultiEdit`) e `Stop`, que perguntam ao daemon. O `Stop` segura o fim do turno no máximo 3 vezes seguidas.",
@@ -232,13 +234,14 @@ export const harness: Post = {
               {
                 title: "Commite o arquivo",
                 body: "Nada vale até o `collie-work.json` ser commitado. Uma regra mais frouxa commitada depois só vale quando o dono adota a nova base.",
-                command: "git add collie-work.json && git commit -m \"harness\"",
+                command: 'git add collie-work.json && git commit -m "harness"',
               },
               {
                 title: "Teste um comando contra as regras",
                 body: "Qualquer terminal pode perguntar. Diz qual regra bateu, o modo, a mensagem e o check que o `requireBefore` exige, mais o que cada camada consegue bloquear no Claude e no Cursor. Não executa nada.",
                 ask: "Um push forçado seria recusado aqui?",
-                command: 'collie harness explain "git push --force origin main"',
+                command:
+                  'collie harness explain "git push --force origin main"',
               },
               {
                 title: "Rode o check que a regra pede",
@@ -296,7 +299,8 @@ export const harness: Post = {
     ],
     commands: [
       {
-        command: "collie harness init [--preset minimo|estrito|semgrep] [--print]",
+        command:
+          "collie harness init [--preset minimo|estrito|semgrep] [--print]",
         does: "Grava uma harness pronta no collie-work.json",
       },
       {

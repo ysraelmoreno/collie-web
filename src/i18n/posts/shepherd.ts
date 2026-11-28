@@ -47,7 +47,7 @@ export const shepherd: Post = {
             items: [
               "Shepherd: tick **Pastor** when you create or edit a terminal. A terminal that is not a Shepherd cannot summon, leash or create paddocks.",
               "Leash: collie summon <name> creates an agent already leashed to you (--preset, --cwd, --paddock, --model, --connect, and a first prompt). collie leash a b ties two agents that are both leashed to you, and collie unleash removes it. To reach a terminal you do not reach, collie leash request <name> shows a card in the app and you decide.",
-              "Talking: collie list shows who you reach. collie ask <name> \"…\" sends a prompt and waits for the reply, or returns an id with --no-wait (collie ask result <id>). collie check <name> reads its output, and --screen shows the screen as drawn now. collie dismiss <name> kills an agent leashed to you.",
+              'Talking: collie list shows who you reach. collie ask <name> "…" sends a prompt and waits for the reply, or returns an id with --no-wait (collie ask result <id>). collie check <name> reads its output, and --screen shows the screen as drawn now. collie dismiss <name> kills an agent leashed to you.',
               "Paddock: collie paddock create <name> makes a git worktree off your repository (name: a-z, 0-9 and -). With --folder it works in place on an existing folder, git or not. Branches created by Collie are named collie/<name>. A terminal outside any paddock sits in the Pasture, which is not a paddock.",
               "Paddock lifecycle: collie paddock status shows it, collie paddock land <name> brings it back onto its base branch (merge, squash or rebase), and collie paddock delete removes the worktree and branch. Anyone can list paddocks. Creating is for Shepherds. Landing and deleting are for the Shepherd that created it, or you. Landing as a pull request (pr) is only for you.",
               "Herd: a herd has terminals (preset, initial prompt, position), panels, leashes and, if you want, a paddock. A Shepherd runs collie herd list, collie herd apply <id> --name <name> and collie herd save <name> --terminals a,b,c. Applying is all or nothing: if a step fails, what was created is undone.",
@@ -87,7 +87,7 @@ export const shepherd: Post = {
                 title: "Ask and read",
                 body: "The Shepherd sends work and reads the answer.",
                 ask: "Ask the designer to draw the screen",
-                command: "collie ask designer \"Draw the sign-in screen\"",
+                command: 'collie ask designer "Draw the sign-in screen"',
               },
               {
                 title: "Land it",
@@ -97,7 +97,8 @@ export const shepherd: Post = {
               {
                 title: "Save the team as a herd",
                 body: "The next project starts from the same team. Applying it from the app first shows a preview with every command and prompt.",
-                command: "collie herd save signin-team --terminals designer,tester",
+                command:
+                  "collie herd save signin-team --terminals designer,tester",
               },
             ],
           },
@@ -136,18 +137,55 @@ export const shepherd: Post = {
       },
     ],
     commands: [
-      { command: "collie list", does: "List the agents you reach (--all adds your paddock's other terminals)." },
-      { command: "collie summon <name> [--preset …] [--paddock …] \"<first prompt>\"", does: "Spawn an agent leashed to you." },
-      { command: "collie ask <name> \"<prompt>\"", does: "Send a prompt and wait for the reply (--no-wait returns an id)." },
-      { command: "collie check <name> [--screen]", does: "Read an agent's recent output, or its screen." },
-      { command: "collie leash <a> <b>", does: "Leash two agents that are both leashed to you." },
-      { command: "collie leash request <name> --reason \"…\"", does: "Ask you, with a card, to leash a terminal the Shepherd does not reach." },
-      { command: "collie dismiss <name>", does: "Kill an agent leashed to you." },
-      { command: "collie paddock create <name> [--folder <path>]", does: "Create a paddock: a git worktree, or an existing folder." },
-      { command: "collie paddock land <name> [--mode merge|squash|rebase]", does: "Land the paddock back onto its base branch." },
-      { command: "collie paddock delete <name>", does: "Delete a paddock's worktree and branch." },
-      { command: "collie herd save <name> --terminals a,b,c", does: "Save terminals (and panels) you reach as a herd." },
-      { command: "collie herd apply <id> --name <name>", does: "Apply a herd, all or nothing." },
+      {
+        command: "collie list",
+        does: "List the agents you reach (--all adds your paddock's other terminals).",
+      },
+      {
+        command:
+          'collie summon <name> [--preset …] [--paddock …] "<first prompt>"',
+        does: "Spawn an agent leashed to you.",
+      },
+      {
+        command: 'collie ask <name> "<prompt>"',
+        does: "Send a prompt and wait for the reply (--no-wait returns an id).",
+      },
+      {
+        command: "collie check <name> [--screen]",
+        does: "Read an agent's recent output, or its screen.",
+      },
+      {
+        command: "collie leash <a> <b>",
+        does: "Leash two agents that are both leashed to you.",
+      },
+      {
+        command: 'collie leash request <name> --reason "…"',
+        does: "Ask you, with a card, to leash a terminal the Shepherd does not reach.",
+      },
+      {
+        command: "collie dismiss <name>",
+        does: "Kill an agent leashed to you.",
+      },
+      {
+        command: "collie paddock create <name> [--folder <path>]",
+        does: "Create a paddock: a git worktree, or an existing folder.",
+      },
+      {
+        command: "collie paddock land <name> [--mode merge|squash|rebase]",
+        does: "Land the paddock back onto its base branch.",
+      },
+      {
+        command: "collie paddock delete <name>",
+        does: "Delete a paddock's worktree and branch.",
+      },
+      {
+        command: "collie herd save <name> --terminals a,b,c",
+        does: "Save terminals (and panels) you reach as a herd.",
+      },
+      {
+        command: "collie herd apply <id> --name <name>",
+        does: "Apply a herd, all or nothing.",
+      },
     ],
     related: ["loop", "memory", "sandbox"],
   },
@@ -197,7 +235,7 @@ export const shepherd: Post = {
             items: [
               "Pastor: marque Pastor ao criar ou editar um terminal. Um terminal que não é Pastor não chama agentes, não faz coleira e não cria cercado.",
               "Coleira: collie summon <nome> cria um agente já ligado a você (--preset, --cwd, --paddock, --model, --connect, e um primeiro prompt). collie leash a b liga dois agentes que já estão ligados a você, e collie unleash desfaz. Para alcançar um terminal que você não alcança, collie leash request <nome> mostra um cartão no app e você decide.",
-              "Conversa: collie list mostra quem você alcança. collie ask <nome> \"…\" envia um prompt e espera a resposta, ou devolve um id com --no-wait (collie ask result <id>). collie check <nome> lê a saída, e --screen mostra a tela como está desenhada agora. collie dismiss <nome> encerra um agente ligado a você.",
+              'Conversa: collie list mostra quem você alcança. collie ask <nome> "…" envia um prompt e espera a resposta, ou devolve um id com --no-wait (collie ask result <id>). collie check <nome> lê a saída, e --screen mostra a tela como está desenhada agora. collie dismiss <nome> encerra um agente ligado a você.',
               "Cercado: collie paddock create <nome> cria uma worktree do git a partir do seu repositório (nome: a-z, 0-9 e -). Com --folder ele trabalha direto numa pasta existente, git ou não. As branches criadas pelo Collie se chamam collie/<nome>. Um terminal fora de qualquer cercado fica no Pasto, que não é um cercado.",
               "Ciclo do cercado: collie paddock status mostra o cercado, collie paddock land <nome> traz de volta para a branch base (merge, squash ou rebase), e collie paddock delete remove a worktree e a branch. Qualquer um lista cercados. Criar é só de Pastor. Integrar e excluir é do Pastor que criou, ou seu. Integrar como pull request (pr) é só seu.",
               "Rebanho: um rebanho tem terminais (preset, prompt inicial, posição), painéis, coleiras e, se quiser, um cercado. Um Pastor roda collie herd list, collie herd apply <id> --name <nome> e collie herd save <nome> --terminals a,b,c. Aplicar é tudo ou nada: se um passo falha, o que foi criado é desfeito.",
@@ -237,7 +275,7 @@ export const shepherd: Post = {
                 title: "Peça e leia",
                 body: "O Pastor manda o trabalho e lê a resposta.",
                 ask: "Peça ao designer para desenhar a tela",
-                command: "collie ask designer \"Desenhe a tela de login\"",
+                command: 'collie ask designer "Desenhe a tela de login"',
               },
               {
                 title: "Integre",
@@ -247,7 +285,8 @@ export const shepherd: Post = {
               {
                 title: "Salve a equipe como rebanho",
                 body: "O próximo projeto começa da mesma equipe. Aplicar pelo app mostra antes uma prévia com cada comando e cada prompt.",
-                command: "collie herd save equipe-login --terminals designer,tester",
+                command:
+                  "collie herd save equipe-login --terminals designer,tester",
               },
             ],
           },
@@ -286,18 +325,55 @@ export const shepherd: Post = {
       },
     ],
     commands: [
-      { command: "collie list", does: "Lista os agentes que você alcança (--all inclui os outros terminais do cercado)." },
-      { command: "collie summon <nome> [--preset …] [--paddock …] \"<primeiro prompt>\"", does: "Cria um agente ligado a você." },
-      { command: "collie ask <nome> \"<prompt>\"", does: "Envia um prompt e espera a resposta (--no-wait devolve um id)." },
-      { command: "collie check <nome> [--screen]", does: "Lê a saída recente de um agente, ou a tela dele." },
-      { command: "collie leash <a> <b>", does: "Liga dois agentes que já estão ligados a você." },
-      { command: "collie leash request <nome> --reason \"…\"", does: "Pede a você, num cartão, para ligar um terminal que o Pastor não alcança." },
-      { command: "collie dismiss <nome>", does: "Encerra um agente ligado a você." },
-      { command: "collie paddock create <nome> [--folder <pasta>]", does: "Cria um cercado: uma worktree do git, ou uma pasta existente." },
-      { command: "collie paddock land <nome> [--mode merge|squash|rebase]", does: "Integra o cercado de volta na branch base." },
-      { command: "collie paddock delete <nome>", does: "Exclui a worktree e a branch de um cercado." },
-      { command: "collie herd save <nome> --terminals a,b,c", does: "Salva terminais (e painéis) que você alcança como rebanho." },
-      { command: "collie herd apply <id> --name <nome>", does: "Aplica um rebanho, tudo ou nada." },
+      {
+        command: "collie list",
+        does: "Lista os agentes que você alcança (--all inclui os outros terminais do cercado).",
+      },
+      {
+        command:
+          'collie summon <nome> [--preset …] [--paddock …] "<primeiro prompt>"',
+        does: "Cria um agente ligado a você.",
+      },
+      {
+        command: 'collie ask <nome> "<prompt>"',
+        does: "Envia um prompt e espera a resposta (--no-wait devolve um id).",
+      },
+      {
+        command: "collie check <nome> [--screen]",
+        does: "Lê a saída recente de um agente, ou a tela dele.",
+      },
+      {
+        command: "collie leash <a> <b>",
+        does: "Liga dois agentes que já estão ligados a você.",
+      },
+      {
+        command: 'collie leash request <nome> --reason "…"',
+        does: "Pede a você, num cartão, para ligar um terminal que o Pastor não alcança.",
+      },
+      {
+        command: "collie dismiss <nome>",
+        does: "Encerra um agente ligado a você.",
+      },
+      {
+        command: "collie paddock create <nome> [--folder <pasta>]",
+        does: "Cria um cercado: uma worktree do git, ou uma pasta existente.",
+      },
+      {
+        command: "collie paddock land <nome> [--mode merge|squash|rebase]",
+        does: "Integra o cercado de volta na branch base.",
+      },
+      {
+        command: "collie paddock delete <nome>",
+        does: "Exclui a worktree e a branch de um cercado.",
+      },
+      {
+        command: "collie herd save <nome> --terminals a,b,c",
+        does: "Salva terminais (e painéis) que você alcança como rebanho.",
+      },
+      {
+        command: "collie herd apply <id> --name <nome>",
+        does: "Aplica um rebanho, tudo ou nada.",
+      },
     ],
     related: ["loop", "memory", "sandbox"],
   },

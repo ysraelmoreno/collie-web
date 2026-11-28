@@ -81,18 +81,20 @@ export const memory: Post = {
                 title: "Search before reading code",
                 body: "Ask the agent, or run it yourself in a terminal that belongs to the project.",
                 ask: "How do we handle sessions?",
-                command: "collie memory search \"sessions\"",
+                command: 'collie memory search "sessions"',
               },
               {
                 title: "Save a decision",
                 body: "kind is decision, map or pitfall. The subject is the topic key, and a new save on it replaces the old one. The scope defaults to your lot when you are in one, otherwise the project.",
                 ask: "Remember that /v1 is frozen",
-                command: "collie memory save --kind pitfall --subject api-v1 --title \"/v1 is frozen\" \"Add new routes to /v2.\"",
+                command:
+                  'collie memory save --kind pitfall --subject api-v1 --title "/v1 is frozen" "Add new routes to /v2."',
               },
               {
                 title: "Judge what was injected",
                 body: "When a memory helped, say so. When it is wrong or out of date, flag it and say why.",
-                command: "collie memory flag <id> --outdated \"the API moved to /v2\"",
+                command:
+                  'collie memory flag <id> --outdated "the API moved to /v2"',
               },
               {
                 title: "Review proposals and watch the numbers",
@@ -135,14 +137,37 @@ export const memory: Post = {
       },
     ],
     commands: [
-      { command: "collie memory search \"<words>\"", does: "Search memory before re-reading code (--limit, --all, --inactive)." },
-      { command: "collie memory save --kind decision|map|pitfall --subject <key> --title <summary>", does: "Save an entry; same subject replaces the old one." },
-      { command: "collie memory flag <id> --useful|--wrong|--outdated", does: "Judge a memory that was injected." },
-      { command: "collie memory promote <id>", does: "Move a lot memory to the project." },
-      { command: "collie memory stats [--since 7d] [--json]", does: "Coverage, injections, dead memories and trends." },
-      { command: "collie memory doc-search \"<words>\"", does: "Search the documents you ingested." },
+      {
+        command: 'collie memory search "<words>"',
+        does: "Search memory before re-reading code (--limit, --all, --inactive).",
+      },
+      {
+        command:
+          "collie memory save --kind decision|map|pitfall --subject <key> --title <summary>",
+        does: "Save an entry; same subject replaces the old one.",
+      },
+      {
+        command: "collie memory flag <id> --useful|--wrong|--outdated",
+        does: "Judge a memory that was injected.",
+      },
+      {
+        command: "collie memory promote <id>",
+        does: "Move a lot memory to the project.",
+      },
+      {
+        command: "collie memory stats [--since 7d] [--json]",
+        does: "Coverage, injections, dead memories and trends.",
+      },
+      {
+        command: 'collie memory doc-search "<words>"',
+        does: "Search the documents you ingested.",
+      },
       { command: "collie lot board", does: "Read the lot's board of notes." },
-      { command: "collie lot post --kind handoff|question|status|answer --to <name>", does: "Post a note to a member of the lot." },
+      {
+        command:
+          "collie lot post --kind handoff|question|status|answer --to <name>",
+        does: "Post a note to a member of the lot.",
+      },
     ],
     related: ["loop", "shepherd", "design"],
   },
@@ -226,18 +251,20 @@ export const memory: Post = {
                 title: "Busque antes de ler código",
                 body: "Peça ao agente, ou rode você mesmo num terminal que pertence ao projeto.",
                 ask: "Como a gente trata sessões?",
-                command: "collie memory search \"sessões\"",
+                command: 'collie memory search "sessões"',
               },
               {
                 title: "Salve uma decisão",
                 body: "kind é decision, map ou pitfall. O subject é a chave do assunto, e um novo save nele substitui o antigo. O escopo padrão é o seu lote, se você está em um, senão o projeto.",
                 ask: "Guarde que a /v1 está congelada",
-                command: "collie memory save --kind pitfall --subject api-v1 --title \"/v1 está congelada\" \"Novas rotas vão na /v2.\"",
+                command:
+                  'collie memory save --kind pitfall --subject api-v1 --title "/v1 está congelada" "Novas rotas vão na /v2."',
               },
               {
                 title: "Julgue o que foi injetado",
                 body: "Quando uma memória ajudou, diga. Quando está errada ou velha, marque e explique por quê.",
-                command: "collie memory flag <id> --outdated \"a API passou para /v2\"",
+                command:
+                  'collie memory flag <id> --outdated "a API passou para /v2"',
               },
               {
                 title: "Revise as propostas e olhe os números",
@@ -280,14 +307,37 @@ export const memory: Post = {
       },
     ],
     commands: [
-      { command: "collie memory search \"<palavras>\"", does: "Busca na memória antes de reler código (--limit, --all, --inactive)." },
-      { command: "collie memory save --kind decision|map|pitfall --subject <chave> --title <resumo>", does: "Salva uma entrada; o mesmo assunto substitui a antiga." },
-      { command: "collie memory flag <id> --useful|--wrong|--outdated", does: "Julga uma memória que foi injetada." },
-      { command: "collie memory promote <id>", does: "Move uma memória de lote para o projeto." },
-      { command: "collie memory stats [--since 7d] [--json]", does: "Cobertura, injeções, memórias mortas e tendências." },
-      { command: "collie memory doc-search \"<palavras>\"", does: "Busca nos documentos que você ingeriu." },
+      {
+        command: 'collie memory search "<palavras>"',
+        does: "Busca na memória antes de reler código (--limit, --all, --inactive).",
+      },
+      {
+        command:
+          "collie memory save --kind decision|map|pitfall --subject <chave> --title <resumo>",
+        does: "Salva uma entrada; o mesmo assunto substitui a antiga.",
+      },
+      {
+        command: "collie memory flag <id> --useful|--wrong|--outdated",
+        does: "Julga uma memória que foi injetada.",
+      },
+      {
+        command: "collie memory promote <id>",
+        does: "Move uma memória de lote para o projeto.",
+      },
+      {
+        command: "collie memory stats [--since 7d] [--json]",
+        does: "Cobertura, injeções, memórias mortas e tendências.",
+      },
+      {
+        command: 'collie memory doc-search "<palavras>"',
+        does: "Busca nos documentos que você ingeriu.",
+      },
       { command: "collie lot board", does: "Lê o quadro de recados do lote." },
-      { command: "collie lot post --kind handoff|question|status|answer --to <nome>", does: "Posta um recado para um membro do lote." },
+      {
+        command:
+          "collie lot post --kind handoff|question|status|answer --to <nome>",
+        does: "Posta um recado para um membro do lote.",
+      },
     ],
     related: ["loop", "shepherd", "design"],
   },
