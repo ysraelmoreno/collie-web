@@ -11,16 +11,42 @@ drive, without writing a [plug-in](/docs/features/plugins) by hand.
 There are two ways in: `collie app new` scaffolds a page of your own, and `collie app adopt` wraps a local service that
 already exists. Either way, only you approve the app, and nothing runs before that.
 
+## What an app gives agents
+
+- **HTTP commands**, the core: the agent calls them as tools. Writes ask you on each call
+  ([where they come from](#where-the-commands-come-from)).
+- **A managed service**: the daemon starts the tool, checks its health and keeps its log ([The service](#the-service)).
+- **A panel**: the tool's page in Collie; the agent reads what you are looking at and the rendered page
+  ([Reading an app](#reading-an-app)).
+- **Events**, optional: an SSE stream the daemon records, and only with `--notify` types into the agent
+  ([Events](#events)).
+
+Everything an app returns is data for the agent, never instructions, and changing an adopted app's parameters needs
+`--replace` and your approval again.
+
 ## Adopt a local tool
 
 `collie app adopt` takes a tool that already serves a web page on loopback and writes its manifest for you. An agent can
 run it; the approval card is yours.
 
-```sh
-collie app adopt quadro --url http://127.0.0.1:8791 --start ./run.sh --cwd Examples/apps/quadro \
-  --health /api/health --events /api/stream --event-diff events
-collie app attach quadro
+```tabs
+tabs:
+  - label: Commands by hand
+    lang: sh
+    code: |
+      collie app adopt analytics --url http://127.0.0.1:4000 --start "npm run dev" --cwd tools/analytics \
+        --health /api/health --cmd "events=GET:/api/events,clear=POST:/api/clear" --pick items,count
+      collie app attach analytics
+  - label: From collie.json (Quadro)
+    lang: sh
+    code: |
+      collie app adopt quadro --url http://127.0.0.1:8791 --start ./run.sh --cwd Examples/apps/quadro \
+        --health /api/health --events /api/stream --event-diff events
+      collie app attach quadro
 ```
+
+Between the two commands, you approve the card in the Collie app. In the first tab the agent gets `analytics_events`
+(only `items` and `count` of the reply) and `analytics_clear`, which asks you each time.
 
 | Flag | What it sets |
 |---|---|
@@ -120,8 +146,12 @@ with text and boxes) and `collie app context <id>` returns what the page last pa
 
 ## Events
 
-`--events` points at the tool's SSE stream. With `--event-diff <key>`, the stream is expected to send the whole JSON
-document on each change (up to 4 MiB). The first document of each connection is only the baseline. After that, each new
+Optional: an app without `--events` has everything above. `--events` points at the tool's SSE stream. The daemon
+listens to it while the app's panel is open on the canvas and reconnects on its own (1 s, doubling to 30 s).
+
+Without `--event-diff`, each SSE event named `<id>.event` (the `event:` field) is one event, its `data` read as JSON or
+else as text, up to 64 KiB. Unnamed messages are ignored. With `--event-diff <key>`, the stream is expected to send the
+whole JSON document on each change (up to 4 MiB). The first document of each connection is only the baseline. After that, each new
 item of the array at `<key>` becomes one `<id>.event`, at most 100 per document. A cleared log resets the baseline.
 
 By default an adopted app is in **consult mode** (`notify: false`): events are recorded and read with `collie events`
