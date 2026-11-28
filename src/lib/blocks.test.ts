@@ -126,3 +126,12 @@ test("inline html escaped", () => {
       b.body.includes("<code>ok</code>"),
   );
 });
+
+test("inline: code span keeps > and raw html stays text", () => {
+  const [s] = toSegments(
+    '```callout\nkind: note\nbody: "`a > b` <b>x</b>"\n```\n',
+    strict,
+  );
+  assert.ok(s.kind === "block" && s.block.name === "callout");
+  assert.equal(s.block.body, "<code>a &gt; b</code> &lt;b&gt;x&lt;/b&gt;");
+});

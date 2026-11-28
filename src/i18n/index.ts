@@ -36,6 +36,17 @@ export const blogPath: Record<Locale, string> = {
   pt: "/pt/blog",
 };
 
+export const docsPath: Record<Locale, string> = {
+  en: "/docs",
+  pt: "/pt/docs",
+};
+
+/** Docs pages share their slug across locales. */
+export const docPaths = (slug: string): Record<Locale, string> => ({
+  en: `${docsPath.en}/${slug}`,
+  pt: `${docsPath.pt}/${slug}`,
+});
+
 /** A locale without this post falls back to its blog index. */
 export const blogPostPaths = (
   slug: string,

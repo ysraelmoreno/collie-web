@@ -4,6 +4,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   blogPath,
   changelogPath,
+  docsPath,
   featuresPath,
   getDictionary,
   localePath,
@@ -19,7 +20,7 @@ export function Nav({
   switchPaths,
 }: {
   locale: Locale;
-  current?: "changelog" | "features" | "blog";
+  current?: "changelog" | "features" | "blog" | "docs";
   /** Where the EN|PT switch points; defaults to the changelog (or home). */
   switchPaths?: Record<Locale, string>;
 }) {
@@ -34,6 +35,7 @@ export function Nav({
   // Page links after the section anchors; the current page gets aria-current.
   const pages = [
     ["features", t.links.features, featuresPath[locale]],
+    ["docs", t.links.docs, docsPath[locale]],
     ["changelog", t.links.changelog, changelogPath[locale]],
     ["blog", t.links.blog, blogPath[locale]],
   ] as const;

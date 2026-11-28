@@ -31,7 +31,10 @@ export function blogPostPath(root: string, locale: BlogLocale, slug: string) {
 }
 
 // Frontmatter: `key: value` lines; strings are JSON-quoted so `:` and quotes survive.
-export function parsePost(source: string): { meta: BlogMeta; body: string } {
+export function parseFrontmatter(source: string): {
+  raw: Record<string, string | boolean>;
+  body: string;
+} {
   const m = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/.exec(source);
   if (!m) throw new Error("Missing frontmatter");
   const raw: Record<string, string | boolean> = {};
@@ -48,6 +51,11 @@ export function parsePost(source: string): { meta: BlogMeta; body: string } {
           ? false
           : v;
   }
+  return { raw, body: m[2].replace(/^\r?\n/, "") };
+}
+
+export function parsePost(source: string): { meta: BlogMeta; body: string } {
+  const { raw, body } = parseFrontmatter(source);
   const meta: BlogMeta = {
     title: String(raw.title ?? ""),
     date: String(raw.date ?? ""),
@@ -55,7 +63,7 @@ export function parsePost(source: string): { meta: BlogMeta; body: string } {
     draft: raw.draft === true,
   };
   if (typeof raw.cover === "string" && raw.cover) meta.cover = raw.cover;
-  return { meta, body: m[2].replace(/^\r?\n/, "") };
+  return { meta, body };
 }
 
 export function serializePost(meta: BlogMeta, body: string): string {
@@ -95,9 +103,23 @@ const esc = (t: string) =>
 
 const plain = new Marked();
 
+/** Heading anchor: lowercase, accents dropped, anything else non-alphanumeric → `-`. */
+export const slugifyHeading = (text: string): string =>
+  text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
 // Fenced code gets the design's header: ```lang file/name.ext → label is the file name, else the language.
 export const md = new Marked({
   renderer: {
+    // Every heading gets an anchor (docs "On this page" links to h2/h3).
+    heading({ tokens, depth, text }) {
+      const html = this.parser.parseInline(tokens);
+      return `<h${depth} id="${slugifyHeading(text)}">${html}</h${depth}>\n`;
+    },
     code({ text, lang }) {
       const [language, ...file] = (lang ?? "").trim().split(/\s+/);
       const label = file.join(" ") || language;

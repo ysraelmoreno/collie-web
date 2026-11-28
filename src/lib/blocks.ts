@@ -1,8 +1,8 @@
 import { parse } from "yaml";
-import type { Token, Tokens } from "marked";
+import { Marked, type Token, type Tokens } from "marked";
 import { md } from "./blog.ts";
 
-export type Inline = string; // HTML from md.parseInline (input escaped)
+export type Inline = string; // HTML from inline Markdown, raw HTML escaped
 export type CalloutKind = "note" | "status" | "vision" | "warning";
 export type Block =
   | { name: "callout"; kind: CalloutKind; title?: Inline; body: Inline }
@@ -74,11 +74,12 @@ function list(v: unknown, at: string, min: number, max = Infinity): unknown[] {
   return v;
 }
 
-// Escape raw HTML first so inline Markdown can't inject tags.
-const inline = (s: string): string =>
-  md.parseInline(s.replace(/</g, "&lt;").replace(/>/g, "&gt;"), {
-    async: false,
-  });
+// Raw HTML is shown as text, so inline Markdown can't inject tags. Escaping in the
+// renderer (not the source) keeps `a > b` in a code span from showing `&gt;`.
+const escHtml = (t: string) =>
+  t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const safe = new Marked({ renderer: { html: ({ text }) => escHtml(text) } });
+const inline = (s: string): string => safe.parseInline(s, { async: false });
 const il = (v: unknown, at: string) => inline(str(v, at));
 const optIl = (o: Obj, k: string, at: string) =>
   o[k] === undefined ? undefined : il(o[k], `${at}.${k}`);
@@ -176,12 +177,12 @@ function validate(name: string, data: unknown): Block {
 
 export function toSegments(
   body: string,
-  opts: { strict: boolean; file?: string },
+  opts: { strict: boolean; file?: string; firstLine?: number },
 ): Segment[] {
   const tokens = md.lexer(body);
   const out: Segment[] = [];
   let pending: Token[] = [];
-  let line = 1;
+  let line = opts.firstLine ?? 1;
   const flush = () => {
     if (!pending.length) return;
     const list = Object.assign(pending, { links: tokens.links });

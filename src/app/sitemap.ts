@@ -4,6 +4,7 @@ import {
   blogPath,
   blogPostPaths,
   changelogPath,
+  docPaths,
   featuresPath,
   localePath,
   locales,
@@ -13,6 +14,7 @@ import {
 } from "@/i18n";
 import { postSlugs } from "@/i18n/posts";
 import { listPosts } from "@/lib/blog";
+import { docSlugs } from "@/lib/docs";
 import { absoluteUrl } from "@/lib/site";
 
 export const dynamic = "force-static";
@@ -37,6 +39,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     featuresPath,
     blogPath,
     ...postSlugs.map(postPaths),
+    // Docs are always bilingual (assertDocs fails the build otherwise).
+    ...docSlugs().map(docPaths),
   ].flatMap((paths) => page(paths));
 
   // A blog post is listed only in the locales that have its file.

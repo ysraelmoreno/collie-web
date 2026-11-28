@@ -8,7 +8,7 @@ export function Toc({
   items,
 }: {
   label: string;
-  items: { id: string; title: string }[];
+  items: { id: string; title: string; depth?: 2 | 3 }[];
 }) {
   const [active, setActive] = useState(items[0]?.id);
 
@@ -36,12 +36,12 @@ export function Toc({
         {label}
       </p>
       <ul className="flex flex-col gap-0.5">
-        {items.map(({ id, title }) => (
+        {items.map(({ id, title, depth }) => (
           <li key={id}>
             <a
               href={`#${id}`}
               aria-current={id === active ? "location" : undefined}
-              className="block border-l-2 border-border py-1.5 pl-3.5 text-[15px] leading-[22px] text-text-secondary hover:text-fg aria-[current=location]:border-accent-text aria-[current=location]:text-fg"
+              className={`block border-l-2 border-border py-1.5 text-[15px] ${depth === 3 ? "pl-7" : "pl-3.5"} leading-[22px] text-text-secondary hover:text-fg aria-[current=location]:border-accent-text aria-[current=location]:text-fg`}
             >
               {title}
             </a>
